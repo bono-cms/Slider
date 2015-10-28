@@ -1,7 +1,6 @@
 <?php
 
-use Krystal\Form\Widget\CheckBoxWidget;
-use Krystal\Form\Widget\DropdownWidget;
+use Krystal\Form\Element;
 
 ?>
 
@@ -18,14 +17,14 @@ use Krystal\Form\Widget\DropdownWidget;
 		<div role="tabpanel" class="tab-pane fade in active" id="image" role="tabpanel">
 			<div class="well clearfix">
 				
-				<input type="hidden" name="image[id]" value="<?php echo $image->getId(); ?>" />
-				<input type="hidden" name="image[image]" value="<?php echo $image->getCover(); ?>" />
+                <?php echo Element::hidden('image[id]', $image->getId()); ?>
+                <?php echo Element::hidden('image[image]', $image->getCover()); ?>
 				
 				<div class="form-group clearfix">
 					<label class="col-lg-2 control-label"><?php $this->show('Name'); ?></label>
 					<div class="col-lg-10">
 						<div class="input-group">
-							<input type="text" name="image[name]" class="form-control" placeholder="<?php $this->show("Slider's name. When empty, then is taken from a filename"); ?>" value="<?php echo $image->getName(); ?>" />
+                            <?php echo Element::text('image[name]', $image->getName(), array('class' => 'form-control', 'placeholder' => $this->translate("Slider's name. When empty, then is taken from a filename"))); ?>
 							<span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
 						</div>
 					</div>
@@ -34,7 +33,7 @@ use Krystal\Form\Widget\DropdownWidget;
 				<div class="form-group clearfix">
 					<label class="col-lg-2 control-label"><?php $this->show('Category'); ?></label>
 					<div class="col-lg-10">
-						<?php echo DropdownWidget::render(array('name' => 'image[category_id]', 'class' => 'form-control'), $categories, $image->getCategoryId(), false); ?>
+                        <?php echo Element::select('image[category_id]', $categories, $image->getCategoryId(), array('class' => 'form-control')); ?>
 					</div>
 				</div>
 				
@@ -53,7 +52,7 @@ use Krystal\Form\Widget\DropdownWidget;
 						<br />
 						<br />
 						
-						<input type="file" name="file" accept="image/x-png, image/gif, image/jpeg" />
+                        <?php echo Element::file('file', 'image/x-png, image/gif, image/jpeg'); ?>
 					</div>
 				</div>
 			</div>
@@ -65,7 +64,7 @@ use Krystal\Form\Widget\DropdownWidget;
 					<label class="col-lg-2 control-label"><?php $this->show('Order'); ?></label>
 					<div class="col-lg-10">
 						<div class="input-group">
-							<input type="number" min="0" name="image[order]" class="form-control" value="<?php echo $image->getOrder(); ?>" placeholder="<?php $this->show('Image sort order'); ?>" />
+                            <?php echo Element::number('image[order]', $image->getOrder(), array('class' => 'form-control', 'placeholder' => $this->translate('Image sort order'))); ?>
 							<span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
 						</div>
 					</div>
@@ -75,7 +74,7 @@ use Krystal\Form\Widget\DropdownWidget;
 					<label class="col-lg-2 control-label"><?php $this->show('Description'); ?></label>
 					<div class="col-lg-10">
 						<div class="input-group">
-							<textarea name="image[description]" class="form-control" placeholder="<?php $this->show('Image description'); ?>"><?php echo $image->getDescription(); ?></textarea>
+                            <?php echo Element::textarea('image[description]', $image->getDescription(), array('class' => 'form-control', 'placeholder' => $this->translate('Image description'))); ?>
 							<span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
 						</div>
 					</div>
@@ -85,7 +84,7 @@ use Krystal\Form\Widget\DropdownWidget;
 					<label class="col-lg-2 control-label"><?php $this->show('Link'); ?></label>
 					<div class="col-lg-10">
 						<div class="input-group">
-							<input type="text" name="image[link]" class="form-control" placeholder="<?php $this->show('Link to be opened when clicking on the slider'); ?>" value="<?php echo $image->getLink(); ?>" />
+                            <?php echo Element::text('image[link]', $image->getLink(), array('class' => 'form-control', 'placeholder' => $this->translate('Link to be opened when clicking on the slider'))); ?>
 							<span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
 						</div>
 					</div>
@@ -94,7 +93,7 @@ use Krystal\Form\Widget\DropdownWidget;
 				<div class="form-group clearfix">
 					<label class="col-lg-2 control-label"><?php $this->show('Published'); ?></label>
 					<div class="col-lg-10">
-						<?php echo CheckBoxWidget::render(array('name' => 'image[published]', 'class' => 'form-control'), $image->getPublished()); ?>
+                        <?php echo Element::checkbox('image[published]', $image->getPublished(), array('class' => 'form-control')); ?>
 					</div>
 				</div>
 			</div>
@@ -103,13 +102,16 @@ use Krystal\Form\Widget\DropdownWidget;
 	</div>
 	
 	<?php if (!$image->getId()): ?>
-	<button data-button="add" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Add'); ?></button>
+	
+    <button data-button="add" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Add'); ?></button>
 	<button data-button="add-upload" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Add & Upload new'); ?></button>
-	<?php else: ?>
+	
+    <?php else: ?>
 	
 	<button data-button="save" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save'); ?></button>
 	<button data-button="save-upload" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save & Upload new'); ?></button>
-	<?php endif; ?>
+	
+    <?php endif; ?>
 	
 	<button data-button="cancel" class="btn btn-default"><i class="glyphicon glyphicon-floppy-remove"></i> <?php $this->show('Cancel'); ?></button>
 	

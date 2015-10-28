@@ -1,7 +1,6 @@
 <?php
 
-use Krystal\Form\Widget\CheckBoxWidget;
-use Krystal\Form\HtmlHelper;
+use Krystal\Form\Element;
 
 ?>
 
@@ -22,10 +21,8 @@ use Krystal\Form\HtmlHelper;
 		 <li><a href="#" data-button="save-changes"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save changes'); ?></a></li>
 		 <li><a href="#" data-button="remove-selected"><i class="glyphicon glyphicon-remove"></i> <?php $this->show('Remove selected'); ?></a></li>
 		 <?php else: ?>
-		 
 		 <li class="disabled"><a><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save changes'); ?></a></li>
 		 <li class="disabled"><a><i class="glyphicon glyphicon-remove"></i> <?php $this->show('Remove selected'); ?></a></li>
-		 
 		 <?php endif; ?>
 	  </ul>
 	</div>
@@ -55,7 +52,6 @@ use Krystal\Form\HtmlHelper;
 			<?php if (!empty($images)): ?>
 			<tbody>
 				<?php foreach ($images as $image): ?>
-				
 				<tr>
 					<td class="text-center">
 						<input type="checkbox" name="toDelete[<?php echo $image->getId(); ?>]" />
@@ -66,19 +62,17 @@ use Krystal\Form\HtmlHelper;
 					</td>
 					<td class="text-center"><?php echo $image->getCategoryName(); ?></td>
 					<td class="text-center">
-						<?php echo CheckBoxWidget::render(array('name' => sprintf('published[%s]', $image->getId())), $image->getPublished()); ?>
+                        <?php echo Element::checkbox(sprintf('published[%s]', $image->getId()), $image->getPublished()); ?>
 					</td>
 					<td class="text-center col-md-1">
-						<input type="number" min="0" class="form-control" name="order[<?php echo $image->getId(); ?>]" value="<?php echo $image->getOrder(); ?>" />
+                        <?php echo Element::number(sprintf('order[%s]', $image->getId()), $image->getOrder(), array('class' => 'form-control', 'min' => '0')); ?>
 					</td>
 					<td class="text-center col-md-1">
 						<a data-button="edit" data-toggle="tooltip" data-placement="left" data-original-title="<?php $this->show('Edit this image'); ?>" href="<?php echo $this->url('Slider:Admin:Image:Edit@indexAction', $image->getId()); ?>"><i class="glyphicon glyphicon-pencil"></i></a>
 						<a data-button="delete" data-id="<?php echo $image->getId(); ?>" data-category="image" data-toggle="tooltip" data-placement="left" data-original-title="<?php $this->show('Remove this image'); ?>" href="#"><i class="glyphicon glyphicon-remove"></i></a>
 					</td>
 				</tr>
-				
 				<?php endforeach; ?>
-				
 			</tbody>
 			<?php endif; ?>
 		</table>
@@ -105,18 +99,15 @@ use Krystal\Form\HtmlHelper;
 				<th class="text-center"><?php $this->show('Amount of slides'); ?></th>
 				<th class="text-center"><?php $this->show('Height'); ?></th>
 				<th class="text-center"><?php $this->show('Width'); ?></th>
-				
 				<?php if ($extendedMode): ?>
 				<th class="text-center"><?php $this->show('Class'); ?></th>
 				<th class="text-center"><?php $this->show('Actions'); ?></th>
 				<?php endif; ?>
-				
 			</tr>
 		</thead>
 		
 		<?php if (!empty($categories)): ?>
 		<tbody>
-			
 			<?php foreach ($categories as $category): ?>
 			<tr>
 				<td class="text-center text-muted"><?php echo $category->getId(); ?></td>
@@ -133,9 +124,9 @@ use Krystal\Form\HtmlHelper;
 				<td class="text-center"><?php echo $taskManager->getSlidesCountByCategoryId($category->getId());; ?></td>
 				<td class="text-center"><?php echo $category->getHeight(); ?></td>
 				<td class="text-center"><?php echo $category->getWidth(); ?></td>
-				
+                
 				<?php if ($extendedMode): ?>
-				
+                
 				<td class="text-center"><?php echo $category->getClass(); ?></td>
 				<td class="text-center">
 					<a data-button="edit" data-toggle="tooltip" data-placement="left" data-original-title="<?php $this->show('Edit this category'); ?>" href="<?php echo $this->url('Slider:Admin:Category:Edit@indexAction', $category->getId()); ?>"><i class="glyphicon glyphicon-pencil"></i></a>
@@ -144,11 +135,9 @@ use Krystal\Form\HtmlHelper;
 				
 				<?php endif; ?>
 			</tr>
-			
 			<?php endforeach; ?>
 		</tbody>
 		<?php endif; ?>
-		
 	</table>
 
 	<?php if (empty($categories)): ?>
