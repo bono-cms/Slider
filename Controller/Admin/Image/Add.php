@@ -15,46 +15,43 @@ use Krystal\Stdlib\VirtualEntity;
 
 final class Add extends AbstractImage
 {
-	/**
-	 * Shows the adding form
-	 * 
-	 * @return string
-	 */
-	public function indexAction()
-	{
-		$this->loadSharedPlugins();
+    /**
+     * Shows the adding form
+     * 
+     * @return string
+     */
+    public function indexAction()
+    {
+        $this->loadSharedPlugins();
 
-		$image = new VirtualEntity();
-		$image->setPublished(true)
-			  ->setOrder(0);
+        $image = new VirtualEntity();
+        $image->setPublished(true)
+              ->setOrder(0);
 
-		return $this->view->render($this->getTemplatePath(), $this->getWithSharedVars(array(
-			'title' => 'Add a slider',
-			'image' => $image
-		)));
-	}
+        return $this->view->render($this->getTemplatePath(), $this->getWithSharedVars(array(
+            'title' => 'Add a slider',
+            'image' => $image
+        )));
+    }
 
-	/**
-	 * Adds a slider
-	 * 
-	 * @return string
-	 */
-	public function addAction()
-	{
-		$formValidator = $this->getValidator($this->request->getPost('image'), $this->request->getFiles());
+    /**
+     * Adds a slider
+     * 
+     * @return string
+     */
+    public function addAction()
+    {
+        $formValidator = $this->getValidator($this->request->getPost('image'), $this->request->getFiles());
 
-		if ($formValidator->isValid()) {
+        if ($formValidator->isValid()) {
 
-			$imageManager = $this->getImageManager();
-
-			if ($imageManager->add($this->request->getAll())) {
-
-				$this->flashBag->set('success', 'A slider has been added successfully');
-				return $imageManager->getLastId();
-			}
-
-		} else {
-			return $formValidator->getErrors();
-		}
-	}
+            $imageManager = $this->getImageManager();
+            if ($imageManager->add($this->request->getAll())) {
+                $this->flashBag->set('success', 'A slider has been added successfully');
+                return $imageManager->getLastId();
+            }
+        } else {
+            return $formValidator->getErrors();
+        }
+    }
 }

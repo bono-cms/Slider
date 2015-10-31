@@ -10,11 +10,11 @@
  */
 
 return array(
-	'module' => array(
-		'name'	=> 'Slider',
-		'url'	=> '/admin/module/slider',
-		'icon'	=> '/module/Slider/Assets/slider.png',
-		'order' => 1,
-		'description' => 'Slider module allows you to manage sliders with random dimensions'
-	)
+    'module' => array(
+        'name'  => 'Slider',
+        'url'   => '/admin/module/slider',
+        'icon'  => '/module/Slider/Assets/slider.png',
+        'order' => 1,
+        'description' => 'Slider module allows you to manage sliders with random dimensions'
+    )
 );

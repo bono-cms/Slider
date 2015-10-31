@@ -13,50 +13,47 @@ namespace Slider\Controller\Admin\Image;
 
 final class Edit extends AbstractImage
 {
-	/**
-	 * Shows an editing form
-	 * 
-	 * @param string $id
-	 * @return string
-	 */
-	public function indexAction($id)
-	{
-		$image = $this->getImageManager()->fetchById($id);
+    /**
+     * Shows an editing form
+     * 
+     * @param string $id
+     * @return string
+     */
+    public function indexAction($id)
+    {
+        $image = $this->getImageManager()->fetchById($id);
 
-		if ($image !== false) {
-			$this->loadSharedPlugins(false);
+        if ($image !== false) {
+            $this->loadSharedPlugins(false);
 
-			return $this->view->render($this->getTemplatePath(), $this->getWithSharedVars(array(
-				'title' => 'Edit the slider',
-				'image' => $image
-			)));
+            return $this->view->render($this->getTemplatePath(), $this->getWithSharedVars(array(
+                'title' => 'Edit the slider',
+                'image' => $image
+            )));
 
-		} else {
+        } else {
 
-			return false;
-		}
-	}
+            return false;
+        }
+    }
 
-	/**
-	 * Updates an image
-	 * 
-	 * @return string
-	 */
-	public function updateAction()
-	{
-		$formValidator = $this->getValidator($this->request->getPost('image'), $this->request->getFiles(), true);
+    /**
+     * Updates an image
+     * 
+     * @return string
+     */
+    public function updateAction()
+    {
+        $formValidator = $this->getValidator($this->request->getPost('image'), $this->request->getFiles(), true);
 
-		if ($formValidator->isValid()) {
+        if ($formValidator->isValid()) {
+            if ($this->getImageManager()->update($this->request->getAll())) {
+                $this->flashBag->set('success', 'The slider has been updated successfully');
+                return '1';
+            }
 
-			if ($this->getImageManager()->update($this->request->getAll())) {
-
-				$this->flashBag->set('success', 'The slider has been updated successfully');
-				return '1';
-			}
-
-		} else {
-
-			return $formValidator->getErrors();
-		}
-	}
+        } else {
+            return $formValidator->getErrors();
+        }
+    }
 }

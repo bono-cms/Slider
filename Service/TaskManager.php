@@ -15,32 +15,32 @@ use Slider\Storage\ImageMapperInterface;
 
 final class TaskManager implements TaskManagerInterface
 {
-	/**
-	 * Any compliant image mapper
-	 * 
-	 * @var \Slider\Storage\ImageMapperInterface
-	 */
-	private $imageMapper;
+    /**
+     * Any compliant image mapper
+     * 
+     * @var \Slider\Storage\ImageMapperInterface
+     */
+    private $imageMapper;
 
-	/**
-	 * State initialization
-	 * 
-	 * @param \Slider\Storage\ImageMapperInterface $imageMapper
-	 * @return void
-	 */
-	public function __construct(ImageMapperInterface $imageMapper)
-	{
-		$this->imageMapper = $imageMapper;
-	}
+    /**
+     * State initialization
+     * 
+     * @param \Slider\Storage\ImageMapperInterface $imageMapper
+     * @return void
+     */
+    public function __construct(ImageMapperInterface $imageMapper)
+    {
+        $this->imageMapper = $imageMapper;
+    }
 
-	/**
-	 * Counts amount of slides in given category
-	 * 
-	 * @param string $categoryId
-	 * @return integer
-	 */
-	public function getSlidesCountByCategoryId($categoryId)
-	{
-		return $this->imageMapper->countAllByCategoryId($categoryId);
-	}
+    /**
+     * Counts amount of slides in given category
+     * 
+     * @param string $categoryId
+     * @return integer
+     */
+    public function getSlidesCountByCategoryId($categoryId)
+    {
+        return $this->imageMapper->countAllByCategoryId($categoryId);
+    }
 }

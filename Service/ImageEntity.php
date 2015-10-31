@@ -15,13 +15,13 @@ use Krystal\Stdlib\VirtualEntity;
 
 final class ImageEntity extends VirtualEntity
 {
-	/**
-	 * Tells whether a slide image has a link
-	 * 
-	 * @return boolean
-	 */
-	public function hasLink()
-	{
-		return $this->getLink() !== '';
-	}
+    /**
+     * Tells whether a slide image has a link
+     * 
+     * @return boolean
+     */
+    public function hasLink()
+    {
+        return $this->getLink() !== '';
+    }
 }

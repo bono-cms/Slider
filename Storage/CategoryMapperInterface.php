@@ -13,65 +13,65 @@ namespace Slider\Storage;
 
 interface CategoryMapperInterface
 {
-	/**
-	 * Fetches a list
-	 * 
-	 * @return array
-	 */
-	public function fetchList();
+    /**
+     * Fetches a list
+     * 
+     * @return array
+     */
+    public function fetchList();
 
-	/**
-	 * Fetches category's id by its associated class name
-	 * 
-	 * @param string $class Category's class name
-	 * @return string
-	 */
-	public function fetchIdByClass($class);
+    /**
+     * Fetches category's id by its associated class name
+     * 
+     * @param string $class Category's class name
+     * @return string
+     */
+    public function fetchIdByClass($class);
 
-	/**
-	 * Fetches category's name by its associated id
-	 * 
-	 * @param string $id Category id
-	 * @return string
-	 */
-	public function fetchNameById($id);
+    /**
+     * Fetches category's name by its associated id
+     * 
+     * @param string $id Category id
+     * @return string
+     */
+    public function fetchNameById($id);
 
-	/**
-	 * Inserts a category
-	 * 
-	 * @param array $data Category data
-	 * @return boolean
-	 */
-	public function insert(array $data);
+    /**
+     * Inserts a category
+     * 
+     * @param array $data Category data
+     * @return boolean
+     */
+    public function insert(array $data);
 
-	/**
-	 * Updates a category
-	 * 
-	 * @param array $data Category data
-	 * @return boolean
-	 */
-	public function update(array $data);
+    /**
+     * Updates a category
+     * 
+     * @param array $data Category data
+     * @return boolean
+     */
+    public function update(array $data);
 
-	/**
-	 * Deletes a category by its associated id
-	 * 
-	 * @param string $id Category id
-	 * @return boolean
-	 */
-	public function deleteById($id);
+    /**
+     * Deletes a category by its associated id
+     * 
+     * @param string $id Category id
+     * @return boolean
+     */
+    public function deleteById($id);
 
-	/**
-	 * Fetches category data by its associated id
-	 * 
-	 * @param string $id Category id
-	 * @return array
-	 */
-	public function fetchById($id);
+    /**
+     * Fetches category data by its associated id
+     * 
+     * @param string $id Category id
+     * @return array
+     */
+    public function fetchById($id);
 
-	/**
-	 * Fetches all categories
-	 * 
-	 * @return array
-	 */
-	public function fetchAll();
+    /**
+     * Fetches all categories
+     * 
+     * @return array
+     */
+    public function fetchAll();
 }

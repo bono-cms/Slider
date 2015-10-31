@@ -21,24 +21,24 @@ use Slider\Service\SiteService;
 
 final class Module extends AbstractCmsModule
 {
-	/**
-	 * {@inheritDoc}
-	 */
-	public function getServiceProviders()
-	{
-		// Build required mappers
-		$imageMapper = $this->getMapper('/Slider/Storage/MySQL/ImageMapper');
-		$categoryMapper = $this->getMapper('/Slider/Storage/MySQL/CategoryMapper');
+    /**
+     * {@inheritDoc}
+     */
+    public function getServiceProviders()
+    {
+        // Build required mappers
+        $imageMapper = $this->getMapper('/Slider/Storage/MySQL/ImageMapper');
+        $categoryMapper = $this->getMapper('/Slider/Storage/MySQL/CategoryMapper');
 
-		$historyManager = $this->getHistoryManager();
+        $historyManager = $this->getHistoryManager();
 
-		$imageManager = new ImageManager($imageMapper, $categoryMapper, new ImageManagerFactory($this->getAppConfig()), $historyManager);
+        $imageManager = new ImageManager($imageMapper, $categoryMapper, new ImageManagerFactory($this->getAppConfig()), $historyManager);
 
-		return array(
-			'siteService' => new SiteService($imageManager, new MemoryCache),
-			'categoryManager' => new CategoryManager($categoryMapper, $historyManager),
-			'imageManager'  => $imageManager,
-			'taskManager' => new TaskManager($imageMapper)
-		);
-	}
+        return array(
+            'siteService' => new SiteService($imageManager, new MemoryCache),
+            'categoryManager' => new CategoryManager($categoryMapper, $historyManager),
+            'imageManager'  => $imageManager,
+            'taskManager' => new TaskManager($imageMapper)
+        );
+    }
 }

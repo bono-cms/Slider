@@ -13,56 +13,56 @@ namespace Slider\Service;
 
 interface CategoryManagerInterface
 {
-	/**
-	 * Fetches as a list
-	 * 
-	 * @return array
-	 */
-	public function fetchList();
+    /**
+     * Fetches as a list
+     * 
+     * @return array
+     */
+    public function fetchList();
 
-	/**
-	 * Returns last category id
-	 * 
-	 * @return integer
-	 */
-	public function getLastId();
+    /**
+     * Returns last category id
+     * 
+     * @return integer
+     */
+    public function getLastId();
 
-	/**
-	 * Fetch a category bag by associated id
-	 * 
-	 * @param string $id
-	 * @return array
-	 */
-	public function fetchById($id);
+    /**
+     * Fetch a category bag by associated id
+     * 
+     * @param string $id
+     * @return array
+     */
+    public function fetchById($id);
 
-	/**
-	 * Fetches all category bags
-	 * 
-	 * @return array
-	 */
-	public function fetchAll();
+    /**
+     * Fetches all category bags
+     * 
+     * @return array
+     */
+    public function fetchAll();
 
-	/**
-	 * Deletes a category by its associated id
-	 * 
-	 * @param string $id
-	 * @return boolean
-	 */ 
-	public function deleteById($id);
+    /**
+     * Deletes a category by its associated id
+     * 
+     * @param string $id
+     * @return boolean
+     */ 
+    public function deleteById($id);
 
-	/**
-	 * Adds a category
-	 * 
-	 * @param array $data Form data
-	 * @return boolean
-	 */
-	public function add(array $data);
+    /**
+     * Adds a category
+     * 
+     * @param array $data Form data
+     * @return boolean
+     */
+    public function add(array $data);
 
-	/**
-	 * Updates a category
-	 * 
-	 * @param array $data Form data
-	 * @return boolean
-	 */
-	public function update(array $data);
+    /**
+     * Updates a category
+     * 
+     * @param array $data Form data
+     * @return boolean
+     */
+    public function update(array $data);
 }

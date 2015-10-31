@@ -20,144 +20,144 @@ use Krystal\Security\Filter;
 
 final class CategoryManager extends AbstractManager implements CategoryManagerInterface
 {
-	/**
-	 * Any compliant category mapper 
-	 *  
-	 * @var \Slider\Storage\CategoryMapperInterface
-	 */
-	private $categoryMapper;
+    /**
+     * Any compliant category mapper 
+     *  
+     * @var \Slider\Storage\CategoryMapperInterface
+     */
+    private $categoryMapper;
 
-	/**
-	 * History manager to keep track
-	 * 
-	 * @var \Cms\Service\HistoryManager
-	 */
-	private $historyManager;
+    /**
+     * History manager to keep track
+     * 
+     * @var \Cms\Service\HistoryManager
+     */
+    private $historyManager;
 
-	/**
-	 * State initialization
-	 * 
-	 * @param \Slider\Storage\CategoryMapperInterface $categoryMapper
-	 * @param \Cms\Service\HistoryManagerInterface $historyManager
-	 * @return void
-	 */
-	public function __construct(CategoryMapperInterface $categoryMapper, HistoryManagerInterface $historyManager)
-	{
-		$this->categoryMapper = $categoryMapper;
-		$this->historyManager = $historyManager;
-	}
+    /**
+     * State initialization
+     * 
+     * @param \Slider\Storage\CategoryMapperInterface $categoryMapper
+     * @param \Cms\Service\HistoryManagerInterface $historyManager
+     * @return void
+     */
+    public function __construct(CategoryMapperInterface $categoryMapper, HistoryManagerInterface $historyManager)
+    {
+        $this->categoryMapper = $categoryMapper;
+        $this->historyManager = $historyManager;
+    }
 
-	/**
-	 * Fetches as a list
-	 * 
-	 * @return array
-	 */
-	public function fetchList()
-	{
-		return ArrayUtils::arrayList($this->categoryMapper->fetchList(), 'id', 'name');
-	}
+    /**
+     * Fetches as a list
+     * 
+     * @return array
+     */
+    public function fetchList()
+    {
+        return ArrayUtils::arrayList($this->categoryMapper->fetchList(), 'id', 'name');
+    }
 
-	/**
-	 * Tracks activity
-	 * 
-	 * @param string $message
-	 * @param string $placeholder
-	 * @return boolean
-	 */
-	private function track($message, $placeholder)
-	{
-		return $this->historyManager->write('Slider', $message, $placeholder);
-	}
+    /**
+     * Tracks activity
+     * 
+     * @param string $message
+     * @param string $placeholder
+     * @return boolean
+     */
+    private function track($message, $placeholder)
+    {
+        return $this->historyManager->write('Slider', $message, $placeholder);
+    }
 
-	/**
-	 * Returns last category id
-	 * 
-	 * @return integer
-	 */
-	public function getLastId()
-	{
-		return $this->categoryMapper->getLastId();
-	}
+    /**
+     * Returns last category id
+     * 
+     * @return integer
+     */
+    public function getLastId()
+    {
+        return $this->categoryMapper->getLastId();
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	protected function toEntity(array $category)
-	{
-		$entity = new VirtualEntity();
-		$entity->setId((int) $category['id'])
-			->setName(Filter::escape($category['name']))
-			->setClass(Filter::escape($category['class']))
-			// How to escape this ones? As a float? Or as integer?
-			->setWidth($category['width'])
-			->setHeight($category['height']);
-		
-		return $entity;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    protected function toEntity(array $category)
+    {
+        $entity = new VirtualEntity();
+        $entity->setId((int) $category['id'])
+            ->setName(Filter::escape($category['name']))
+            ->setClass(Filter::escape($category['class']))
+            // How to escape this ones? As a float? Or as integer?
+            ->setWidth($category['width'])
+            ->setHeight($category['height']);
+        
+        return $entity;
+    }
 
-	/**
-	 * Fetch category's entity by associated id
-	 * 
-	 * @param string $id Category's id
-	 * @return array
-	 */
-	public function fetchById($id)
-	{
-		return $this->prepareResult($this->categoryMapper->fetchById($id));
-	}
+    /**
+     * Fetch category's entity by associated id
+     * 
+     * @param string $id Category's id
+     * @return array
+     */
+    public function fetchById($id)
+    {
+        return $this->prepareResult($this->categoryMapper->fetchById($id));
+    }
 
-	/**
-	 * Fetches all category entities
-	 * 
-	 * @return array
-	 */
-	public function fetchAll()
-	{
-		return $this->prepareResults($this->categoryMapper->fetchAll());
-	}
+    /**
+     * Fetches all category entities
+     * 
+     * @return array
+     */
+    public function fetchAll()
+    {
+        return $this->prepareResults($this->categoryMapper->fetchAll());
+    }
 
-	/**
-	 * Deletes a category by its associated id
-	 * 
-	 * @param string $id Category's id
-	 * @return boolean
-	 */ 
-	public function deleteById($id)
-	{
-		$name = Filter::escape($this->categoryMapper->fetchNameById($id));
+    /**
+     * Deletes a category by its associated id
+     * 
+     * @param string $id Category's id
+     * @return boolean
+     */ 
+    public function deleteById($id)
+    {
+        $name = Filter::escape($this->categoryMapper->fetchNameById($id));
 
-		if ($this->categoryMapper->deleteById($id)) {
+        if ($this->categoryMapper->deleteById($id)) {
 
-			$this->track('Category "%s" has been removed', $name);
-			return true;
+            $this->track('Category "%s" has been removed', $name);
+            return true;
 
-		} else {
+        } else {
 
-			return false;
-		}
-	}
+            return false;
+        }
+    }
 
-	/**
-	 * Adds a category
-	 * 
-	 * @param array $input Raw input data
-	 * @return boolean
-	 */
-	public function add(array $input)
-	{
-		$this->track('Category "%s" has been added', $input['name']);
-		return $this->categoryMapper->insert($input);
-	}
+    /**
+     * Adds a category
+     * 
+     * @param array $input Raw input data
+     * @return boolean
+     */
+    public function add(array $input)
+    {
+        $this->track('Category "%s" has been added', $input['name']);
+        return $this->categoryMapper->insert($input);
+    }
 
-	/**
-	 * Updates a category
-	 * 
-	 * @param array $input Raw input data
-	 * @return boolean
-	 */
-	public function update(array $input)
-	{
-		$this->track('Category "%s" has been updated', $input['name']);
-		return $this->categoryMapper->update($input);
-	}
+    /**
+     * Updates a category
+     * 
+     * @param array $input Raw input data
+     * @return boolean
+     */
+    public function update(array $input)
+    {
+        $this->track('Category "%s" has been updated', $input['name']);
+        return $this->categoryMapper->update($input);
+    }
 }

@@ -13,19 +13,19 @@ namespace Slider\Service;
 
 interface SiteServiceInterface
 {
-	/**
-	 * Checks whether provided category's class has at least one slide image
-	 * 
-	 * @param string $class
-	 * @return boolean
-	 */
-	public function has($class);
+    /**
+     * Checks whether provided category's class has at least one slide image
+     * 
+     * @param string $class
+     * @return boolean
+     */
+    public function has($class);
 
-	/**
-	 * Returns slide bags from given category class
-	 * 
-	 * @param string $class Category's class name
-	 * @return array
-	 */
-	public function getAll($class);
+    /**
+     * Returns slide bags from given category class
+     * 
+     * @param string $class Category's class name
+     * @return array
+     */
+    public function getAll($class);
 }

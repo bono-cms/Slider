@@ -15,67 +15,67 @@ use Krystal\Image\Tool\AbstractImageManagerFactory;
 
 final class ImageManagerFactory extends AbstractImageManagerFactory
 {
-	/**
-	 * Default height
-	 * 
-	 * @var integer
-	 */
-	private $height = 0;
+    /**
+     * Default height
+     * 
+     * @var integer
+     */
+    private $height = 0;
 
-	/**
-	 * Default width
-	 * 
-	 * @var integer
-	 */
-	private $width = 0;
+    /**
+     * Default width
+     * 
+     * @var integer
+     */
+    private $width = 0;
 
-	/**
-	 * Sets new height
-	 * 
-	 * @param integer|float $height
-	 * @return \Slider\Service\ImageManagerFactory
-	 */
-	public function setHeight($height)
-	{
-		$this->height = $height;
-		return $this;
-	}
+    /**
+     * Sets new height
+     * 
+     * @param integer|float $height
+     * @return \Slider\Service\ImageManagerFactory
+     */
+    public function setHeight($height)
+    {
+        $this->height = $height;
+        return $this;
+    }
 
-	/**
-	 * Sets new width
-	 * 
-	 * @param integer|float $width
-	 * @return \Slider\Service\ImageManagerFactory
-	 */
-	public function setWidth($width)
-	{
-		$this->width = $width;
-		return $this;
-	}
+    /**
+     * Sets new width
+     * 
+     * @param integer|float $width
+     * @return \Slider\Service\ImageManagerFactory
+     */
+    public function setWidth($width)
+    {
+        $this->width = $width;
+        return $this;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	protected function getPath()
-	{
-		return '/data/uploads/module/slider/';
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	protected function getConfig()
-	{
-		return array(
-			'thumb' => array(
-				'dimensions' => array(
-					// For administration
-					array(400, 200),
-					
-					// For slides
-					array($this->width, $this->height)
-				)
-			)
-		);
-	}
+    /**
+     * {@inheritDoc}
+     */
+    protected function getPath()
+    {
+        return '/data/uploads/module/slider/';
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    protected function getConfig()
+    {
+        return array(
+            'thumb' => array(
+                'dimensions' => array(
+                    // For administration
+                    array(400, 200),
+                    
+                    // For slides
+                    array($this->width, $this->height)
+                )
+            )
+        );
+    }
 }
