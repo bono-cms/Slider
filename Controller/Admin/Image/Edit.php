@@ -25,14 +25,15 @@ final class Edit extends AbstractImage
 
         if ($image !== false) {
             $this->loadSharedPlugins(false);
+            $this->loadBreadcrumbs('Edit the slider');
 
-            return $this->view->render($this->getTemplatePath(), $this->getWithSharedVars(array(
+            return $this->view->render($this->getTemplatePath(), array(
+                'categories' => $this->getModuleService('categoryManager')->fetchList(),
                 'title' => 'Edit the slider',
                 'image' => $image
-            )));
+            ));
 
         } else {
-
             return false;
         }
     }

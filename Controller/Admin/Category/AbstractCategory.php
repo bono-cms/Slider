@@ -38,28 +38,15 @@ abstract class AbstractCategory extends AbstractController
     }
 
     /**
-     * Returns shared variables
+     * Loads breadcrumbs
      * 
-     * @param array $overrides
-     * @return array
+     * @param string $title
+     * @return void
      */
-    final protected function getWithSharedVars(array $overrides)
+    final protected function loadBreadcrumbs($title)
     {
-        $this->view->getBreadcrumbBag()->add(array(
-            array(
-                'name' => 'Slider',
-                'link' => 'Slider:Admin:Browser@indexAction'
-            ),
-            array(
-                'name' => $overrides['title'],
-                'link' => '#'
-            )
-        ));
-
-        $vars = array(
-        );
-
-        return array_replace_recursive($vars, $overrides);
+        $this->view->getBreadcrumbBag()->addOne('Slider', 'Slider:Admin:Browser@indexAction')
+                                       ->addOne($title);
     }
 
     /**
@@ -80,7 +67,7 @@ abstract class AbstractCategory extends AbstractController
     final protected function loadSharedPlugins()
     {
         $this->view->getPluginBag()
-                   ->appendScript($this->getWithAssetPath('/admin/category.form.js'));
+                   ->appendScript('@Slider/admin/category.form.js');
     }
 
     /**

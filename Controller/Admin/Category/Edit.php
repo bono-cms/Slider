@@ -25,6 +25,7 @@ final class Edit extends AbstractCategory
 
         if ($category !== false) {
             $this->loadSharedPlugins();
+            $this->loadBreadcrumbs('Edit the category');
 
             return $this->view->render($this->getTemplatePath(), $this->getWithSharedVars(array(
                 'title' => 'Edit the category',
@@ -32,7 +33,6 @@ final class Edit extends AbstractCategory
             )));
             
         } else {
-            
             return false;
         }
     }

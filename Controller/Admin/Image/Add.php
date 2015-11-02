@@ -23,15 +23,17 @@ final class Add extends AbstractImage
     public function indexAction()
     {
         $this->loadSharedPlugins();
+        $this->loadBreadcrumbs('Add a slider');
 
         $image = new VirtualEntity();
         $image->setPublished(true)
               ->setOrder(0);
 
-        return $this->view->render($this->getTemplatePath(), $this->getWithSharedVars(array(
+        return $this->view->render($this->getTemplatePath(), array(
+            'categories' => $this->getModuleService('categoryManager')->fetchList(),
             'title' => 'Add a slider',
             'image' => $image
-        )));
+        ));
     }
 
     /**

@@ -24,6 +24,7 @@ final class Browser extends AbstractController
     public function indexAction($page = 1)
     {
         $this->loadSharedPlugins();
+        $this->view->getBreadcrumbBag()->addOne('Slider');
 
         $paginator = $this->getImageManager()->getPaginator();
         $paginator->setUrl('/admin/module/slider/page/(:var)');
@@ -45,6 +46,7 @@ final class Browser extends AbstractController
     public function categoryAction($categoryId, $page = 1)
     {
         $this->loadSharedPlugins();
+        $this->view->getBreadcrumbBag()->addOne('Slider');
 
         $paginator = $this->getImageManager()->getPaginator();
         $paginator->setUrl('/admin/module/slider/category/view/'.$categoryId.'/page/(:var)');
@@ -64,13 +66,10 @@ final class Browser extends AbstractController
     public function deleteCategoryAction()
     {
         if ($this->request->hasPost('id')) {
-
-            // Get category id from request
             $id = $this->request->getPost('id');
 
             // Remove all images associated with provided category id
             if ($this->getImageManager()->deleteAllByCategoryId($id) && $this->getCategoryManager()->deleteById($id)) {
-
                 $this->flashBag->set('success', 'The category has been removed successfully');
                 return '1';
             }
@@ -88,7 +87,6 @@ final class Browser extends AbstractController
             $id = $this->request->getPost('id');
 
             if ($this->getImageManager()->deleteById($id)) {
-
                 $this->flashBag->set('success', 'Selected slider has been removed successfully');
                 return '1';
             }
@@ -103,13 +101,11 @@ final class Browser extends AbstractController
     public function deleteSelectedAction()
     {
         if ($this->request->hasPost('toDelete')) {
-
             $ids = array_keys($this->request->getPost('toDelete'));
 
             if ($this->getImageManager()->deleteByIds($ids)) {
                 $this->flashBag->set('success', 'Selected slides have been removed successfully');
             }
-
         } else {
             $this->flashBag->set('warning', 'You should select at least one image to remove');
         }
@@ -125,15 +121,12 @@ final class Browser extends AbstractController
     public function saveAction()
     {
         if ($this->request->has('published', 'order')) {
-
-            // Get input variables first
             $published = $this->request->getPost('published');
             $orders = $this->request->getPost('order');
 
             $imageManager = $this->getImageManager();
 
             if ($imageManager->updatePublished($published) && $imageManager->updateOrders($orders)) {
-
                 $this->flashBag->set('success', 'Settings have been updated successfully');
                 return '1';
             }
@@ -158,7 +151,7 @@ final class Browser extends AbstractController
     private function loadSharedPlugins()
     {
         $this->view->getPluginBag()
-                   ->appendScript($this->getWithAssetPath('/admin/browser.js'));
+                   ->appendScript('@Slider/admin/browser.js');
     }
 
     /**
@@ -199,13 +192,6 @@ final class Browser extends AbstractController
      */
     private function getWithSharedVars(array $overrides)
     {
-        $this->view->getBreadcrumbBag()->add(array(
-            array(
-                'name' => 'Slider',
-                'link' => '#'
-            )
-        ));
-
         $vars = array(
             'title' => 'Slider',
             'taskManager' => $this->getTaskManager(),

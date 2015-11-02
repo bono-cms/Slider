@@ -46,29 +46,15 @@ abstract class AbstractImage extends AbstractController
     }
 
     /**
-     * Returns shared variables for Add and Edit controllers
+     * Loads breadcrumbs
      * 
-     * @param array $overrides
-     * @return array
+     * @param string $title
+     * @return void
      */
-    final protected function getWithSharedVars(array $overrides)
+    final protected function loadBreadcrumbs($title)
     {
-        $this->view->getBreadcrumbBag()->add(array(
-            array(
-                'name' => 'Slider',
-                'link' => 'Slider:Admin:Browser@indexAction'
-            ),
-            array(
-                'name' => $overrides['title'],
-                'link' => '#'
-            )
-        ));
-
-        $vars = array(
-            'categories' => $this->getModuleService('categoryManager')->fetchList()
-        );
-
-        return array_replace_recursive($vars, $overrides);
+        $this->view->getBreadcrumbBag()->addOne('Slider', 'Slider:Admin:Browser@indexAction')
+                                       ->addOne($title);
     }
 
     /**
@@ -85,7 +71,7 @@ abstract class AbstractImage extends AbstractController
             $pb->load('preview');
         }
 
-        $pb->appendScript($this->getWithAssetPath('/admin/image.form.js'));
+        $pb->appendScript('@Slider/admin/image.form.js');
     }
 
     /**
