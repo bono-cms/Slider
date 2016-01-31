@@ -16,24 +16,17 @@ use Cms\Controller\Admin\AbstractController;
 final class Browser extends AbstractController
 {
     /**
-     * Shows a table
+     * Renders a grid
      * 
      * @param integer $page Current page
      * @return string
      */
     public function indexAction($page = 1)
     {
-        $this->loadSharedPlugins();
-        $this->view->getBreadcrumbBag()->addOne('Slider');
+        $images = $this->getImageManager()->fetchAllByPage($page, $this->getSharedPerPageCount());
+        $url = '/admin/module/slider/page/(:var)';
 
-        $paginator = $this->getImageManager()->getPaginator();
-        $paginator->setUrl('/admin/module/slider/page/(:var)');
-
-        return $this->view->render($this->getTemplatePath(), $this->getWithSharedVars(array(
-            'title' => 'Slider',
-            'images' => $this->getImageManager()->fetchAllByPage($page, $this->getSharedPerPageCount()),
-            'paginator' => $paginator
-        )));
+        return $this->createGrid($images, $url, null);
     }
 
     /**
@@ -43,115 +36,42 @@ final class Browser extends AbstractController
      * @param integer $page Current page number
      * @return string
      */
-    public function categoryAction($categoryId, $page = 1)
+    public function categoryAction($id, $page = 1)
     {
-        $this->loadSharedPlugins();
-        $this->view->getBreadcrumbBag()->addOne('Slider');
+        $images = $this->getImageManager()->fetchAllByCategoryAndPage($id, $page, $this->getSharedPerPageCount());
+        $url = '/admin/module/slider/category/view/'.$id.'/page/(:var)';
 
+        return $this->createGrid($images, $url, $id);
+    }
+
+    /**
+     * Creates a grid
+     * 
+     * @param array $images
+     * @param string $url
+     * @param string $categoryId
+     * @return string
+     */
+    private function createGrid(array $images, $url, $categoryId)
+    {
         $paginator = $this->getImageManager()->getPaginator();
-        $paginator->setUrl('/admin/module/slider/category/view/'.$categoryId.'/page/(:var)');
+        $paginator->setUrl($url);
 
-        return $this->view->render($this->getTemplatePath(), $this->getWithSharedVars(array(
-            'categoryId' => $categoryId,
-            'images'     => $this->getImageManager()->fetchAllByCategoryAndPage($categoryId, $page, $this->getSharedPerPageCount()),
-            'paginator' => $paginator,
-        )));
-    }
-
-    /**
-     * Deletes a category by its associated id
-     * 
-     * @return string The response
-     */
-    public function deleteCategoryAction()
-    {
-        if ($this->request->hasPost('id')) {
-            $id = $this->request->getPost('id');
-
-            // Remove all images associated with provided category id
-            if ($this->getImageManager()->deleteAllByCategoryId($id) && $this->getCategoryManager()->deleteById($id)) {
-                $this->flashBag->set('success', 'The category has been removed successfully');
-                return '1';
-            }
-        }
-    }
-
-    /**
-     * Deletes selected slide image
-     * 
-     * @return string
-     */
-    public function deleteAction()
-    {
-        if ($this->request->hasPost('id')) {
-            $id = $this->request->getPost('id');
-
-            if ($this->getImageManager()->deleteById($id)) {
-                $this->flashBag->set('success', 'Selected slider has been removed successfully');
-                return '1';
-            }
-        }
-    }
-
-    /**
-     * Removes selected records
-     * 
-     * @return string
-     */
-    public function deleteSelectedAction()
-    {
-        if ($this->request->hasPost('toDelete')) {
-            $ids = array_keys($this->request->getPost('toDelete'));
-
-            if ($this->getImageManager()->deleteByIds($ids)) {
-                $this->flashBag->set('success', 'Selected slides have been removed successfully');
-            }
-        } else {
-            $this->flashBag->set('warning', 'You should select at least one image to remove');
-        }
-
-        return '1';
-    }
-
-    /**
-     * Saves settings
-     * 
-     * @return string
-     */
-    public function saveAction()
-    {
-        if ($this->request->has('published', 'order')) {
-            $published = $this->request->getPost('published');
-            $orders = $this->request->getPost('order');
-
-            $imageManager = $this->getImageManager();
-
-            if ($imageManager->updatePublished($published) && $imageManager->updateOrders($orders)) {
-                $this->flashBag->set('success', 'Settings have been updated successfully');
-                return '1';
-            }
-        }
-    }
-
-    /**
-     * Returns template path
-     * 
-     * @return string
-     */
-    private function getTemplatePath()
-    {
-        return 'browser';
-    }
-
-    /**
-     * Loads shared plugins
-     * 
-     * @return void
-     */
-    private function loadSharedPlugins()
-    {
+        // Load view plugins
         $this->view->getPluginBag()
                    ->appendScript('@Slider/admin/browser.js');
+
+        // Appends a breadcrumb
+        $this->view->getBreadcrumbBag()
+                   ->addOne('Slider');
+
+        return $this->view->render('browser', array(
+            'categoryId' => $categoryId,
+            'images' => $images,
+            'paginator' => $paginator,
+            'taskManager' => $this->getModuleService('taskManager'),
+            'categories' => $this->getModuleService('categoryManager')->fetchAll(),
+        ));
     }
 
     /**
@@ -163,41 +83,4 @@ final class Browser extends AbstractController
     {
         return $this->getModuleService('imageManager');
     }
-
-    /**
-     * Returns category manager
-     * 
-     * @return \Slider\Service\CategoryManager
-     */
-    private function getCategoryManager()
-    {
-        return $this->getModuleService('categoryManager');
-    }
-    
-    /**
-     * Returns task manager
-     * 
-     * @return \Slider\Service\TaskManager
-     */
-    private function getTaskManager()
-    {
-        return $this->getModuleService('taskManager');
-    }
-
-    /**
-     * Returns shared variables
-     * 
-     * @param array $overrides
-     * @return array
-     */
-    private function getWithSharedVars(array $overrides)
-    {
-        $vars = array(
-            'title' => 'Slider',
-            'taskManager' => $this->getTaskManager(),
-            'categories' => $this->getCategoryManager()->fetchAll(),
-        );
-
-        return array_replace_recursive($vars, $overrides);
-    }   
 }
