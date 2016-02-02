@@ -4,6 +4,7 @@ CHANGELOG
 1.3
 ---
 
+ * Changed module icon
  * Improved internal structure
 
 1.2

@@ -13,7 +13,7 @@ return array(
     'module' => array(
         'name'  => 'Slider',
         'url'   => '/admin/module/slider',
-        'icon'  => '/module/Slider/Assets/slider.png',
+        'icon'  => 'fa fa-picture-o fa-5x',
         'order' => 1,
         'description' => 'Slider module allows you to manage sliders with random dimensions'
     )

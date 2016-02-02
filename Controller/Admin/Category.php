@@ -99,7 +99,7 @@ final class Category extends AbstractController
     {
         $input = $this->request->getPost('category');
 
-        $formValidator = $this->validatorFactory->build(array(
+        return $this->invokeSave('categoryManager', $input['id'], $input, array(
             'input' => array(
                 'source' => $input,
                 'definition' => array(
@@ -110,25 +110,5 @@ final class Category extends AbstractController
                 )
             )
         ));
-
-        if ($formValidator->isValid()) {
-            $categoryManager = $this->getCategoryManager();
-
-            if ($input['id']) {
-                if ($categoryManager->update($input)) {
-                    $this->flashBag->set('success', 'The category has been updated successfully');
-                    return '1';
-                }
-                
-            } else {
-                if ($categoryManager->add($input)) {
-                    $this->flashBag->set('success', 'A category has been created successfully');
-                    return $categoryManager->getLastId();
-                }
-            }
-
-        } else {
-            return $formValidator->getErrors();
-        }
     }
 }
