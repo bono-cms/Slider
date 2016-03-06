@@ -30,7 +30,7 @@ final class CategoryManager extends AbstractManager implements CategoryManagerIn
     /**
      * History manager to keep track
      * 
-     * @var \Cms\Service\HistoryManager
+     * @var \Cms\Service\HistoryManagerInterface
      */
     private $historyManager;
 
