@@ -127,12 +127,9 @@ final class CategoryManager extends AbstractManager implements CategoryManagerIn
         $name = Filter::escape($this->categoryMapper->fetchNameById($id));
 
         if ($this->categoryMapper->deleteById($id)) {
-
             $this->track('Category "%s" has been removed', $name);
             return true;
-
         } else {
-
             return false;
         }
     }
