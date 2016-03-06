@@ -248,9 +248,7 @@ final class ImageManager extends AbstractManager implements ImageManagerInterfac
                 // Failed to remove a file
                 return false;
             }
-
         } else {
-
             // Invalid id supplied
             return false;
         }
@@ -274,7 +272,6 @@ final class ImageManager extends AbstractManager implements ImageManagerInterfac
                     return false;
                 }
             }
-            
         }
 
         // @TODO: Now, it's time to remove records themselves
@@ -295,9 +292,7 @@ final class ImageManager extends AbstractManager implements ImageManagerInterfac
         if ($this->delete($id)) {
             $this->track('Slider "%s" has been removed', $name);
             return true;
-
         } else {
-
             return false;
         }
     }
@@ -331,16 +326,16 @@ final class ImageManager extends AbstractManager implements ImageManagerInterfac
         if (is_null($this->imageManager)) {
             // Grab dimensions
             $category = $this->categoryMapper->fetchById($id);
-            
+
             if (!empty($category)) {
                 // Define dimensions for this category
                 $this->imageManagerFactory->setWidth($category['width'])
                                           ->setHeight($category['height']);
             }
-            
+
             $this->imageManager = $this->imageManagerFactory->build();
         }
-        
+
         return $this->imageManager;
     }
 
@@ -412,9 +407,7 @@ final class ImageManager extends AbstractManager implements ImageManagerInterfac
                 // Now override old image with a new one and start uploading
                 $data['image'] = $file[0]->getName();
                 $uploader->upload($data['id'], $file);
-
             } else {
-
                 return false;
             }
         }
