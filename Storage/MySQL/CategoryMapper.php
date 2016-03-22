@@ -21,7 +21,7 @@ final class CategoryMapper extends AbstractMapper implements CategoryMapperInter
      */
     public static function getTableName()
     {
-        return 'bono_module_slider_category';
+        return self::getWithPrefix('bono_module_slider_category');
     }
 
     /**

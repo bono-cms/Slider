@@ -22,9 +22,9 @@ final class ImageMapper extends AbstractMapper implements ImageMapperInterface
      */
     public static function getTableName()
     {
-        return 'bono_module_slider_images';
+        return self::getWithPrefix('bono_module_slider_images');
     }
-    
+
     /**
      * Returns shared select
      * 
