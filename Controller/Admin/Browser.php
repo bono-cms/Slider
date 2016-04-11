@@ -24,7 +24,7 @@ final class Browser extends AbstractController
     public function indexAction($page = 1)
     {
         $images = $this->getImageManager()->fetchAllByPage($page, $this->getSharedPerPageCount());
-        $url = '/admin/module/slider/page/(:var)';
+        $url = $this->createUrl('Slider:Admin:Browser@indexAction', array(), 1);
 
         return $this->createGrid($images, $url, null);
     }
@@ -39,7 +39,7 @@ final class Browser extends AbstractController
     public function categoryAction($id, $page = 1)
     {
         $images = $this->getImageManager()->fetchAllByCategoryAndPage($id, $page, $this->getSharedPerPageCount());
-        $url = '/admin/module/slider/category/view/'.$id.'/page/(:var)';
+        $url = $this->createUrl('Slider:Admin:Browser@categoryAction', array($id), 1);
 
         return $this->createGrid($images, $url, $id);
     }
