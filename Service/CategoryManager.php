@@ -91,7 +91,7 @@ final class CategoryManager extends AbstractManager implements CategoryManagerIn
             // How to escape this ones? As a float? Or as integer?
             ->setWidth($category['width'])
             ->setHeight($category['height']);
-        
+
         return $entity;
     }
 
