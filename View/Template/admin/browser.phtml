@@ -19,7 +19,7 @@ use Krystal\Form\Element;
 		 
 		 <?php if (!empty($images)): ?>
 		 <li><a href="#" data-button="save-changes" data-url="<?php echo $this->url('Slider:Admin:Image@tweakAction'); ?>"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save changes'); ?></a></li>
-		 <li><a href="#" data-button="remove-selected" data-url="<?php echo $this->url('Slider:Admin:Image@deleteAction'); ?>"><i class="glyphicon glyphicon-remove"></i> <?php $this->show('Remove selected'); ?></a></li>
+		 <li><a href="#" data-button="remove-selected" data-url="<?php echo $this->url('Slider:Admin:Image@deleteAction', null); ?>"><i class="glyphicon glyphicon-remove"></i> <?php $this->show('Remove selected'); ?></a></li>
 		 <?php else: ?>
 		 <li class="disabled"><a><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save changes'); ?></a></li>
 		 <li class="disabled"><a><i class="glyphicon glyphicon-remove"></i> <?php $this->show('Remove selected'); ?></a></li>
@@ -69,7 +69,7 @@ use Krystal\Form\Element;
 					</td>
 					<td class="text-center col-md-1">
 						<a data-button="edit" data-toggle="tooltip" data-placement="left" data-original-title="<?php $this->show('Edit this image'); ?>" href="<?php echo $this->url('Slider:Admin:Image@editAction', $image->getId()); ?>"><i class="glyphicon glyphicon-pencil"></i></a>
-						<a data-button="delete" data-id="<?php echo $image->getId(); ?>" data-category="image" data-toggle="tooltip" data-placement="left" data-original-title="<?php $this->show('Remove this image'); ?>" href="#"><i class="glyphicon glyphicon-remove"></i></a>
+						<a data-button="delete" data-url="<?php echo $this->url('Slider:Admin:Image@deleteAction', $image->getId()); ?>" data-toggle="tooltip" data-placement="left" data-original-title="<?php $this->show('Remove this image'); ?>" href="#"><i class="glyphicon glyphicon-remove"></i></a>
 					</td>
 				</tr>
 				<?php endforeach; ?>
@@ -130,7 +130,7 @@ use Krystal\Form\Element;
 				<td class="text-center"><?php echo $category->getClass(); ?></td>
 				<td class="text-center">
 					<a data-button="edit" data-toggle="tooltip" data-placement="left" data-original-title="<?php $this->show('Edit this category'); ?>" href="<?php echo $this->url('Slider:Admin:Category@editAction', $category->getId()); ?>"><i class="glyphicon glyphicon-pencil"></i></a>
-					<a data-button="delete" data-toggle="tooltip" data-placement="left" data-original-title="<?php $this->show('Remove this category'); ?>" data-id="<?php echo $category->getId(); ?>" data-category="category" href="#" ><i class="glyphicon glyphicon-remove"></i></a>
+					<a data-button="delete" data-toggle="tooltip" data-placement="left" data-original-title="<?php $this->show('Remove this category'); ?>" data-url="<?php echo $this->url('Slider:Admin:Category@deleteAction', $category->getId()); ?>" href="#" ><i class="glyphicon glyphicon-remove"></i></a>
 				</td>
 				
 				<?php endif; ?>

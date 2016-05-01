@@ -57,10 +57,6 @@ final class Browser extends AbstractController
         $paginator = $this->getImageManager()->getPaginator();
         $paginator->setUrl($url);
 
-        // Load view plugins
-        $this->view->getPluginBag()
-                   ->appendScript('@Slider/admin/browser.js');
-
         // Appends a breadcrumb
         $this->view->getBreadcrumbBag()
                    ->addOne('Slider');

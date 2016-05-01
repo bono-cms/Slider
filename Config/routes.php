@@ -23,7 +23,7 @@ return array(
         'disallow' => array('guest')
     ),
     
-    '/admin/module/slider/image/delete' => array(
+    '/admin/module/slider/image/delete/(:var)' => array(
         'controller' => 'Admin:Image@deleteAction',
         'disallow' => array('guest')
     ),
@@ -62,7 +62,7 @@ return array(
         'disallow' => array('guest')
     ),
     
-    '/admin/module/slider/category/delete' => array(
+    '/admin/module/slider/category/delete/(:var)' => array(
         'controller' => 'Admin:Category@deleteAction',
         'disallow' => array('guest')
     )

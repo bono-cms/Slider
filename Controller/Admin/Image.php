@@ -107,11 +107,12 @@ final class Image extends AbstractController
     /**
      * Deletes selected slide image
      * 
+     * @param string $id
      * @return string
      */
-    public function deleteAction()
+    public function deleteAction($id)
     {
-        return $this->invokeRemoval('imageManager');
+        return $this->invokeRemoval('imageManager', $id);
     }
 
     /**

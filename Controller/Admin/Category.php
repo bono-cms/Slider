@@ -75,18 +75,15 @@ final class Category extends AbstractController
     /**
      * Deletes a category by its associated id
      * 
+     * @param string $id
      * @return string
      */
-    public function deleteAction()
+    public function deleteAction($id)
     {
-        if ($this->request->hasPost('id')) {
-            $id = $this->request->getPost('id');
-
-            // Remove all images associated with provided category id
-            if ($this->getModuleService('imageManager')->deleteAllByCategoryId($id) && $this->getCategoryManager()->deleteById($id)) {
-                $this->flashBag->set('success', 'The category has been removed successfully');
-                return '1';
-            }
+        // Remove all images associated with provided category id
+        if ($this->getModuleService('imageManager')->deleteAllByCategoryId($id) && $this->getCategoryManager()->deleteById($id)) {
+            $this->flashBag->set('success', 'The category has been removed successfully');
+            return '1';
         }
     }
 
