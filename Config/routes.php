@@ -10,59 +10,59 @@
  */
 
 return array(
-    '/admin/module/slider' => array(
+    '/%s/module/slider' => array(
         'controller' => 'Admin:Browser@indexAction'
     ),
     
-    '/admin/module/slider/page/(:var)' => array(
+    '/%s/module/slider/page/(:var)' => array(
         'controller' => 'Admin:Browser@indexAction'
     ),
     
-    '/admin/module/slider/tweak' => array(
+    '/%s/module/slider/tweak' => array(
         'controller' => 'Admin:Image@tweakAction',
         'disallow' => array('guest')
     ),
     
-    '/admin/module/slider/image/delete/(:var)' => array(
+    '/%s/module/slider/image/delete/(:var)' => array(
         'controller' => 'Admin:Image@deleteAction',
         'disallow' => array('guest')
     ),
     
-    '/admin/module/slider/image/add' => array(
+    '/%s/module/slider/image/add' => array(
         'controller' => 'Admin:Image@addAction'
     ),
     
-    '/admin/module/slider/image/edit/(:var)' => array(
+    '/%s/module/slider/image/edit/(:var)' => array(
         'controller' => 'Admin:Image@editAction'
     ),
     
-    '/admin/module/slider/image/save' => array(
+    '/%s/module/slider/image/save' => array(
         'controller' => 'Admin:Image@saveAction',
         'disallow' => array('guest')
     ),
 
-    '/admin/module/slider/category/view/(:var)' => array(
+    '/%s/module/slider/category/view/(:var)' => array(
         'controller' => 'Admin:Browser@categoryAction'
     ),
     
-    '/admin/module/slider/category/(:var)/page/(:var)' => array(
+    '/%s/module/slider/category/(:var)/page/(:var)' => array(
         'controller' => 'Admin:Browser@categoryAction'
     ),
     
-    '/admin/module/slider/category/add' => array(
+    '/%s/module/slider/category/add' => array(
         'controller' => 'Admin:Category@addAction'
     ),
     
-    '/admin/module/slider/category/edit/(:var)' => array(
+    '/%s/module/slider/category/edit/(:var)' => array(
         'controller' => 'Admin:Category@editAction'
     ),
     
-    '/admin/module/slider/category/save' => array(
+    '/%s/module/slider/category/save' => array(
         'controller' => 'Admin:Category@saveAction',
         'disallow' => array('guest')
     ),
     
-    '/admin/module/slider/category/delete/(:var)' => array(
+    '/%s/module/slider/category/delete/(:var)' => array(
         'controller' => 'Admin:Category@deleteAction',
         'disallow' => array('guest')
     )
