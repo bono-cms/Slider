@@ -60,7 +60,7 @@ final class ImageManagerFactory extends AbstractImageManagerFactory
     {
         return '/data/uploads/module/slider/';
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -71,7 +71,6 @@ final class ImageManagerFactory extends AbstractImageManagerFactory
                 'dimensions' => array(
                     // For administration
                     array(400, 200),
-                    
                     // For slides
                     array($this->width, $this->height)
                 )
