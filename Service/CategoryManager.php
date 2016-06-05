@@ -87,7 +87,7 @@ final class CategoryManager extends AbstractManager implements CategoryManagerIn
         $entity = new VirtualEntity();
         $entity->setId($category['id'], VirtualEntity::FILTER_INT)
             ->setName($category['name'], VirtualEntity::FILTER_TAGS)
-            ->setClass($category['class'], VirtualEntity::FILTER_FLOAT)
+            ->setClass($category['class'], VirtualEntity::FILTER_TAGS)
             ->setWidth($category['width'], VirtualEntity::FILTER_FLOAT)
             ->setHeight($category['height'], VirtualEntity::FILTER_FLOAT);
 
