@@ -143,15 +143,15 @@ final class ImageManager extends AbstractManager implements ImageManagerInterfac
 
         $entity = new ImageEntity(false);
         $entity->setImageBag($imageBag)
-            ->setId((int) $image['id'])
-            ->setCategoryId((int) $image['category_id'])
-            ->setCategoryName(Filter::escape($this->categoryMapper->fetchNameById($image['category_id'])))
-            ->setName(Filter::escape($image['name']))
-            ->setDescription(Filter::escape($image['description']))
-            ->setOrder((int) $image['order'])
-            ->setPublished((bool) $image['published'])
-            ->setLink(Filter::escape($image['link']))
-            ->setCover(Filter::escape($image['image']));
+            ->setId($image['id'], ImageEntity::FILTER_INT)
+            ->setCategoryId($image['category_id'], ImageEntity::FILTER_INT)
+            ->setCategoryName($this->categoryMapper->fetchNameById($image['category_id']), ImageEntity::FILTER_TAGS)
+            ->setName($image['name'], ImageEntity::FILTER_TAGS)
+            ->setDescription($image['description'], ImageEntity::FILTER_TAGS)
+            ->setOrder($image['order'], ImageEntity::FILTER_INT)
+            ->setPublished($image['published'], ImageEntity::FILTER_BOOL)
+            ->setLink($image['link'], ImageEntity::FILTER_TAGS)
+            ->setCover($image['image'], ImageEntity::FILTER_TAGS);
 
         return $entity;
     }
