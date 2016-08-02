@@ -2,6 +2,7 @@
 
 return array(
  'name'  => 'Slider',
+ 'caption'  => 'Slider',
  'route' => 'Slider:Admin:Browser@indexAction',
  'icon'  => 'fa fa-picture-o fa-5x',
  'order' => 1,
