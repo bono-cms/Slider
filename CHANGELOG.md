@@ -4,6 +4,7 @@ CHANGELOG
 1.3
 ---
 
+ * Fixed issue with quote escaping
  * Added getImageUrl() shortcut in `ImageEntity`
  * Fixed bug with non-ability to render from same category with different languages
  * Added support for table prefix
