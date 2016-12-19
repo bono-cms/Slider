@@ -193,9 +193,22 @@ final class ImageManager extends AbstractManager implements ImageManagerInterfac
     }
 
     /**
+     * Fetches random published image by category class
+     * 
+     * @param string $class Category class
+     * @return array
+     */
+    public function fetchRandomPublishedByCategoryClass($class)
+    {
+        // Get associated id, first
+        $id = $this->categoryMapper->fetchIdByClass($class);
+        return $this->prepareResult($this->imageMapper->fetchRandomPublishedByCategoryId($id));
+    }
+
+    /**
      * Fetches all published slide images in provided category class
      * 
-     * @param string $class Category's class
+     * @param string $class Category class
      * @return array
      */
     public function fetchAllPublishedByCategoryClass($class)

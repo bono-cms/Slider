@@ -64,9 +64,17 @@ interface ImageManagerInterface
     public function fetchAllPublishedByCategoryId($id);
 
     /**
+     * Fetches random published image by category class
+     * 
+     * @param string $class Category class
+     * @return array
+     */
+    public function fetchRandomPublishedByCategoryClass($class);
+
+    /**
      * Fetches all published slide images in provided category class
      * 
-     * @param string $class Category's class
+     * @param string $class Category class
      * @return array
      */
     public function fetchAllPublishedByCategoryClass($class);
