@@ -147,6 +147,22 @@ final class ImageMapper extends AbstractMapper implements ImageMapperInterface
     }
 
     /**
+     * Fetches random published slide image associated with provided category id
+     * 
+     * @param string $categoryId
+     * @return array
+     */
+    public function fetchRandomPublishedByCategoryId($categoryId)
+    {
+        return $this->db->select('*')
+                        ->from(self::getTableName())
+                        ->whereEquals('category_id', $categoryId)
+                        ->orderBy()
+                        ->rand()
+                        ->query();
+    }
+
+    /**
      * Fetches all images filtered by pagination
      * 
      * @param integer $page Current page number

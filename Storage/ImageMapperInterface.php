@@ -64,6 +64,14 @@ interface ImageMapperInterface
     public function fetchCategoryIdById($id);
 
     /**
+     * Fetches random published slide image associated with provided category id
+     * 
+     * @param string $categoryId
+     * @return array
+     */
+    public function fetchRandomPublishedByCategoryId($categoryId);
+
+    /**
      * Fetches all images filtered by pagination
      * 
      * @param integer $page Current page number
