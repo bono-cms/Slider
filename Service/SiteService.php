@@ -64,6 +64,17 @@ final class SiteService implements SiteServiceInterface
     }
 
     /**
+     * Returns random image entity
+     * 
+     * @param string $class Category class
+     * @return \Slider\Service\ImageEntity
+     */
+    public function getRandom($class)
+    {
+        return $this->imageManager->fetchRandomPublishedByCategoryClass($class);
+    }
+
+    /**
      * Checks whether provided category's class has at least one slide image
      * 
      * @param string $class

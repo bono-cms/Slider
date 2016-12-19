@@ -4,6 +4,7 @@ CHANGELOG
 1.3
 ---
 
+ * In `\Slider\Service\SiteService` added `getRandom()` to fetch random image entity by category class
  * Switched to two column grid layout in main module page
  * Fixed issue with quote escaping
  * Added getImageUrl() shortcut in `ImageEntity`
