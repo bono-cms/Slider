@@ -157,6 +157,7 @@ final class ImageMapper extends AbstractMapper implements ImageMapperInterface
         return $this->db->select('*')
                         ->from(self::getTableName())
                         ->whereEquals('category_id', $categoryId)
+                        ->andWhereEquals('published', '1')
                         ->orderBy()
                         ->rand()
                         ->query();
