@@ -96,7 +96,7 @@ final class Category extends AbstractController
     {
         $input = $this->request->getPost('category');
 
-        return $this->invokeSave('categoryManager', $input['id'], $input, array(
+        $formValidator = $this->createValidator(array(
             'input' => array(
                 'source' => $input,
                 'definition' => array(
@@ -107,5 +107,25 @@ final class Category extends AbstractController
                 )
             )
         ));
+
+        if ($formValidator->isValid()) {
+            $service = $this->getModuleService('categoryManager');
+
+            if (!empty($input['id'])) {
+                if ($service->update($input)) {
+                    $this->flashBag->set('success', 'The element has been updated successfully');
+                    return '1';
+                }
+
+            } else {
+                if ($service->add($input)) {
+                    $this->flashBag->set('success', 'The element has been created successfully');
+                    return $service->getLastId();
+                }
+            }
+
+        } else {
+            return $formValidator->getErrors();
+        }
     }
 }
