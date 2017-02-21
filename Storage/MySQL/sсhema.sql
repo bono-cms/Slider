@@ -1,4 +1,21 @@
 
+DROP TABLE IF EXISTS `bono_module_slider_category_attribute_groups`;
+CREATE TABLE `bono_module_slider_category_attribute_groups` (
+    `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT 'Attribute group unique ID',
+	`category_Id` INT NOT NULL COMMENT 'Attached category ID',
+	`name` varchar(255) NOT NULL
+) DEFAULT CHARSET = UTF8;
+
+
+DROP TABLE IF EXISTS `bono_module_slider_category_attribute_values`;
+CREATE TABLE `bono_module_slider_category_attribute_values` (
+	`id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT 'Attribute value unique ID',
+	`group_Id` INT NOT NULL COMMENT 'Attached category group ID',
+    `image_id`INT NOT NULL COMMENT 'Attached image ID',
+    `value` varchar(255) NOT NULL
+) DEFAULT CHARSET = UTF8;
+
+
 DROP TABLE IF EXISTS `bono_module_slider_category`; 
 CREATE TABLE `bono_module_slider_category` (
 	`id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
