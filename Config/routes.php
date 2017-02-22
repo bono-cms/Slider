@@ -65,5 +65,30 @@ return array(
     '/%s/module/slider/category/delete/(:var)' => array(
         'controller' => 'Admin:Category@deleteAction',
         'disallow' => array('guest')
+    ),
+
+    // Category attributes
+    '/%s/module/slider/attributes/category/(:var)' => array(
+        'controller' => 'Admin:Attribute@listAction',
+        'disallow' => array('guest')
+    ),
+
+    '/%s/module/slider/attributes/category/(:var)/add' => array(
+        'controller' => 'Admin:Attribute@addAction',
+    ),
+
+    '/%s/module/slider/attributes/category/(:var)/edit/(:var)' => array(
+        'controller' => 'Admin:Attribute@editAction',
+        'disallow' => array('guest')
+    ),
+
+    '/%s/module/slider/attributes/category/(:var)/save' => array(
+        'controller' => 'Admin:Attribute@saveAction',
+        'disallow' => array('guest')
+    ),
+
+    '/%s/module/slider/attributes/category/(:var)/delete/(:var)' => array(
+        'controller' => 'Admin:Attribute@deleteAction',
+        'disallow' => array('guest')
     )
 );
