@@ -124,13 +124,12 @@ use Krystal\Form\HtmlHelper;
                         <td class="text-center"><?php echo $category->getWidth(); ?></td>
                         
                         <?php if ($extendedMode): ?>
-                        
                         <td class="text-center"><?php echo $category->getClass(); ?></td>
                         <td class="text-center">
+                            <a data-button="edit" data-toggle="tooltip" data-placement="left" data-original-title="<?php $this->show('Manage attributes'); ?>" href="<?php echo $this->url('Slider:Admin:Attribute@listAction', $category->getId()); ?>"><i class="glyphicon glyphicon-th-list"></i></a>
                             <a data-button="edit" data-toggle="tooltip" data-placement="left" data-original-title="<?php $this->show('Edit this category'); ?>" href="<?php echo $this->url('Slider:Admin:Category@editAction', $category->getId()); ?>"><i class="glyphicon glyphicon-pencil"></i></a>
                             <a data-button="delete" data-toggle="tooltip" data-placement="left" data-original-title="<?php $this->show('Remove this category'); ?>" data-url="<?php echo $this->url('Slider:Admin:Category@deleteAction', $category->getId()); ?>" href="#" ><i class="glyphicon glyphicon-remove"></i></a>
                         </td>
-                        
                         <?php endif; ?>
                     </tr>
                     <?php endforeach; ?>

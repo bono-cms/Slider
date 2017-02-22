@@ -1,0 +1,35 @@
+<?php defined('KRYSTAL') or die; ?>
+<?php
+
+use Krystal\Form\Element;
+
+?>
+<form data-group="group">
+	<div class="well">
+		<input type="hidden" name="group[id]" value="<?php echo $group->getId(); ?>" />
+		<input type="hidden" name="group[category_id]" value="<?php echo $group->getCategoryId(); ?>" />
+
+		<div class="form-group">
+			<label class="col-lg-2 control-label"><?php $this->show('Name'); ?></label>
+			<div class="col-lg-10">
+				<div class="input-group">
+					<?php echo Element::text('group[name]', $group->getName(), array('class' => 'form-control', 'placeholder' => $this->translate('Name'))); ?>
+					<span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+				</div>
+			</div>
+        </div>
+	</div>
+	
+	<?php if (!$group->getId()): ?>
+	
+	<button data-button="add" data-back-url="<?php echo $this->url('Slider:Admin:Attribute@editAction', $group->getCategoryId(), null); ?>" data-url="<?php echo $this->url('Slider:Admin:Attribute@saveAction', $group->getCategoryId()); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Add'); ?></button>
+	<button data-button="add-create" data-url="<?php echo $this->url('Slider:Admin:Attribute@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Add & Create new'); ?></button>
+	
+	<?php else: ?>
+	
+	<button data-button="save" data-url="<?php echo $this->url('Slider:Admin:Attribute@saveAction', $group->getCategoryId()); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save'); ?></button>
+	<button data-button="save-create" data-back-url="<?php echo $this->url('Slider:Admin:Attribute@addAction', $group->getCategoryId()); ?>" data-url="<?php echo $this->url('Slider:Admin:Attribute@saveAction', $group->getCategoryId()); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save & Create new'); ?></button>
+	
+    <?php endif; ?>
+	<button data-button="cancel" data-url="<?php echo $this->url('Slider:Admin:Attribute@listAction', $group->getCategoryId()); ?>" class="btn btn-default"><i class="glyphicon glyphicon-floppy-remove"></i> <?php $this->show('Cancel'); ?></button>
+</form>
