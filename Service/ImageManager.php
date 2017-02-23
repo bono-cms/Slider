@@ -12,10 +12,12 @@
 namespace Slider\Service;
 
 use Krystal\Security\Filter;
+use Krystal\Stdlib\ArrayUtils;
 use Cms\Service\AbstractManager;
 use Cms\Service\HistoryManagerInterface;
 use Slider\Storage\ImageMapperInterface;
 use Slider\Storage\CategoryMapperInterface;
+use Slider\Storage\AttributeValueMapperInterface;
 use Slider\Service\ImageManagerFactory;
 
 final class ImageManager extends AbstractManager implements ImageManagerInterface
@@ -33,6 +35,13 @@ final class ImageManager extends AbstractManager implements ImageManagerInterfac
      * @var \Slider\Storage\CategoryMapperInterface
      */
     private $categoryMapper;
+
+    /**
+     * Any compliant attribute value mapper
+     * 
+     * @var \Slider\Storage\AttributeValueMapperInterface
+     */
+    private $attributeValueMapper;
 
     /**
      * Image manager to deal with images
@@ -60,6 +69,7 @@ final class ImageManager extends AbstractManager implements ImageManagerInterfac
      * 
      * @param \Slider\Storage\ImageMapperInterface $imageMapper
      * @param \Slider\Storage\CategoryMapperInterface $categoryMapper
+     * @param \Slider\Storage\AttributeValueMapperInterface $attributeValueMapper
      * @param \Slider\Service\Factories\ImageManagerFactory $imageManagerFactory
      * @param \Cms\Service\HistoryManagerInterface $historyManager
      * @return void
@@ -67,11 +77,13 @@ final class ImageManager extends AbstractManager implements ImageManagerInterfac
     public function __construct(
         ImageMapperInterface $imageMapper, 
         CategoryMapperInterface $categoryMapper, 
+        AttributeValueMapperInterface $attributeValueMapper,
         ImageManagerFactory $imageManagerFactory, 
         HistoryManagerInterface $historyManager
     ){
         $this->imageMapper = $imageMapper;
         $this->categoryMapper = $categoryMapper;
+        $this->attributeValueMapper = $attributeValueMapper;
         $this->imageManagerFactory = $imageManagerFactory;
         $this->historyManager = $historyManager;
     }
@@ -152,7 +164,8 @@ final class ImageManager extends AbstractManager implements ImageManagerInterfac
             ->setPublished($image['published'], ImageEntity::FILTER_BOOL)
             ->setLink($image['link'], ImageEntity::FILTER_HTML)
             ->setCover($image['image'], ImageEntity::FILTER_HTML);
-
+        
+        $entity->setAttributes($this->attributeValueMapper->fetchAll($entity->getId()));
         return $entity;
     }
 
@@ -398,6 +411,31 @@ final class ImageManager extends AbstractManager implements ImageManagerInterfac
     }
 
     /**
+     * Update attributes
+     * 
+     * @param array $image
+     * @return void
+     */
+    private function updateAttributes(array $image)
+    {
+        // Do only if there are category attribute
+        if (isset($image['attributes'])) {
+            // Remove all previous meta data if any
+            $this->attributeValueMapper->deleteAllByImageId($image['id']);
+
+            // Insert new meta data
+            foreach ($image['attributes'] as $groupId => $value) {
+
+                $this->attributeValueMapper->persist(array(
+                    'group_id' => $groupId,
+                    'image_id' => $image['id'],
+                    'value' => $value
+                ));
+            }
+        }
+    }
+
+    /**
      * Updates a slider
      * 
      * @param array $input Raw input data
@@ -426,6 +464,8 @@ final class ImageManager extends AbstractManager implements ImageManagerInterfac
         }
 
         $this->track('Slider "%s" has been updated', $data['name']);
-        return $this->imageMapper->update($data);
+        $this->updateAttributes($data);
+
+        return $this->imageMapper->update(ArrayUtils::arrayWithout($data, array('attributes')));
     }
 }
