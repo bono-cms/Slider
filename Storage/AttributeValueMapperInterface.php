@@ -13,5 +13,19 @@ namespace Slider\Storage;
 
 interface AttributeValueMapperInterface
 {
-    
+    /**
+     * Deletes all data associated with particular image
+     * 
+     * @param string $id Image ID
+     * @return boolean
+     */
+    public function deleteAllByImageId($id);
+
+    /**
+     * Fetches attribute data associated with image ID
+     * 
+     * @param string $imageId
+     * @return array
+     */
+    public function fetchAll($imageId);
 }
