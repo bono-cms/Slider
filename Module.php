@@ -19,7 +19,6 @@ use Slider\Service\TaskManager;
 use Slider\Service\ImageManagerFactory;
 use Slider\Service\SiteService;
 use Slider\Service\AttributeGroupManager;
-use Slider\Service\AttributeValueManager;
 
 final class Module extends AbstractCmsModule
 {
@@ -36,12 +35,15 @@ final class Module extends AbstractCmsModule
 
         $historyManager = $this->getHistoryManager();
 
-        $imageManager = new ImageManager($imageMapper, $categoryMapper, new ImageManagerFactory($this->getAppConfig()), $historyManager);
+        $imageManager = new ImageManager(
+            $imageMapper, 
+            $categoryMapper, 
+            $attributeValueMapper, 
+            new ImageManagerFactory($this->getAppConfig()), $historyManager
+        );
 
         return array(
             'attributeGroupManager' => new AttributeGroupManager($attributeGroupMapper),
-            'attributeValueManager' => new AttributeValueManager($attributeValueMapper),
-
             'siteService' => new SiteService($imageManager, new MemoryCache),
             'categoryManager' => new CategoryManager($categoryMapper, $historyManager),
             'imageManager'  => $imageManager,
