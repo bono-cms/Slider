@@ -44,9 +44,23 @@ final class Image extends AbstractController
         $this->view->getBreadcrumbBag()->addOne('Slider', 'Slider:Admin:Browser@indexAction')
                                        ->addOne($title);
 
+        $attributeGroupManager = $this->getModuleService('attributeGroupManager');
+
+        // If edit form
+        if ($image->getId()) {
+            // Populate values
+            $attributes = $attributeGroupManager->fetchAll($image->getCategoryId());
+            $attributeGroupManager->populateValues($attributes, $image);
+
+        } else {
+            // No attributes on creating
+            $attributes = array();
+        }
+
         return $this->view->render('image.form', array(
             'categories' => $this->getModuleService('categoryManager')->fetchList(),
-            'image' => $image
+            'image' => $image,
+            'attributes' => $attributes
         ));
     }
 

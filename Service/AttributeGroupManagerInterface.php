@@ -11,8 +11,19 @@
 
 namespace Slider\Service;
 
+use Krystal\Stdlib\VirtualEntity;
+
 interface AttributeGroupManagerInterface
 {
+    /**
+     * Populate group entities with their corresponding values
+     * 
+     * @param array $groups A collection of group entities
+     * @param \Krystal\Stdlib\VirtualEntity $image Image entity
+     * @return array
+     */
+    public function populateValues(array $groups, VirtualEntity $image);
+
     /**
      * Fetches group entities by its associated ID
      * 

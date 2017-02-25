@@ -49,6 +49,24 @@ final class AttributeGroupManager extends AbstractManager implements AttributeGr
     }
 
     /**
+     * Populate group entities with their corresponding values
+     * 
+     * @param array $groups A collection of group entities
+     * @param \Krystal\Stdlib\VirtualEntity $image Image entity
+     * @return array
+     */
+    public function populateValues(array $groups, VirtualEntity $image)
+    {
+        foreach ($groups as $group) {
+            foreach ($image->getAttributes() as $imageAttributes) {
+                if ($imageAttributes['group_id'] == $group->getId()) {
+                    $group->setValue($imageAttributes['value']);
+                }
+            }
+        }
+    }
+
+    /**
      * Fetches group entities by its associated ID
      * 
      * @param string $id Group ID
