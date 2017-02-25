@@ -28,6 +28,14 @@ interface CategoryManagerInterface
     public function getLastId();
 
     /**
+     * Fetches category name by its associated ID
+     * 
+     * @param string $id Category ID
+     * @return string
+     */
+    public function fetchNameById($id);
+
+    /**
      * Fetch a category bag by associated id
      * 
      * @param string $id

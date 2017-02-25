@@ -95,6 +95,17 @@ final class CategoryManager extends AbstractManager implements CategoryManagerIn
     }
 
     /**
+     * Fetches category name by its associated ID
+     * 
+     * @param string $id Category ID
+     * @return string
+     */
+    public function fetchNameById($id)
+    {
+        return Filter::escape($this->categoryMapper->fetchNameById($id));
+    }
+
+    /**
      * Fetch category's entity by associated id
      * 
      * @param string $id Category's id
@@ -123,7 +134,7 @@ final class CategoryManager extends AbstractManager implements CategoryManagerIn
      */ 
     public function deleteById($id)
     {
-        $name = Filter::escape($this->categoryMapper->fetchNameById($id));
+        $name = $this->fetchNameById($id);
 
         if ($this->categoryMapper->deleteById($id)) {
             $this->track('Category "%s" has been removed', $name);
