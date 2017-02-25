@@ -60,7 +60,8 @@ final class Image extends AbstractController
         return $this->view->render('image.form', array(
             'categories' => $this->getModuleService('categoryManager')->fetchList(),
             'image' => $image,
-            'attributes' => $attributes
+            'attributes' => $attributes,
+            'hasAttributes' => $image->getCategoryId() && !empty($attributes)
         ));
     }
 

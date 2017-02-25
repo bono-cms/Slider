@@ -12,6 +12,10 @@ use Krystal\Form\Element;
 	<ul class="nav nav-tabs" role="tablist">
 		<li role="presentation" class="active"><a href="#image" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-picture"></i> <?php $this->show('Image'); ?></a></li>
 		<li role="presentation"><a href="#options" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-th-list"></i> <?php $this->show('Options'); ?></a></li>
+        
+        <?php if ($hasAttributes): ?>
+		<li role="presentation"><a href="#attrs" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-th-list"></i> <?php $this->show('Attributes'); ?></a></li>
+        <?php endif; ?>
 	</ul>
 	
 	<div class="tab-content">
@@ -99,6 +103,26 @@ use Krystal\Form\Element;
 				</div>
 			</div>
 		</div>
+        
+        <?php if ($hasAttributes): ?>
+		<div class="tab-pane" id="attrs" role="tabpanel">
+            <div class="well">
+
+                <?php foreach ($attributes as $attribute): ?>
+                <div class="form-group">
+                    <label class="col-lg-2 control-label"><?php echo $attribute->getName(); ; ?></label>
+                    <div class="col-lg-10">
+                        <div class="input-group">
+                            <?php echo Element::text(sprintf('image[attributes][%s]', $attribute->getId()), $attribute->getValue(), array('class' => 'form-control')); ?>
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+
+            </div>
+        </div>
+        <?php endif; ?>
 	</div>
 	
 	<?php if (!$image->getId()): ?>
