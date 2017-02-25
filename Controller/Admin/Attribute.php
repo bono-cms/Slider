@@ -27,7 +27,12 @@ final class Attribute extends AbstractController
     {
         // Configure breadcrumbs
         $this->view->getBreadcrumbBag()->addOne('Slider', 'Slider:Admin:Browser@indexAction')
-                                       ->addOne('Attributes');
+                                       ->addOne(
+                                            $this->translator->translate(
+                                                'Attributes of category "%s"', 
+                                                $this->getModuleService('categoryManager')->fetchNameById($id)
+                                            )
+                                        );
 
         return $this->view->render('attributes', array(
             'groups' => $this->getModuleService('attributeGroupManager')->fetchAll($id),
@@ -46,7 +51,14 @@ final class Attribute extends AbstractController
     {
         // Configure breadcrumbs
         $this->view->getBreadcrumbBag()->addOne('Slider', 'Slider:Admin:Browser@indexAction')
-                                       ->addOne('Attributes', $this->createUrl('Slider:Admin:Attribute@listAction', array($group->getCategoryId())))
+                                       ->addOne(
+                                            $this->translator->translate(
+                                                'Attributes of category "%s"', 
+                                                $this->getModuleService('categoryManager')->fetchNameById($group->getCategoryId())
+                                            ), 
+
+                                            $this->createUrl('Slider:Admin:Attribute@listAction', array($group->getCategoryId()))
+                                        )
                                        ->addOne($title);
 
         // Render the form
