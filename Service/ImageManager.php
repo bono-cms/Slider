@@ -268,7 +268,7 @@ final class ImageManager extends AbstractManager implements ImageManagerInterfac
         }
 
         if ($categoryId) {
-            if ($this->imageMapper->deleteById($id) && $this->getUploader($categoryId)->delete($id)) {
+            if ($this->imageMapper->deleteById($id) && $this->attributeValueMapper->deleteAllByImageId($id) && $this->getUploader($categoryId)->delete($id)) {
                 return true;
             } else {
                 // Failed to remove a file
