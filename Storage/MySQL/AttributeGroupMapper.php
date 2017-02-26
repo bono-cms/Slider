@@ -25,6 +25,17 @@ final class AttributeGroupMapper extends AbstractMapper implements AttributeGrou
     }
 
     /**
+     * Deletes all data associated with particular category ID
+     * 
+     * @param string $id Category ID
+     * @return boolean
+     */
+    public function deleteAllByCategoryId($id)
+    {
+        return $this->deleteByColumn('category_Id', $id);
+    }
+
+    /**
      * Deletes a group by its ID
      * 
      * @param string $id

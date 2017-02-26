@@ -45,7 +45,7 @@ final class Module extends AbstractCmsModule
         return array(
             'attributeGroupManager' => new AttributeGroupManager($attributeGroupMapper),
             'siteService' => new SiteService($imageManager, new MemoryCache),
-            'categoryManager' => new CategoryManager($categoryMapper, $historyManager),
+            'categoryManager' => new CategoryManager($categoryMapper, $attributeGroupMapper, $historyManager),
             'imageManager'  => $imageManager,
             'taskManager' => new TaskManager($imageMapper)
         );

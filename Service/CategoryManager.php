@@ -14,6 +14,7 @@ namespace Slider\Service;
 use Cms\Service\AbstractManager;
 use Cms\Service\HistoryManagerInterface;
 use Slider\Storage\CategoryMapperInterface;
+use Slider\Storage\AttributeGroupMapperInterface;
 use Krystal\Stdlib\VirtualEntity;
 use Krystal\Stdlib\ArrayUtils;
 use Krystal\Security\Filter;
@@ -28,6 +29,13 @@ final class CategoryManager extends AbstractManager implements CategoryManagerIn
     private $categoryMapper;
 
     /**
+     * Any compliat attribute group mapper
+     * 
+     * @var \Slider\Storage\AttributeGroupMapperInterface
+     */
+    private $attributeGroupMapper;
+
+    /**
      * History manager to keep track
      * 
      * @var \Cms\Service\HistoryManagerInterface
@@ -38,12 +46,14 @@ final class CategoryManager extends AbstractManager implements CategoryManagerIn
      * State initialization
      * 
      * @param \Slider\Storage\CategoryMapperInterface $categoryMapper
+     * @param \Slider\Storage\AttributeGroupMapperInterface $attributeGroupMapper
      * @param \Cms\Service\HistoryManagerInterface $historyManager
      * @return void
      */
-    public function __construct(CategoryMapperInterface $categoryMapper, HistoryManagerInterface $historyManager)
+    public function __construct(CategoryMapperInterface $categoryMapper, AttributeGroupMapperInterface $attributeGroupMapper, HistoryManagerInterface $historyManager)
     {
         $this->categoryMapper = $categoryMapper;
+        $this->attributeGroupMapper = $attributeGroupMapper;
         $this->historyManager = $historyManager;
     }
 
@@ -136,7 +146,7 @@ final class CategoryManager extends AbstractManager implements CategoryManagerIn
     {
         $name = $this->fetchNameById($id);
 
-        if ($this->categoryMapper->deleteById($id)) {
+        if ($this->categoryMapper->deleteById($id) && $this->attributeGroupMapper->deleteAllByCategoryId($id)) {
             $this->track('Category "%s" has been removed', $name);
             return true;
         } else {
