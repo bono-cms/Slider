@@ -16,9 +16,7 @@
             <?php foreach ($groups as $group): ?>
             <tr>
                 <td class="text-center text-muted"><?php echo $group->getId(); ?></td>
-                <td class="text-center">
-                    <a href="<?php echo $this->url('Slider:Admin:Attribute@groupAction', $group->getId()); ?>"><?php echo $group->getName(); ?></a>
-                </td>
+                <td class="text-center"><?php echo $group->getName(); ?></td>
                 <td class="text-center">
                     <a data-toggle="tooltip" data-placement="left" data-original-title="<?php $this->show('Edit this group'); ?>" data-button="edit" href="<?php echo $this->url('Slider:Admin:Attribute@editAction', $group->getCategoryId(), $group->getId()); ?>"><i class="glyphicon glyphicon-pencil"></i></a>
                     <a data-toggle="tooltip" data-placement="left" data-original-title="<?php $this->show('Remove this group'); ?>" data-button="delete" data-url="<?php echo $this->url('Slider:Admin:Attribute@deleteAction', $group->getCategoryId(), $group->getId()); ?>" href="#"><i class="glyphicon glyphicon-remove"></i></a>
