@@ -16,6 +16,25 @@ use Krystal\Stdlib\VirtualEntity;
 final class ImageEntity extends VirtualEntity
 {
     /**
+     * Gets attribute value by group ID
+     * 
+     * @param string $groupId
+     * @return string
+     */
+    public function getAttribute($groupId)
+    {
+        $attributes = $this->getAttributes();
+
+        foreach ($attributes as $attribute) {
+            if ($attribute['group_id'] == $groupId) {
+                return $attribute['value'];
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Returns image URL
      * 
      * @param string $size
