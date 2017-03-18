@@ -26,6 +26,26 @@ final class ImageMapper extends AbstractMapper implements ImageMapperInterface
     }
 
     /**
+     * Returns shared columns to be selected
+     * 
+     * @return array
+     */
+    private function getColumns()
+    {
+        return array(
+            self::getFullColumnName('id'),
+            self::getFullColumnName('category_id'),
+            CategoryMapper::getFullColumnName('name') => 'category_name',
+            self::getFullColumnName('name'),
+            self::getFullColumnName('description'),
+            self::getFullColumnName('order'),
+            self::getFullColumnName('published'),
+            self::getFullColumnName('link'),
+            self::getFullColumnName('image'),
+        );
+    }
+    
+    /**
      * Fetches image's name by its associated id
      * 
      * @param string $id Image id
@@ -113,23 +133,11 @@ final class ImageMapper extends AbstractMapper implements ImageMapperInterface
      */
     public function fetchAll($published, $categoryId, $page, $itemsPerPage)
     {
-        $columns = array(
-            self::getFullColumnName('id'),
-            self::getFullColumnName('category_id'),
-            CategoryMapper::getFullColumnName('name') => 'category_name',
-            self::getFullColumnName('name'),
-            self::getFullColumnName('description'),
-            self::getFullColumnName('order'),
-            self::getFullColumnName('published'),
-            self::getFullColumnName('link'),
-            self::getFullColumnName('image'),
-        );
-
-        $db = $this->db->select($columns)
-                        ->from(self::getTableName())
-                        ->innerJoin(CategoryMapper::getTableName())
-                        ->on()
-                        ->equals(CategoryMapper::getFullColumnName('id'), new RawSqlFragment(self::getFullColumnName('category_id')));
+        $db = $this->db->select($this->getColumns())
+                       ->from(self::getTableName())
+                       ->innerJoin(CategoryMapper::getTableName())
+                       ->on()
+                       ->equals(CategoryMapper::getFullColumnName('id'), new RawSqlFragment(self::getFullColumnName('category_id')));
 
         if ($categoryId !== null) {
             $db->rawAnd()
@@ -159,19 +167,7 @@ final class ImageMapper extends AbstractMapper implements ImageMapperInterface
      */
     public function fetchById($id)
     {
-        $columns = array(
-            self::getFullColumnName('id'),
-            self::getFullColumnName('category_id'),
-            CategoryMapper::getFullColumnName('name') => 'category_name',
-            self::getFullColumnName('name'),
-            self::getFullColumnName('description'),
-            self::getFullColumnName('order'),
-            self::getFullColumnName('published'),
-            self::getFullColumnName('link'),
-            self::getFullColumnName('image'),
-        );
-
-        return $this->db->select($columns)
+        return $this->db->select($this->getColumns())
                         ->from(self::getTableName())
                         ->innerJoin(CategoryMapper::getTableName())
                         ->on()
