@@ -99,7 +99,8 @@ final class CategoryManager extends AbstractManager implements CategoryManagerIn
             ->setName($category['name'], VirtualEntity::FILTER_HTML)
             ->setClass($category['class'], VirtualEntity::FILTER_HTML)
             ->setWidth($category['width'], VirtualEntity::FILTER_FLOAT)
-            ->setHeight($category['height'], VirtualEntity::FILTER_FLOAT);
+            ->setHeight($category['height'], VirtualEntity::FILTER_FLOAT)
+            ->setSlidesCount($category['slides_count'], VirtualEntity::FILTER_INT);
 
         return $entity;
     }

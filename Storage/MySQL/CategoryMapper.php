@@ -13,6 +13,7 @@ namespace Slider\Storage\MySQL;
 
 use Cms\Storage\MySQL\AbstractMapper;
 use Slider\Storage\CategoryMapperInterface;
+use Krystal\Db\Sql\RawSqlFragment;
 
 final class CategoryMapper extends AbstractMapper implements CategoryMapperInterface
 {
@@ -81,10 +82,23 @@ final class CategoryMapper extends AbstractMapper implements CategoryMapperInter
      */
     public function fetchAll()
     {
-        return $this->db->select('*')
-                        ->from(static::getTableName())
-                        ->whereEquals('lang_id', $this->getLangId())
-                        ->orderBy('id')
+        $columns = array(
+            self::getFullColumnName('id'),
+            self::getFullColumnName('name'),
+            self::getFullColumnName('class'),
+            self::getFullColumnName('width'),
+            self::getFullColumnName('height'),
+        );
+
+        return $this->db->select($columns)
+                        ->append(',')
+                        ->count(ImageMapper::getFullColumnName('id'), 'slides_count')
+                        ->from(ImageMapper::getTableName())
+                        ->rightJoin(self::getTableName())
+                        ->on()
+                        ->equals(self::getFullColumnName('id'), new RawSqlFragment(ImageMapper::getFullColumnName('category_id')))
+                        ->groupBy(self::getFullColumnName('id'))
+                        ->orderBy(self::getFullColumnName('id'))
                         ->desc()
                         ->queryAll();
     }
