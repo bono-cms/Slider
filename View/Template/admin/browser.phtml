@@ -119,7 +119,7 @@ use Krystal\Form\HtmlHelper;
                         <td class="text-center">
                             <a href="<?php echo $this->url('Slider:Admin:Browser@categoryAction', $category->getId()); ?>"><?php echo $category->getName(); ?></a>
                         </td>
-                        <td class="text-center"><?php echo $taskManager->getSlidesCountByCategoryId($category->getId());; ?></td>
+                        <td class="text-center"><?php echo $category->getSlidesCount();; ?></td>
                         <td class="text-center"><?php echo $category->getHeight(); ?></td>
                         <td class="text-center"><?php echo $category->getWidth(); ?></td>
                         
