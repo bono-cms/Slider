@@ -26,51 +26,6 @@ final class ImageMapper extends AbstractMapper implements ImageMapperInterface
     }
 
     /**
-     * Returns shared select
-     * 
-     * @param boolean $published
-     * @param string $categoryId Optional category id
-     * @return \Krystal\Db\Sql\Db
-     */
-    private function getSelectQuery($published, $categoryId = null)
-    {
-        // Build first shared fragment
-        $db = $this->db->select('*')
-                       ->from(static::getTableName())
-                       ->whereEquals('lang_id', $this->getLangId());
-
-        if ($categoryId !== null) {
-            $db->andWhereEquals('category_id', $categoryId);
-        }
-
-        if ($published === true) {
-            $db->andWhereEquals('published', '1')
-               ->orderBy(new RawSqlFragment('`order`, CASE WHEN `order` = 0 THEN `id` END DESC'));
-        } else {
-            $db->orderBy('id')
-               ->desc();
-        }
-
-        return $db;
-    }
-
-    /**
-     * Queries for results
-     * 
-     * @param integer $page Current page
-     * @param integer $itemsPerPage Per page count
-     * @param boolean $published Whether to sort only published records
-     * @param string $categoryId Optional category id
-     * @return array
-     */
-    private function getResults($page, $itemsPerPage, $published, $categoryId = null)
-    {
-        return $this->getSelectQuery($published, $categoryId)
-                    ->paginate($page, $itemsPerPage)
-                    ->queryAll();
-    }
-
-    /**
      * Fetches image's name by its associated id
      * 
      * @param string $id Image id
@@ -120,22 +75,6 @@ final class ImageMapper extends AbstractMapper implements ImageMapperInterface
     }
 
     /**
-     * Counts all images associated with given category id
-     * Public intentionally
-     * 
-     * @param string $categoryId
-     * @return integer
-     */
-    public function countAllByCategoryId($categoryId)
-    {
-        return $this->db->select()
-                        ->count('id', 'count')
-                        ->from(static::getTableName())
-                        ->whereEquals('category_id', $categoryId)
-                        ->query('count');
-    }
-
-    /**
      * Fetches image id by its associated category id
      * 
      * @param string $id
@@ -164,65 +103,82 @@ final class ImageMapper extends AbstractMapper implements ImageMapperInterface
     }
 
     /**
-     * Fetches all images filtered by pagination
+     * Fetch all images
      * 
+     * @param boolean $published Whether to fetch only published records
+     * @param string $categoryId Optional category ID filter
      * @param integer $page Current page number
      * @param integer $itemsPerPage Per page count
      * @return array
      */
-    public function fetchAllByPage($page, $itemsPerPage)
+    public function fetchAll($published, $categoryId, $page, $itemsPerPage)
     {
-        return $this->getResults($page, $itemsPerPage, false);
+        $columns = array(
+            self::getFullColumnName('id'),
+            self::getFullColumnName('category_id'),
+            CategoryMapper::getFullColumnName('name') => 'category_name',
+            self::getFullColumnName('name'),
+            self::getFullColumnName('description'),
+            self::getFullColumnName('order'),
+            self::getFullColumnName('published'),
+            self::getFullColumnName('link'),
+            self::getFullColumnName('image'),
+        );
+
+        $db = $this->db->select($columns)
+                        ->from(self::getTableName())
+                        ->innerJoin(CategoryMapper::getTableName())
+                        ->on()
+                        ->equals(CategoryMapper::getFullColumnName('id'), new RawSqlFragment(self::getFullColumnName('category_id')));
+
+        if ($categoryId !== null) {
+            $db->rawAnd()
+               ->equals(self::getFullColumnName('category_id'), $categoryId);
+        }
+
+        if ($published === true) {
+            $db->andWhereEquals('published', '1')
+               ->orderBy(new RawSqlFragment(sprintf('`order`, CASE WHEN `order` = 0 THEN %s END DESC', self::getFullColumnName('id'))));
+        } else {
+            $db->orderBy(self::getFullColumnName('id'))
+               ->desc();
+        }
+
+        if ($page !== null && $itemsPerPage !== null) {
+            $db->paginate($page,$itemsPerPage);
+        }
+
+        return $db->queryAll();
     }
 
     /**
-     * Fetches all published images filtered by pagination
+     * Fetches an image by its associated id
      * 
-     * @param integer $page Current page
-     * @param integer $itemsPerPage Per page count
+     * @param string $id
      * @return array
      */
-    public function fetchAllPublishedByPage($page, $itemsPerPage)
+    public function fetchById($id)
     {
-        return $this->getResults($page, $itemsPerPage, true);
-    }
+        $columns = array(
+            self::getFullColumnName('id'),
+            self::getFullColumnName('category_id'),
+            CategoryMapper::getFullColumnName('name') => 'category_name',
+            self::getFullColumnName('name'),
+            self::getFullColumnName('description'),
+            self::getFullColumnName('order'),
+            self::getFullColumnName('published'),
+            self::getFullColumnName('link'),
+            self::getFullColumnName('image'),
+        );
 
-    /**
-     * Fetches all published images associated with given category id
-     * 
-     * @param string $categoryId
-     * @return array
-     */
-    public function fetchAllPublishedByCategoryId($categoryId)
-    {
-        return $this->getSelectQuery(true, $categoryId)
-                    ->queryAll();
-    }
-
-    /**
-     * Fetches all published images by category id and filtered by pagination
-     * 
-     * @param integer $categoryId
-     * @param integer $page Current page number
-     * @param integer $itemsPerPage Per page count
-     * @return array
-     */
-    public function fetchAllPublishedByCategoryIdAndPage($categoryId, $page, $itemsPerPage)
-    {
-        return $this->getResults($page, $itemsPerPage, true, $categoryId);
-    }
-
-    /**
-     * Fetches all images by category id and filtered by pagination
-     * 
-     * @param string $categoryId
-     * @param integer $page Current page number
-     * @param integer $itemsPerPage Per page count
-     * @return array
-     */
-    public function fetchAllByCategoryAndPage($categoryId, $page, $itemsPerPage)
-    {
-        return $this->getResults($page, $itemsPerPage, false, $categoryId);
+        return $this->db->select($columns)
+                        ->from(self::getTableName())
+                        ->innerJoin(CategoryMapper::getTableName())
+                        ->on()
+                        ->equals(CategoryMapper::getFullColumnName('id'), new RawSqlFragment(self::getFullColumnName('category_id')))
+                        ->rawAnd()
+                        ->equals(self::getFullColumnName('id'), $id)
+                        ->query();
     }
 
     /**
@@ -245,17 +201,6 @@ final class ImageMapper extends AbstractMapper implements ImageMapperInterface
     public function insert(array $data)
     {
         return $this->persist($this->getWithLang($data));
-    }
-
-    /**
-     * Fetches an image by its associated id
-     * 
-     * @param string $id
-     * @return array
-     */
-    public function fetchById($id)
-    {
-        return $this->findByPk($id);
     }
 
     /**

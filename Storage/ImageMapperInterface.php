@@ -48,14 +48,6 @@ interface ImageMapperInterface
     public function fetchIdsByCategoryId($categoryId);
 
     /**
-     * Counts all images associated with given category id
-     * 
-     * @param string $categoryId
-     * @return integer
-     */
-    public function countAllByCategoryId($categoryId);
-
-    /**
      * Fetches image id by its associated category id
      * 
      * @param string $id Image id
@@ -72,50 +64,23 @@ interface ImageMapperInterface
     public function fetchRandomPublishedByCategoryId($categoryId);
 
     /**
-     * Fetches all images filtered by pagination
+     * Fetch all images
      * 
+     * @param boolean $published Whether to fetch only published records
+     * @param string $categoryId Optional category ID filter
      * @param integer $page Current page number
      * @param integer $itemsPerPage Per page count
      * @return array
      */
-    public function fetchAllByPage($page, $itemsPerPage);
+    public function fetchAll($published, $categoryId, $page, $itemsPerPage);
 
     /**
-     * Fetches all published images filtered by pagination
+     * Fetches an image by its associated id
      * 
-     * @param integer $page Current page
-     * @param integer $itemsPerPage Per page count
+     * @param string $id Image id
      * @return array
      */
-    public function fetchAllPublishedByPage($page, $itemsPerPage);
-
-    /**
-     * Fetches all published images associated with given category id
-     * 
-     * @param string $categoryId Category id
-     * @return array
-     */
-    public function fetchAllPublishedByCategoryId($categoryId);
-
-    /**
-     * Fetches all published images by category id and filtered by pagination
-     * 
-     * @param integer $categoryId
-     * @param integer $page Current page number
-     * @param integer $itemsPerPage Per page count
-     * @return array
-     */
-    public function fetchAllPublishedByCategoryIdAndPage($categoryId, $page, $itemsPerPage);
-
-    /**
-     * Fetches all images by category id and filtered by pagination
-     * 
-     * @param string $categoryId
-     * @param integer $page Current page number
-     * @param integer $itemsPerPage Per page count
-     * @return array
-     */
-    public function fetchAllByCategoryAndPage($categoryId, $page, $itemsPerPage);
+    public function fetchById($id);
 
     /**
      * Updates an image
@@ -132,14 +97,6 @@ interface ImageMapperInterface
      * @return boolean
      */
     public function insert(array $data);
-
-    /**
-     * Fetches an image by its associated id
-     * 
-     * @param string $id Image id
-     * @return array
-     */
-    public function fetchById($id);
 
     /**
      * Deletes an image by its associated id
