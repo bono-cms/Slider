@@ -23,10 +23,8 @@ final class Browser extends AbstractController
      */
     public function indexAction($page = 1)
     {
-        $images = $this->getImageManager()->fetchAllByPage($page, $this->getSharedPerPageCount());
         $url = $this->createUrl('Slider:Admin:Browser@indexAction', array(), 1);
-
-        return $this->createGrid($images, $url, null);
+        return $this->createGrid($page, $url, null);
     }
 
     /**
@@ -38,23 +36,24 @@ final class Browser extends AbstractController
      */
     public function categoryAction($id, $page = 1)
     {
-        $images = $this->getImageManager()->fetchAllByCategoryAndPage($id, $page, $this->getSharedPerPageCount());
         $url = $this->createUrl('Slider:Admin:Browser@categoryAction', array($id), 1);
-
-        return $this->createGrid($images, $url, $id);
+        return $this->createGrid($page, $url, $id);
     }
 
     /**
      * Creates a grid
      * 
-     * @param array $images
+     * @param integer $page Page number
      * @param string $url
      * @param string $categoryId
      * @return string
      */
-    private function createGrid(array $images, $url, $categoryId)
+    private function createGrid($page, $url, $categoryId)
     {
-        $paginator = $this->getImageManager()->getPaginator();
+        $imageManager = $this->getModuleService('imageManager');
+        $images = $imageManager->fetchAll($categoryId, $page, $this->getSharedPerPageCount());
+
+        $paginator = $imageManager->getPaginator();
         $paginator->setUrl($url);
 
         // Appends a breadcrumb
@@ -67,15 +66,5 @@ final class Browser extends AbstractController
             'paginator' => $paginator,
             'categories' => $this->getModuleService('categoryManager')->fetchAll()
         ));
-    }
-
-    /**
-     * Returns image manager
-     * 
-     * @return \Slider\Service\ImageManager
-     */
-    private function getImageManager()
-    {
-        return $this->getModuleService('imageManager');
     }
 }

@@ -37,23 +37,14 @@ interface ImageManagerInterface
     public function getPaginator();
 
     /**
-     * Fetch all images filtered by paginator
+     * Fetch all image entities
      * 
-     * @param integer $page
-     * @param integer $itemsPerPage
+     * @param string $categoryId Optional category ID
+     * @param integer $page Page number
+     * @param integer $itemsPerPage Per page count
      * @return array
      */
-    public function fetchAllByPage($page, $itemsPerPage);
-
-    /**
-     * Fetch all by category and page
-     * 
-     * @param string $categoryId
-     * @param integer $page
-     * @param integer $itemsPerPage
-     * @return array
-     */
-    public function fetchAllByCategoryAndPage($categoryId, $page, $itemsPerPage);
+    public function fetchAll($categoryId, $page, $itemsPerPage);
 
     /**
      * Fetches all published slider bags by category id

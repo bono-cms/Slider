@@ -157,7 +157,7 @@ final class ImageManager extends AbstractManager implements ImageManagerInterfac
         $entity->setImageBag($imageBag)
             ->setId($image['id'], ImageEntity::FILTER_INT)
             ->setCategoryId($image['category_id'], ImageEntity::FILTER_INT)
-            ->setCategoryName($this->categoryMapper->fetchNameById($image['category_id']), ImageEntity::FILTER_HTML)
+            ->setCategoryName($image['category_name'], ImageEntity::FILTER_HTML)
             ->setName($image['name'], ImageEntity::FILTER_HTML)
             ->setDescription($image['description'], ImageEntity::FILTER_HTML)
             ->setOrder($image['order'], ImageEntity::FILTER_INT)
@@ -170,28 +170,16 @@ final class ImageManager extends AbstractManager implements ImageManagerInterfac
     }
 
     /**
-     * Fetch all images filtered by paginator
+     * Fetch all image entities
      * 
-     * @param integer $page
-     * @param integer $itemsPerPage
+     * @param string $categoryId Optional category ID
+     * @param integer $page Page number
+     * @param integer $itemsPerPage Per page count
      * @return array
      */
-    public function fetchAllByPage($page, $itemsPerPage)
+    public function fetchAll($categoryId, $page, $itemsPerPage)
     {
-        return $this->prepareResults($this->imageMapper->fetchAllByPage($page, $itemsPerPage));
-    }
-
-    /**
-     * Fetch all by category and page
-     * 
-     * @param string $categoryId
-     * @param integer $page
-     * @param integer $itemsPerPage
-     * @return array
-     */
-    public function fetchAllByCategoryAndPage($categoryId, $page, $itemsPerPage)
-    {
-        return $this->prepareResults($this->imageMapper->fetchAllByCategoryAndPage($categoryId, $page, $itemsPerPage));
+        return $this->prepareResults($this->imageMapper->fetchAll(false, $categoryId, $page, $itemsPerPage));
     }
 
     /**
@@ -202,7 +190,7 @@ final class ImageManager extends AbstractManager implements ImageManagerInterfac
      */
     public function fetchAllPublishedByCategoryId($id)
     {
-        return $this->prepareResults($this->imageMapper->fetchAllPublishedByCategoryId($id));
+        return $this->prepareResults($this->imageMapper->fetchAll(true, $id, null, null));
     }
 
     /**
@@ -425,7 +413,6 @@ final class ImageManager extends AbstractManager implements ImageManagerInterfac
 
             // Insert new meta data
             foreach ($image['attributes'] as $groupId => $value) {
-
                 $this->attributeValueMapper->persist(array(
                     'group_id' => $groupId,
                     'image_id' => $image['id'],
