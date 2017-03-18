@@ -4,6 +4,8 @@ CHANGELOG
 1.3
 ---
 
+ * Removed `TaskManager` service
+ * In category entity added `getSlidesCount()` that returns a count of attached slides
  * Since now categories support dynamic attributes
  * In `\Slider\Service\SiteService` added `getRandom()` to fetch random image entity by category class
  * Switched to two column grid layout in main module page
