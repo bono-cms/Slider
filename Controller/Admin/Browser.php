@@ -65,8 +65,7 @@ final class Browser extends AbstractController
             'categoryId' => $categoryId,
             'images' => $images,
             'paginator' => $paginator,
-            'taskManager' => $this->getModuleService('taskManager'),
-            'categories' => $this->getModuleService('categoryManager')->fetchAll(),
+            'categories' => $this->getModuleService('categoryManager')->fetchAll()
         ));
     }
 

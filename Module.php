@@ -15,7 +15,6 @@ use Krystal\Cache\MemoryCache;
 use Cms\AbstractCmsModule;
 use Slider\Service\CategoryManager;
 use Slider\Service\ImageManager;
-use Slider\Service\TaskManager;
 use Slider\Service\ImageManagerFactory;
 use Slider\Service\SiteService;
 use Slider\Service\AttributeGroupManager;
@@ -46,8 +45,7 @@ final class Module extends AbstractCmsModule
             'attributeGroupManager' => new AttributeGroupManager($attributeGroupMapper),
             'siteService' => new SiteService($imageManager, new MemoryCache),
             'categoryManager' => new CategoryManager($categoryMapper, $attributeGroupMapper, $historyManager),
-            'imageManager'  => $imageManager,
-            'taskManager' => new TaskManager($imageMapper)
+            'imageManager'  => $imageManager
         );
     }
 }
