@@ -147,7 +147,7 @@ final class ImageManager extends AbstractManager implements ImageManagerInterfac
     /**
      * {@inheritDoc}
      */
-    protected function toEntity(array $image)
+    protected function toEntity(array $image, $withAttributes = true)
     {
         $imageBag = clone $this->getUploader($image['category_id'])->getImageBag();
         $imageBag->setId($image['id'])
@@ -165,7 +165,10 @@ final class ImageManager extends AbstractManager implements ImageManagerInterfac
             ->setLink($image['link'], ImageEntity::FILTER_HTML)
             ->setCover($image['image'], ImageEntity::FILTER_HTML);
         
-        $entity->setAttributes($this->attributeValueMapper->fetchAll($entity->getId()));
+        if ($withAttributes !== false) {
+            $entity->setAttributes($this->attributeValueMapper->fetchAll($entity->getId()));
+        }
+
         return $entity;
     }
 
@@ -179,7 +182,8 @@ final class ImageManager extends AbstractManager implements ImageManagerInterfac
      */
     public function fetchAll($categoryId, $page, $itemsPerPage)
     {
-        return $this->prepareResults($this->imageMapper->fetchAll(false, $categoryId, $page, $itemsPerPage));
+        $images = $this->imageMapper->fetchAll(false, $categoryId, $page, $itemsPerPage);
+        return $this->prepareResults($images, false);
     }
 
     /**
