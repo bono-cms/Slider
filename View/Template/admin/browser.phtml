@@ -85,7 +85,6 @@ use Krystal\Form\HtmlHelper;
                     <h2 class="text-center text-muted"><i class="glyphicon glyphicon-remove"></i> <?php $this->show('No images'); ?></h2>
                 </div>
                 <?php endif; ?>
-                
             </div>
         </form>
 
@@ -94,13 +93,12 @@ use Krystal\Form\HtmlHelper;
 
     <div class="col-lg-5">
         <div class="table-responsive">
-            
             <h4><i class="glyphicon glyphicon-th-list"></i> <?php $this->show('Categories'); ?> (<?php echo count($categories); ?>)</h4>
             <table class="table table-hover table-bordered table-striped table-condensed">
                 <thead>
                     <tr>
                         <th class="text-center"><?php $this->show('#'); ?></th>
-                        <th class="text-center"><?php $this->show('Name'); ?></th>
+                        <th><?php $this->show('Name'); ?></th>
                         <th class="text-center"><?php $this->show('Amount of slides'); ?></th>
                         <th class="text-center"><?php $this->show('Height'); ?></th>
                         <th class="text-center"><?php $this->show('Width'); ?></th>
@@ -116,7 +114,7 @@ use Krystal\Form\HtmlHelper;
                     <?php foreach ($categories as $category): ?>
                     <tr class="<?php echo HtmlHelper::addOnDemand(isset($categoryId) && $categoryId == $category->getId(), 'info'); ?>">
                         <td class="text-center text-muted"><?php echo $category->getId(); ?></td>
-                        <td class="text-center">
+                        <td>
                             <a href="<?php echo $this->url('Slider:Admin:Browser@categoryAction', $category->getId()); ?>"><?php echo $category->getName(); ?></a>
                         </td>
                         <td class="text-center"><?php echo $category->getSlidesCount();; ?></td>
