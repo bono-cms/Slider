@@ -68,16 +68,18 @@ final class Image extends AbstractController
     /**
      * Renders empty form
      * 
+     * @param string $categoryId Optional category ID to be pre-selected in the form
      * @return string
      */
-    public function addAction()
+    public function addAction($categoryId = null)
     {
         $this->view->getPluginBag()
                    ->load('preview');
 
         $image = new VirtualEntity();
         $image->setPublished(true)
-              ->setOrder(0);
+              ->setOrder(0)
+              ->setCategoryId($categoryId);
 
         return $this->createForm($image, 'Add a slider');
     }

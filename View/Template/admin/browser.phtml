@@ -12,7 +12,7 @@ use Krystal\Form\HtmlHelper;
 		<i class="glyphicon glyphicon-list"></i> <?php $this->show('Menu'); ?> <span class="caret"></span>
 	  </button>
 	  <ul class="dropdown-menu">
-		 <li><a href="<?php echo $this->url('Slider:Admin:Image@addAction'); ?>"><i class="glyphicon glyphicon-picture"></i> <?php $this->show('Add a slider'); ?></a></li>
+		 <li><a href="<?php echo isset($categoryId) ? $this->mapUrl('Slider:Admin:Image@addAction', array($categoryId), 1) : $this->url('Slider:Admin:Image@addAction'); ?>"><i class="glyphicon glyphicon-picture"></i> <?php $this->show('Add a slider'); ?></a></li>
 		 <?php if ($extendedMode): ?>
 		 <li><a href="<?php echo $this->url('Slider:Admin:Category@addAction'); ?>"><i class="glyphicon glyphicon-folder-open"></i> <?php $this->show('Add a category'); ?></a></li>
 		 <?php endif; ?>

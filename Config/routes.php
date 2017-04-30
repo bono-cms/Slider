@@ -32,6 +32,10 @@ return array(
         'controller' => 'Admin:Image@addAction'
     ),
     
+    '/%s/module/slider/image/add/category/(:var)' => array(
+        'controller' => 'Admin:Image@addAction'
+    ),
+    
     '/%s/module/slider/image/edit/(:var)' => array(
         'controller' => 'Admin:Image@editAction'
     ),
