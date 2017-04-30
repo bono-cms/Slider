@@ -77,10 +77,6 @@ return array(
         'disallow' => array('guest')
     ),
 
-    '/%s/module/slider/attributes/category/(:var)/add' => array(
-        'controller' => 'Admin:Attribute@addAction',
-    ),
-
     '/%s/module/slider/attributes/category/(:var)/edit/(:var)' => array(
         'controller' => 'Admin:Attribute@editAction',
         'disallow' => array('guest')

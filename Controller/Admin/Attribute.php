@@ -18,51 +18,35 @@ use Krystal\Validate\Pattern;
 final class Attribute extends AbstractController
 {
     /**
-     * Lists a category
+     * Lists category attributes
      * 
      * @param string $id Category id
      * @return string
      */
     public function listAction($id)
     {
-        // Configure breadcrumbs
-        $this->view->getBreadcrumbBag()->addOne('Slider', 'Slider:Admin:Browser@indexAction')
-                                       ->addOne(
-                                            $this->translator->translate(
-                                                'Attributes of category "%s"', 
-                                                $this->getModuleService('categoryManager')->fetchNameById($id)
-                                            )
-                                        );
+        $group = new VirtualEntity();
+        $group->setCategoryId($id);
 
-        return $this->view->render('attributes', array(
-            'groups' => $this->getModuleService('attributeGroupManager')->fetchAll($id),
-            'id' => $id
-        ));
+        return $this->createForm($group, $id);
     }
 
     /**
-     * Renders a form
+     * Lists category attributes
      * 
      * @param \Krystal\Stdlib\VirtualEntity $group
-     * @param string $title
+     * @param string $id Category id
      * @return string
      */
-    private function createForm(VirtualEntity $group, $title)
+    private function createForm(VirtualEntity $group, $id)
     {
         // Configure breadcrumbs
         $this->view->getBreadcrumbBag()->addOne('Slider', 'Slider:Admin:Browser@indexAction')
-                                       ->addOne(
-                                            $this->translator->translate(
-                                                'Attributes of category "%s"', 
-                                                $this->getModuleService('categoryManager')->fetchNameById($group->getCategoryId())
-                                            ), 
+                                       ->addOne($this->translator->translate('Attributes of category "%s"', $this->getModuleService('categoryManager')->fetchNameById($id)));
 
-                                            $this->createUrl('Slider:Admin:Attribute@listAction', array($group->getCategoryId()))
-                                        )
-                                       ->addOne($title);
-
-        // Render the form
-        return $this->view->render('attributes-group', array(
+        return $this->view->render('attributes', array(
+            'groups' => $this->getModuleService('attributeGroupManager')->fetchAll($id),
+            'id' => $id,
             'group' => $group
         ));
     }
@@ -95,24 +79,10 @@ final class Attribute extends AbstractController
         $group = $this->getModuleService('attributeGroupManager')->fetchById($groupId);
 
         if ($group !== false) {
-            return $this->createForm($group, 'Edit the group');
+            return $this->createForm($group, $categoryId);
         } else {
             return false;
         }
-    }
-
-    /**
-     * Render adding form
-     * 
-     * @param string $id Category ID
-     * @return string
-     */
-    public function addAction($id)
-    {
-        $group = new VirtualEntity();
-        $group->setCategoryId($id);
-
-        return $this->createForm($group, 'Add new group');
     }
 
     /**

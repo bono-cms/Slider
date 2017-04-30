@@ -1,34 +1,74 @@
+<?php
 
-<a class="btn btn-sm btn-default" href="<?php echo $this->url('Slider:Admin:Attribute@addAction', $id); ?>"><i class="glyphicon glyphicon-tag"></i> <?php $this->show('Add group'); ?></a>
-<h4><i class="glyphicon glyphicon-book"></i> <?php $this->show('Groups'); ?></h4>
+use Krystal\Form\Element;
 
-<div class="table-responsive">
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <td class="text-center">#</td>
-                <td class="text-center"><?php $this->show('Name'); ?></td>
-                <td class="text-center"><?php $this->show('Actions'); ?></td>
-            </tr>
-        </thead>
+?>
 
-        <tbody>
-            <?php foreach ($groups as $group): ?>
-            <tr>
-                <td class="text-center text-muted"><?php echo $group->getId(); ?></td>
-                <td class="text-center"><?php echo $group->getName(); ?></td>
-                <td class="text-center">
-                    <a data-toggle="tooltip" data-placement="left" data-original-title="<?php $this->show('Edit this group'); ?>" data-button="edit" href="<?php echo $this->url('Slider:Admin:Attribute@editAction', $group->getCategoryId(), $group->getId()); ?>"><i class="glyphicon glyphicon-pencil"></i></a>
-                    <a data-toggle="tooltip" data-placement="left" data-original-title="<?php $this->show('Remove this group'); ?>" data-button="delete" data-url="<?php echo $this->url('Slider:Admin:Attribute@deleteAction', $group->getCategoryId(), $group->getId()); ?>" href="#"><i class="glyphicon glyphicon-remove"></i></a>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+<h4><i class="glyphicon glyphicon-book"></i> <?php $this->show('Groups'); ?> <small>(<?php echo count($groups); ?>)</small></h4>
 
-    <?php if (empty($groups)): ?>
-    <div class="center-block">
-        <h2 class="text-center text-muted"><i class="glyphicon glyphicon-remove"></i> <?php $this->show('This category has not attributes'); ?></h2>
+<div class="row">
+    <div class="col-lg-6">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <td class="text-center">#</td>
+                    <td class="text-center"><?php $this->show('Name'); ?></td>
+                    <td class="text-center"><?php $this->show('Actions'); ?></td>
+                </tr>
+            </thead>
+
+            <tbody>
+                <?php foreach ($groups as $entity): ?>
+                <tr class="<?php echo $entity->getId() == $group->getId() ? 'info' : null; ?>">
+                    <td class="text-center text-muted"><?php echo $entity->getId(); ?></td>
+                    <td><?php echo $entity->getName(); ?></td>
+                    <td class="text-center">
+                        <a data-toggle="tooltip" data-placement="left" data-original-title="<?php $this->show('Edit this group'); ?>" data-button="edit" href="<?php echo $this->url('Slider:Admin:Attribute@editAction', $entity->getCategoryId(), $entity->getId()); ?>"><i class="glyphicon glyphicon-pencil"></i></a>
+                        <a data-toggle="tooltip" data-placement="left" data-original-title="<?php $this->show('Remove this group'); ?>" data-button="delete" data-url="<?php echo $this->url('Slider:Admin:Attribute@deleteAction', $entity->getCategoryId(), $entity->getId()); ?>" href="#"><i class="glyphicon glyphicon-remove"></i></a>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+
+        <?php if (empty($groups)): ?>
+        <div class="center-block">
+            <h2 class="text-center text-muted"><i class="glyphicon glyphicon-remove"></i> <?php $this->show('This category has not attributes'); ?></h2>
+        </div>
+        <?php endif; ?>
     </div>
-    <?php endif; ?>
+
+    <div class="col-lg-6">
+        <form data-group="group">
+            <h2 class="page-header"><i class="glyphicon glyphicon-floppy-save"></i> <?php echo $this->translate(!$group->getId() ? 'Add new group' : 'Edit the group'); ?></h2>
+
+            <div class="well">
+                <input type="hidden" name="group[id]" value="<?php echo $group->getId(); ?>" />
+                <input type="hidden" name="group[category_id]" value="<?php echo $group->getCategoryId(); ?>" />
+
+                <div class="form-group">
+                    <label class="col-lg-2 control-label"><?php $this->show('Name'); ?></label>
+                    <div class="col-lg-10">
+                        <div class="input-group">
+                            <?php echo Element::text('group[name]', $group->getName(), array('class' => 'form-control', 'placeholder' => $this->translate('Name'))); ?>
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <?php if (!$group->getId()): ?>
+            
+            <button data-button="add" data-back-url="<?php echo $this->url('Slider:Admin:Attribute@editAction', $group->getCategoryId(), null); ?>" data-url="<?php echo $this->url('Slider:Admin:Attribute@saveAction', $group->getCategoryId()); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Add'); ?></button>
+            <button data-button="add-create" data-url="<?php echo $this->url('Slider:Admin:Attribute@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Add & Create new'); ?></button>
+            
+            <?php else: ?>
+            
+            <button data-button="save" data-url="<?php echo $this->url('Slider:Admin:Attribute@saveAction', $group->getCategoryId()); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save'); ?></button>
+            <button data-button="save-create" data-back-url="<?php echo $this->url('Slider:Admin:Attribute@addAction', $group->getCategoryId()); ?>" data-url="<?php echo $this->url('Slider:Admin:Attribute@saveAction', $group->getCategoryId()); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save & Create new'); ?></button>
+            
+            <?php endif; ?>
+            <button data-button="cancel" data-url="<?php echo $this->url($group->getId() ? 'Slider:Admin:Attribute@listAction' : 'Slider:Admin:Browser@indexAction', $group->getCategoryId()); ?>" class="btn btn-default"><i class="glyphicon glyphicon-floppy-remove"></i> <?php $this->show('Cancel'); ?></button>
+        </form>
+    </div>
 </div>
