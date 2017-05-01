@@ -23,7 +23,8 @@ CREATE TABLE `bono_module_slider_category` (
 	`name` varchar(255) NOT NULL,
 	`class` varchar(255) NOT NULL COMMENT 'Class to simplify rendering',
 	`width` FLOAT NOT NULL,
-	`height` FLOAT NOT NULL
+	`height` FLOAT NOT NULL,
+    `quality` INT NOT NULL COMMENT 'Quality for images'
 ) DEFAULT CHARSET = UTF8;
 
 

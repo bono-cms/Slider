@@ -88,6 +88,7 @@ final class CategoryMapper extends AbstractMapper implements CategoryMapperInter
             self::getFullColumnName('class'),
             self::getFullColumnName('width'),
             self::getFullColumnName('height'),
+            self::getFullColumnName('quality')
         );
 
         return $this->db->select($columns)

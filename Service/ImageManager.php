@@ -348,7 +348,8 @@ final class ImageManager extends AbstractManager implements ImageManagerInterfac
             if (!empty($category)) {
                 // Define dimensions for this category
                 $this->imageManagerFactory->setWidth($category['width'])
-                                          ->setHeight($category['height']);
+                                          ->setHeight($category['height'])
+                                          ->setQuality($category['quality']);
             }
 
             $this->imageManager = $this->imageManagerFactory->build();

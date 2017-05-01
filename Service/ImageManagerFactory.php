@@ -30,6 +30,25 @@ final class ImageManagerFactory extends AbstractImageManagerFactory
     private $width = 0;
 
     /**
+     * Quality for images
+     * 
+     * @var integer
+     */
+    private $quality;
+
+    /**
+     * Sets new quality
+     * 
+     * @param integer $quality
+     * @return \Slider\Service\ImageManagerFactory
+     */
+    public function setQuality($quality)
+    {
+        $this->quality = (int) $quality;
+        return $this;
+    }
+
+    /**
      * Sets new height
      * 
      * @param integer|float $height
@@ -73,7 +92,9 @@ final class ImageManagerFactory extends AbstractImageManagerFactory
                     array(400, 200),
                     // For slides
                     array($this->width, $this->height)
-                )
+                ),
+
+                'quality' => $this->quality
             )
         );
     }
