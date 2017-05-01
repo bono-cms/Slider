@@ -4,6 +4,7 @@ CHANGELOG
 1.3
 ---
 
+ * Added `quality` option for categories
  * Automatically category pre-selection when adding a slide image
  * Removed `TaskManager` service
  * In category entity added `getSlidesCount()` that returns a count of attached slides

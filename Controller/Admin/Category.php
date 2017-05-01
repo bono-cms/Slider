@@ -52,7 +52,10 @@ final class Category extends AbstractController
      */
     public function addAction()
     {
-        return $this->createForm(new VirtualEntity(), 'Add a category');
+        $category = new VirtualEntity();
+        $category->setQuality(75); // Medium quality by default
+
+        return $this->createForm($category, 'Add a category');
     }
 
     /**

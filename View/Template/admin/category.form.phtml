@@ -18,7 +18,17 @@ use Krystal\Form\Element;
 				</div>
 			</div>
 		</div>
-		
+
+        <div class="form-group">
+            <label class="col-lg-2 control-label"><?php $this->show('Quality'); ?></label>
+			<div class="col-lg-10">
+                <div class="input-group">
+                    <?php echo Element::number('category[quality]', $category->getQuality(), array('min' => 10, 'max' => 100, 'class' => 'form-control', 'placeholder' => $this->translate('Quality for images'))); ?>
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                </div>
+            </div>
+		</div>
+
 		<div class="form-group">
 			<label class="col-lg-2 control-label"><?php $this->show('Class'); ?></label>
 			<div class="col-lg-10">
