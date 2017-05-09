@@ -36,10 +36,6 @@ final class Image extends AbstractController
      */
     private function createForm(VirtualEntity $image, $title)
     {
-        // Load view plugins
-        $this->view->getPluginBag()
-                   ->appendScript('@Slider/admin/image.form.js');
-
         // Append breadcrumbs
         $this->view->getBreadcrumbBag()->addOne('Slider', 'Slider:Admin:Browser@indexAction')
                                        ->addOne($title);
