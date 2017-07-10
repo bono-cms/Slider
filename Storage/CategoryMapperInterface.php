@@ -37,22 +37,6 @@ interface CategoryMapperInterface
     public function fetchNameById($id);
 
     /**
-     * Inserts a category
-     * 
-     * @param array $data Category data
-     * @return boolean
-     */
-    public function insert(array $data);
-
-    /**
-     * Updates a category
-     * 
-     * @param array $data Category data
-     * @return boolean
-     */
-    public function update(array $data);
-
-    /**
      * Deletes a category by its associated id
      * 
      * @param string $id Category id
