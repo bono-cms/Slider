@@ -165,7 +165,7 @@ final class CategoryManager extends AbstractManager implements CategoryManagerIn
     public function add(array $input)
     {
         $this->track('Category "%s" has been added', $input['name']);
-        return $this->categoryMapper->insert($input);
+        return $this->categoryMapper->persist($input);
     }
 
     /**
@@ -177,6 +177,6 @@ final class CategoryManager extends AbstractManager implements CategoryManagerIn
     public function update(array $input)
     {
         $this->track('Category "%s" has been updated', $input['name']);
-        return $this->categoryMapper->update($input);
+        return $this->categoryMapper->persist($input);
     }
 }

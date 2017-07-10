@@ -133,8 +133,9 @@ final class ImageManager extends AbstractManager implements ImageManagerInterfac
         $entity = new ImageEntity(false);
         $entity->setImageBag($imageBag)
             ->setId($image['id'], ImageEntity::FILTER_INT)
+            ->setLangId($image['lang_id'], ImageEntity::FILTER_INT)
             ->setCategoryId($image['category_id'], ImageEntity::FILTER_INT)
-            ->setCategoryName($image['category_name'], ImageEntity::FILTER_HTML)
+            ->setCategoryName(isset($image['category_name']) ? $image['category_name'] : null, ImageEntity::FILTER_HTML)
             ->setName($image['name'], ImageEntity::FILTER_HTML)
             ->setDescription($image['description'], ImageEntity::FILTER_HTML)
             ->setOrder($image['order'], ImageEntity::FILTER_INT)
@@ -208,7 +209,7 @@ final class ImageManager extends AbstractManager implements ImageManagerInterfac
      */
     public function fetchById($id)
     {
-        return $this->prepareResult($this->imageMapper->fetchById($id));
+        return $this->prepareResults($this->imageMapper->fetchById($id));
     }
 
     /**
@@ -237,7 +238,7 @@ final class ImageManager extends AbstractManager implements ImageManagerInterfac
         }
 
         if ($categoryId) {
-            if ($this->imageMapper->deleteById($id) && $this->attributeValueMapper->deleteAllByImageId($id) && $this->getUploader($categoryId)->delete($id)) {
+            if ($this->imageMapper->deleteEntity($id) && $this->attributeValueMapper->deleteAllByImageId($id) && $this->getUploader($categoryId)->delete($id)) {
                 return true;
             } else {
                 // Failed to remove a file
@@ -282,10 +283,10 @@ final class ImageManager extends AbstractManager implements ImageManagerInterfac
      */
     public function deleteById($id)
     {
-        $name = Filter::escape($this->imageMapper->fetchNameById($id));
+        #$name = Filter::escape($this->imageMapper->fetchNameById($id));
 
         if ($this->delete($id)) {
-            $this->track('Slider "%s" has been removed', $name);
+            #$this->track('Slider "%s" has been removed', $name);
             return true;
         } else {
             return false;
@@ -306,7 +307,7 @@ final class ImageManager extends AbstractManager implements ImageManagerInterfac
             }
         }
 
-        $this->track('Batch removal of "%s" slides', count($ids));
+        #$this->track('Batch removal of "%s" slides', count($ids));
         return true;
     }
 
@@ -343,13 +344,12 @@ final class ImageManager extends AbstractManager implements ImageManagerInterfac
      */
     private function prepareInput(array $input)
     {
-        // Just references
+        // Just a reference
         $data =& $input['data']['image'];
         $file =& $input['files']['file'];
 
-        if (empty($data['name'])) {
-            $data['name'] = pathinfo($file[0]->getName(), \PATHINFO_FILENAME);
-        }
+        // Safe type casting
+        $data['order'] = (int) $data['order'];
 
         $this->filterFileInput($file);
         return $input;
@@ -368,14 +368,16 @@ final class ImageManager extends AbstractManager implements ImageManagerInterfac
 
             $file =& $input['files']['file'];
             $data =& $input['data']['image'];
+            $translations = $input['data']['translation'];
 
             $data['image'] = $file[0]->getName();
+
+            // Now save the entity
+            $this->imageMapper->saveEntity($data, $translations);
+            
+            #$this->track('Slider "%s" has been uploaded', $data['name']);
+
             $uploader = $this->getUploader($data['category_id']);
-
-            // Now insert to gain last id
-            $this->imageMapper->insert($data);
-            $this->track('Slider "%s" has been uploaded', $data['name']);
-
             return $uploader->upload($this->getLastId(), $file);
         }
     }
@@ -413,6 +415,7 @@ final class ImageManager extends AbstractManager implements ImageManagerInterfac
     public function update(array $input)
     {
         $data =& $input['data']['image'];
+        $translations =& $input['data']['translation'];
 
         // Handle image
         if (!empty($input['files'])) {
@@ -432,9 +435,9 @@ final class ImageManager extends AbstractManager implements ImageManagerInterfac
             }
         }
 
-        $this->track('Slider "%s" has been updated', $data['name']);
+        #$this->track('Slider "%s" has been updated', $data['name']);
         $this->updateAttributes($data);
 
-        return $this->imageMapper->update(ArrayUtils::arrayWithout($data, array('attributes')));
+        return $this->imageMapper->saveEntity(ArrayUtils::arrayWithout($data, array('attributes')), $translations);
     }
 }
