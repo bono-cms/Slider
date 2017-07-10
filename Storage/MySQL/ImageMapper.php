@@ -26,6 +26,14 @@ final class ImageMapper extends AbstractMapper implements ImageMapperInterface
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public static function getTranslationTable()
+    {
+        return self::getWithPrefix('bono_module_slider_images');
+    }
+
+    /**
      * Returns shared columns to be selected
      * 
      * @return array
