@@ -43,11 +43,18 @@ final class Image extends AbstractController
         $attributeGroupManager = $this->getModuleService('attributeGroupManager');
         $new = is_object($image);
 
+        // Edit image
+        if (is_array($image)) {
+            $entity = $image[0];
+        } else {
+            $entity = $image;
+        }
+
         // If edit form
         if (!$new) {
             // Populate values
-            $attributes = $attributeGroupManager->fetchAll($image[0]->getCategoryId());
-            $attributeGroupManager->populateValues($attributes, $image[0]);
+            $attributes = $attributeGroupManager->fetchAll($entity->getCategoryId());
+            $attributeGroupManager->populateValues($attributes, $entity);
 
         } else {
             // No attributes on creating
@@ -59,7 +66,7 @@ final class Image extends AbstractController
             'image' => $image,
             'new' => $new,
             'attributes' => $attributes,
-            'hasAttributes' => $image[0]->getCategoryId() && !empty($attributes)
+            'hasAttributes' => $entity->getCategoryId() && !empty($attributes)
         ));
     }
 
