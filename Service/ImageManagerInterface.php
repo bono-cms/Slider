@@ -14,20 +14,12 @@ namespace Slider\Service;
 interface ImageManagerInterface
 {
     /**
-     * Updates published state by associated ids
+     * Update settings
      * 
-     * @param array $pair
+     * @param array $settings
      * @return boolean
      */
-    public function updatePublished(array $pair);
-
-    /**
-     * Updates orders by associated ids
-     * 
-     * @param array $pair
-     * @return boolean
-     */
-    public function updateOrders(array $pair);
+    public function updateSettings(array $settings);
 
     /**
      * Returns prepared paginator instance

@@ -22,22 +22,12 @@ interface ImageMapperInterface
     public function fetchNameById($id);
 
     /**
-     * Updates image's published state by its associated id
+     * Update settings
      * 
-     * @param integer $id Image id
-     * @param string $published Either 0 or 1
+     * @param array $settings
      * @return boolean
      */
-    public function updatePublishedById($id, $published);
-
-    /**
-     * Updates image's order by its associated id
-     * 
-     * @param string $id Image id
-     * @param string $order New order
-     * @return boolean
-     */
-    public function updateOrderById($id, $order);
+    public function updateSettings(array $settings);
 
     /**
      * Fetches all associated image ids with their associated category id

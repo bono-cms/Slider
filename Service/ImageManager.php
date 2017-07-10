@@ -101,37 +101,14 @@ final class ImageManager extends AbstractManager implements ImageManagerInterfac
     }
 
     /**
-     * Updates published state by associated ids
+     * Update settings
      * 
-     * @param array $pair
+     * @param array $settings
      * @return boolean
      */
-    public function updatePublished(array $pair)
+    public function updateSettings(array $settings)
     {
-        foreach ($pair as $id => $published) {
-            if (!$this->imageMapper->updatePublishedById($id, $published)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * Updates orders by associated ids
-     * 
-     * @param array $pair
-     * @return boolean
-     */
-    public function updateOrders(array $pair)
-    {
-        foreach ($pair as $id => $order) {
-            if (!$this->imageMapper->updateOrderById($id, $order)) {
-                return false;
-            }
-        }
-
-        return true;
+        return $this->imageMapper->updateSettings($settings);
     }
 
     /**

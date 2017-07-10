@@ -57,27 +57,14 @@ final class ImageMapper extends AbstractMapper implements ImageMapperInterface
     }
 
     /**
-     * Updates image's published state by its associated id
+     * Update settings
      * 
-     * @param integer $id Image id
-     * @param string $published Either 0 or 1
+     * @param array $settings
      * @return boolean
      */
-    public function updatePublishedById($id, $published)
+    public function updateSettings(array $settings)
     {
-        return $this->updateColumnByPk($id, 'published', $published);
-    }
-
-    /**
-     * Updates image's order by its associated id
-     * 
-     * @param string $id Image id
-     * @param string $order New order
-     * @return boolean
-     */
-    public function updateOrderById($id, $order)
-    {
-        return $this->updateColumnByPk($id, 'order', $order);
+        return $this->updateColumns($settings, array('order', 'published'));
     }
 
     /**
