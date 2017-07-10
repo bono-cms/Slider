@@ -11,7 +11,7 @@ DROP TABLE IF EXISTS `bono_module_slider_category_attribute_values`;
 CREATE TABLE `bono_module_slider_category_attribute_values` (
 	`id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT 'Attribute value unique ID',
 	`group_Id` INT NOT NULL COMMENT 'Attached category group ID',
-    `image_id`INT NOT NULL COMMENT 'Attached image ID',
+    `image_id` INT NOT NULL COMMENT 'Attached image ID',
     `value` varchar(255) NOT NULL
 ) DEFAULT CHARSET = UTF8;
 
@@ -19,7 +19,6 @@ CREATE TABLE `bono_module_slider_category_attribute_values` (
 DROP TABLE IF EXISTS `bono_module_slider_category`; 
 CREATE TABLE `bono_module_slider_category` (
 	`id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	`lang_Id` INT NOT NULL,
 	`name` varchar(255) NOT NULL,
 	`class` varchar(255) NOT NULL COMMENT 'Class to simplify rendering',
 	`width` FLOAT NOT NULL,

@@ -33,8 +33,7 @@ final class CategoryMapper extends AbstractMapper implements CategoryMapperInter
     public function fetchList()
     {
         return $this->db->select(array('id', 'name'))
-                        ->from(static::getTableName())
-                        ->whereEquals('lang_id', $this->getLangId())
+                        ->from(self::getTableName())
                         ->queryAll();
     }
 
@@ -48,9 +47,8 @@ final class CategoryMapper extends AbstractMapper implements CategoryMapperInter
     {
         return $this->db->select('id')
                         ->from(self::getTableName())
-                        ->whereEquals('lang_id', $this->getLangId())
-                        ->andWhereEquals('class', $class)
-                        ->query('id');
+                        ->whereEquals('class', $class)
+                        ->queryScalar();
     }
 
     /**
