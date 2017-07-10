@@ -4,6 +4,7 @@ CHANGELOG
 1.3
 ---
 
+ * Support complete internalization
  * Added shortcut in administration panel
  * Added `quality` option for categories
  * Automatically category pre-selection when adding a slide image
