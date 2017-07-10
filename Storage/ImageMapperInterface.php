@@ -71,28 +71,4 @@ interface ImageMapperInterface
      * @return array
      */
     public function fetchById($id);
-
-    /**
-     * Updates an image
-     * 
-     * @param array $data Image data
-     * @return boolean
-     */
-    public function update(array $data);
-
-    /**
-     * Inserts an image
-     * 
-     * @param array $data Image data
-     * @return boolean
-     */
-    public function insert(array $data);
-
-    /**
-     * Deletes an image by its associated id
-     * 
-     * @param string $id Image id
-     * @return boolean
-     */
-    public function deleteById($id);
 }
