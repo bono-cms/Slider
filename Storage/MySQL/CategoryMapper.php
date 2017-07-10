@@ -92,7 +92,6 @@ final class CategoryMapper extends AbstractMapper implements CategoryMapperInter
         );
 
         return $this->db->select($columns)
-                        ->append(',')
                         ->count(ImageMapper::getFullColumnName('id'), 'slides_count')
                         ->from(ImageMapper::getTableName())
                         ->rightJoin(self::getTableName())
