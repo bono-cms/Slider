@@ -1,7 +1,9 @@
-<?php defined('KRYSTAL') or die; ?>
 <?php
 
 use Krystal\Form\Element;
+use Cms\Service\LanguageManager;
+
+defined('KRYSTAL') or die;
 
 ?>
 
@@ -21,24 +23,71 @@ use Krystal\Form\Element;
 	<div class="tab-content">
 		<div role="tabpanel" class="tab-pane fade in active" id="image" role="tabpanel">
 			<div class="well">
-				
-                <?php echo Element::hidden('image[id]', $image->getId()); ?>
-                <?php echo Element::hidden('image[image]', $image->getCover()); ?>
-				
-				<div class="form-group">
-					<label class="col-lg-2 control-label"><?php $this->show('Name'); ?></label>
-					<div class="col-lg-10">
-						<div class="input-group">
-                            <?php echo Element::text('image[name]', $image->getName(), array('class' => 'form-control', 'placeholder' => $this->translate("Slider's name. When empty, then is taken from a filename"))); ?>
-							<span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-						</div>
-					</div>
-				</div>
-				
+
+                <?php if (count($languages) > 1): ?>
+                <ul class="nav nav-tabs" role="tablist">
+                    <?php foreach ($languages as $index => $language): ?>
+                    <li role="presentation" class="<?php echo $index == 0 ? 'active' : null; ?>"><a href="<?php printf('#language-%s', $language->getId()); ?>" role="tab" data-toggle="tab"><i class="<?php printf('famfamfam-flag-%s', $language->getFlag()); ?>"></i> <?php echo $language->getName(); ?></a></li>
+                    <?php endforeach; ?>
+                </ul>
+                <?php endif; ?>
+
+                <br />
+
+                <div class="tab-content">
+                    <?php foreach ($languages as $index => $language): ?>
+                    <div class="tab-pane fade in <?php echo $index == 0 ? 'active' : null; ?>" id="<?php printf('language-%s', $language->getId()); ?>" role="tabpanel">
+                        <?php $entity = LanguageManager::findByLangId($language->getId(), $image); ?>
+                        <?php echo Element::hidden(sprintf('translation[%s][id]', $language->getId()), $entity->getId()); ?>
+                        <?php echo Element::hidden(sprintf('translation[%s][lang_id]', $language->getId()), $language->getId()); ?>
+
+                        <h2 class="text-muted"><?php echo $language->getName(); ?></h2>
+                        <br />
+
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label"><?php $this->show('Name'); ?></label>
+                            <div class="col-lg-10">
+                                <div class="input-group">
+                                    <?php echo Element::text(sprintf('translation[%s][name]', $language->getId()), $entity->getName(), array('class' => 'form-control', 'placeholder' => $this->translate("Slider's name. When empty, then is taken from a filename"))); ?>
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label"><?php $this->show('Description'); ?></label>
+                            <div class="col-lg-10">
+                                <div class="input-group">
+                                    <?php echo Element::textarea(sprintf('translation[%s][description]', $language->getId()), $entity->getDescription(), array('class' => 'form-control', 'placeholder' => $this->translate('Image description'))); ?>
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label"><?php $this->show('Link'); ?></label>
+                            <div class="col-lg-10">
+                                <div class="input-group">
+                                    <?php echo Element::text(sprintf('translation[%s][link]', $language->getId()), $entity->getLink(), array('class' => 'form-control', 'placeholder' => $this->translate('Link to be opened when clicking on the slider'))); ?>
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+			</div>
+		</div>
+
+        <div class="tab-pane" id="options" role="tabpanel">
+            <?php echo Element::hidden('image[id]', $entity->getId()); ?>
+            <?php echo Element::hidden('image[image]', $entity->getCover()); ?>
+
+			<div class="well">
 				<div class="form-group">
 					<label class="col-lg-2 control-label"><?php $this->show('Category'); ?></label>
 					<div class="col-lg-10">
-                        <?php echo Element::select('image[category_id]', $categories, $image->getCategoryId(), array('class' => 'form-control')); ?>
+                        <?php echo Element::select('image[category_id]', $categories, $entity->getCategoryId(), array('class' => 'form-control')); ?>
 					</div>
 				</div>
 				
@@ -46,8 +95,8 @@ use Krystal\Form\Element;
 					<label class="col-lg-2 control-label"><?php $this->show('Image'); ?></label>
 					<div class="col-lg-10">
 
-						<?php if ($image->getCover() != ''): ?>
-                        <p><img class="img-responsive" src="<?php echo $image->getImageBag()->getUrl('400x200'); ?>" /></p>
+						<?php if ($entity->getCover() != ''): ?>
+                        <p><img class="img-responsive" src="<?php echo $entity->getImageBag()->getUrl('400x200'); ?>" /></p>
 						<?php else: ?>
                         <p><img data-image="preview" /></p>
 
@@ -57,36 +106,12 @@ use Krystal\Form\Element;
                         <?php echo Element::file('file', 'image/x-png, image/gif, image/jpeg', array('class' => 'hidden', 'data-plugin' => 'preview')); ?>
 					</div>
 				</div>
-			</div>
-		</div>
-		
-		<div class="tab-pane" id="options" role="tabpanel">
-			<div class="well">
+            
 				<div class="form-group">
 					<label class="col-lg-2 control-label"><?php $this->show('Order'); ?></label>
 					<div class="col-lg-10">
 						<div class="input-group">
-                            <?php echo Element::number('image[order]', $image->getOrder(), array('class' => 'form-control', 'placeholder' => $this->translate('Image sort order'))); ?>
-							<span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-						</div>
-					</div>
-				</div>
-				
-				<div class="form-group">
-					<label class="col-lg-2 control-label"><?php $this->show('Description'); ?></label>
-					<div class="col-lg-10">
-						<div class="input-group">
-                            <?php echo Element::textarea('image[description]', $image->getDescription(), array('class' => 'form-control', 'placeholder' => $this->translate('Image description'))); ?>
-							<span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-						</div>
-					</div>
-				</div>
-				
-				<div class="form-group">
-					<label class="col-lg-2 control-label"><?php $this->show('Link'); ?></label>
-					<div class="col-lg-10">
-						<div class="input-group">
-                            <?php echo Element::text('image[link]', $image->getLink(), array('class' => 'form-control', 'placeholder' => $this->translate('Link to be opened when clicking on the slider'))); ?>
+                            <?php echo Element::number('image[order]', $entity->getOrder(), array('class' => 'form-control', 'placeholder' => $this->translate('Image sort order'))); ?>
 							<span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
 						</div>
 					</div>
@@ -95,7 +120,7 @@ use Krystal\Form\Element;
 				<div class="form-group">
 					<label class="col-lg-2 control-label"><?php $this->show('Published'); ?></label>
 					<div class="col-lg-10">
-                        <?php echo Element::checkbox('image[published]', $image->getPublished(), array('class' => 'form-control')); ?>
+                        <?php echo Element::checkbox('image[published]', $entity->getPublished(), array('class' => 'form-control')); ?>
 					</div>
 				</div>
 			</div>
@@ -104,7 +129,6 @@ use Krystal\Form\Element;
         <?php if ($hasAttributes): ?>
 		<div class="tab-pane" id="attrs" role="tabpanel">
             <div class="well">
-
                 <?php foreach ($attributes as $attribute): ?>
                 <div class="form-group">
                     <label class="col-lg-2 control-label"><?php echo $attribute->getName(); ; ?></label>
@@ -116,24 +140,23 @@ use Krystal\Form\Element;
                     </div>
                 </div>
                 <?php endforeach; ?>
-
             </div>
         </div>
         <?php endif; ?>
 	</div>
-	
-	<?php if (!$image->getId()): ?>
-	
+
+	<?php if ($new): ?>
+
     <button data-button="add" data-back-url="<?php echo $this->url('Slider:Admin:Image@editAction', null); ?>" data-url="<?php echo $this->url('Slider:Admin:Image@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Add'); ?></button>
 	<button data-button="add-create" data-url="<?php echo $this->url('Slider:Admin:Image@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Add & Upload new'); ?></button>
-    
+
     <?php else: ?>
-	
+
 	<button data-button="save" data-url="<?php echo $this->url('Slider:Admin:Image@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save'); ?></button>
 	<button data-button="save-create" data-back-url="<?php echo $this->url('Slider:Admin:Image@addAction'); ?>" data-url="<?php echo $this->url('Slider:Admin:Image@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save & Upload new'); ?></button>
-	
+
     <?php endif; ?>
-	
+
 	<button data-button="cancel" data-url="<?php echo $this->url('Slider:Admin:Browser@indexAction'); ?>" class="btn btn-default"><i class="glyphicon glyphicon-floppy-remove"></i> <?php $this->show('Cancel'); ?></button>
 </form>
 

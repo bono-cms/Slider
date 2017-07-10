@@ -30,23 +30,24 @@ final class Image extends AbstractController
     /**
      * Creates a form
      * 
-     * @param \Krystal\Stdlib\VirtualEntity $image
+     * @param \Krystal\Stdlib\VirtualEntity|array $image
      * @param string $title
      * @return string
      */
-    private function createForm(VirtualEntity $image, $title)
+    private function createForm($image, $title)
     {
         // Append breadcrumbs
         $this->view->getBreadcrumbBag()->addOne('Slider', 'Slider:Admin:Browser@indexAction')
                                        ->addOne($title);
 
         $attributeGroupManager = $this->getModuleService('attributeGroupManager');
+        $new = is_object($image);
 
         // If edit form
-        if ($image->getId()) {
+        if (!$new) {
             // Populate values
-            $attributes = $attributeGroupManager->fetchAll($image->getCategoryId());
-            $attributeGroupManager->populateValues($attributes, $image);
+            $attributes = $attributeGroupManager->fetchAll($image[0]->getCategoryId());
+            $attributeGroupManager->populateValues($attributes, $image[0]);
 
         } else {
             // No attributes on creating
@@ -56,8 +57,9 @@ final class Image extends AbstractController
         return $this->view->render('image.form', array(
             'categories' => $this->getModuleService('categoryManager')->fetchList(),
             'image' => $image,
+            'new' => $new,
             'attributes' => $attributes,
-            'hasAttributes' => $image->getCategoryId() && !empty($attributes)
+            'hasAttributes' => $image[0]->getCategoryId() && !empty($attributes)
         ));
     }
 
@@ -171,7 +173,7 @@ final class Image extends AbstractController
             )
         ));
 
-        if ($formValidator->isValid()) {
+        if (1) {
             $service = $this->getModuleService('imageManager');
 
             if (!empty($input['id'])) {
