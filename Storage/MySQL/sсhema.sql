@@ -43,5 +43,5 @@ CREATE TABLE `bono_module_slider_images_translations` (
 	`lang_id` INT NOT NULL,
 	`name` varchar(254) NOT NULL,
 	`description` LONGTEXT NOT NULL,
-	`link` varchar(255) NOT NULL,
+	`link` varchar(255) NOT NULL
 ) DEFAULT CHARSET = UTF8;
