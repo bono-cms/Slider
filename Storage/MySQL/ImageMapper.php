@@ -135,7 +135,7 @@ final class ImageMapper extends AbstractMapper implements ImageMapperInterface
 
         $db = $this->createEntitySelect($columns)
                     // Category relation
-                   ->innerJoin(CategoryMapper::getTableName())
+                   ->leftJoin(CategoryMapper::getTableName())
                    ->on()
                    ->equals(CategoryMapper::getFullColumnName('id'), new RawSqlFragment(self::getFullColumnName('category_id')))
                    // Filtering condition
