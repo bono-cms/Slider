@@ -107,7 +107,7 @@ final class ImageMapper extends AbstractMapper implements ImageMapperInterface
      */
     public function fetchRandomPublishedByCategoryId($categoryId)
     {
-        return $this->createEntitySelect($columns)
+        return $this->createEntitySelect($this->getColumns())
                     ->whereEquals(self::getFullColumnName('category_id'), $categoryId)
                     ->andWhereEquals(self::getFullColumnName('published'), '1')
                     ->andWhereEquals(self::getFullColumnName('lang_id', self::getTranslationTable()), $this->getLangId())
