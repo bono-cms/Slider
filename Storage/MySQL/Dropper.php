@@ -22,7 +22,7 @@ final class Dropper extends AbstractStorageDropper
     {
         return array(
             ImageMapper::getTableName(),
-            ImageMapper::getTranslationTable(),
+            ImageTranslationMapper::getTableName(),
             CategoryMapper::getTableName(),
             AttributeGroupMapper::getTableName(),
             AttributeValueMapper::getTableName()

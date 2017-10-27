@@ -30,7 +30,7 @@ final class ImageMapper extends AbstractMapper implements ImageMapperInterface
      */
     public static function getTranslationTable()
     {
-        return self::getWithPrefix('bono_module_slider_images_translations');
+        return ImageTranslationMapper::getTableName();
     }
 
     /**
@@ -42,14 +42,14 @@ final class ImageMapper extends AbstractMapper implements ImageMapperInterface
     {
         return array(
             self::getFullColumnName('id'),
-            self::getFullColumnName('lang_id', self::getTranslationTable()),
             self::getFullColumnName('category_id'),
-            self::getFullColumnName('name', self::getTranslationTable()),
-            self::getFullColumnName('description', self::getTranslationTable()),
             self::getFullColumnName('order'),
             self::getFullColumnName('published'),
-            self::getFullColumnName('link', self::getTranslationTable()),
             self::getFullColumnName('image'),
+            ImageTranslationMapper::getFullColumnName('lang_id'),
+            ImageTranslationMapper::getFullColumnName('name'),
+            ImageTranslationMapper::getFullColumnName('description'),
+            ImageTranslationMapper::getFullColumnName('link')
         );
     }
     
@@ -83,7 +83,7 @@ final class ImageMapper extends AbstractMapper implements ImageMapperInterface
     public function fetchIdsByCategoryId($categoryId)
     {
         return $this->db->select('id')
-                        ->from(static::getTableName())
+                        ->from(self::getTableName())
                         ->whereEquals('category_id', $categoryId)
                         ->queryAll('id');
     }
@@ -110,7 +110,7 @@ final class ImageMapper extends AbstractMapper implements ImageMapperInterface
         return $this->createEntitySelect($this->getColumns())
                     ->whereEquals(self::getFullColumnName('category_id'), $categoryId)
                     ->andWhereEquals(self::getFullColumnName('published'), '1')
-                    ->andWhereEquals(self::getFullColumnName('lang_id', self::getTranslationTable()), $this->getLangId())
+                    ->andWhereEquals(ImageTranslationMapper::getFullColumnName('lang_id'), $this->getLangId())
                     ->orderBy()
                     ->rand()
                     ->query();
@@ -139,7 +139,7 @@ final class ImageMapper extends AbstractMapper implements ImageMapperInterface
                    ->on()
                    ->equals(CategoryMapper::getFullColumnName('id'), new RawSqlFragment(self::getFullColumnName('category_id')))
                    // Filtering condition
-                   ->whereEquals(self::getFullColumnName('lang_id', self::getTranslationTable()), $this->getLangId());
+                   ->whereEquals(ImageTranslationMapper::getFullColumnName('lang_id'), $this->getLangId());
 
         if ($categoryId !== null) {
             $db->andWhereEquals(self::getFullColumnName('category_id'), $categoryId);
