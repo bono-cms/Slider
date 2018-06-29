@@ -81,22 +81,22 @@ final class CategoryMapper extends AbstractMapper implements CategoryMapperInter
     public function fetchAll()
     {
         $columns = array(
-            self::getFullColumnName('id'),
-            self::getFullColumnName('name'),
-            self::getFullColumnName('class'),
-            self::getFullColumnName('width'),
-            self::getFullColumnName('height'),
-            self::getFullColumnName('quality')
+            self::column('id'),
+            self::column('name'),
+            self::column('class'),
+            self::column('width'),
+            self::column('height'),
+            self::column('quality')
         );
 
         return $this->db->select($columns)
-                        ->count(ImageMapper::getFullColumnName('id'), 'slides_count')
+                        ->count(ImageMapper::column('id'), 'slides_count')
                         ->from(ImageMapper::getTableName())
                         ->rightJoin(self::getTableName())
                         ->on()
-                        ->equals(self::getFullColumnName('id'), new RawSqlFragment(ImageMapper::getFullColumnName('category_id')))
-                        ->groupBy(self::getFullColumnName('id'))
-                        ->orderBy(self::getFullColumnName('id'))
+                        ->equals(self::column('id'), new RawSqlFragment(ImageMapper::column('category_id')))
+                        ->groupBy(self::column('id'))
+                        ->orderBy(self::column('id'))
                         ->desc()
                         ->queryAll();
     }

@@ -41,15 +41,15 @@ final class ImageMapper extends AbstractMapper implements ImageMapperInterface
     private function getColumns()
     {
         return array(
-            self::getFullColumnName('id'),
-            self::getFullColumnName('category_id'),
-            self::getFullColumnName('order'),
-            self::getFullColumnName('published'),
-            self::getFullColumnName('image'),
-            ImageTranslationMapper::getFullColumnName('lang_id'),
-            ImageTranslationMapper::getFullColumnName('name'),
-            ImageTranslationMapper::getFullColumnName('description'),
-            ImageTranslationMapper::getFullColumnName('link')
+            self::column('id'),
+            self::column('category_id'),
+            self::column('order'),
+            self::column('published'),
+            self::column('image'),
+            ImageTranslationMapper::column('lang_id'),
+            ImageTranslationMapper::column('name'),
+            ImageTranslationMapper::column('description'),
+            ImageTranslationMapper::column('link')
         );
     }
     
@@ -108,9 +108,9 @@ final class ImageMapper extends AbstractMapper implements ImageMapperInterface
     public function fetchRandomPublishedByCategoryId($categoryId)
     {
         return $this->createEntitySelect($this->getColumns())
-                    ->whereEquals(self::getFullColumnName('category_id'), $categoryId)
-                    ->andWhereEquals(self::getFullColumnName('published'), '1')
-                    ->andWhereEquals(ImageTranslationMapper::getFullColumnName('lang_id'), $this->getLangId())
+                    ->whereEquals(self::column('category_id'), $categoryId)
+                    ->andWhereEquals(self::column('published'), '1')
+                    ->andWhereEquals(ImageTranslationMapper::column('lang_id'), $this->getLangId())
                     ->orderBy()
                     ->rand()
                     ->query();
@@ -130,26 +130,26 @@ final class ImageMapper extends AbstractMapper implements ImageMapperInterface
         // Columns to be selected
         $columns = array_merge(
             $this->getColumns(), 
-            array(CategoryMapper::getFullColumnName('name') => 'category_name')
+            array(CategoryMapper::column('name') => 'category_name')
         );
 
         $db = $this->createEntitySelect($columns)
                     // Category relation
                    ->leftJoin(CategoryMapper::getTableName())
                    ->on()
-                   ->equals(CategoryMapper::getFullColumnName('id'), new RawSqlFragment(self::getFullColumnName('category_id')))
+                   ->equals(CategoryMapper::column('id'), new RawSqlFragment(self::column('category_id')))
                    // Filtering condition
-                   ->whereEquals(ImageTranslationMapper::getFullColumnName('lang_id'), $this->getLangId());
+                   ->whereEquals(ImageTranslationMapper::column('lang_id'), $this->getLangId());
 
         if ($categoryId !== null) {
-            $db->andWhereEquals(self::getFullColumnName('category_id'), $categoryId);
+            $db->andWhereEquals(self::column('category_id'), $categoryId);
         }
 
         if ($published === true) {
-            $db->andWhereEquals(self::getFullColumnName('published'), '1')
-               ->orderBy(new RawSqlFragment(sprintf('`order`, CASE WHEN `order` = 0 THEN %s END DESC', self::getFullColumnName('id'))));
+            $db->andWhereEquals(self::column('published'), '1')
+               ->orderBy(new RawSqlFragment(sprintf('`order`, CASE WHEN `order` = 0 THEN %s END DESC', self::column('id'))));
         } else {
-            $db->orderBy(self::getFullColumnName('id'))
+            $db->orderBy(self::column('id'))
                ->desc();
         }
 
