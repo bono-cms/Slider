@@ -135,9 +135,9 @@ final class ImageMapper extends AbstractMapper implements ImageMapperInterface
 
         $db = $this->createEntitySelect($columns)
                     // Category relation
-                   ->leftJoin(CategoryMapper::getTableName())
-                   ->on()
-                   ->equals(CategoryMapper::column('id'), new RawSqlFragment(self::column('category_id')))
+                   ->leftJoin(CategoryMapper::getTableName(), array(
+                        CategoryMapper::column('id') => self::getRawColumn('category_id')
+                   ))
                    // Filtering condition
                    ->whereEquals(ImageTranslationMapper::column('lang_id'), $this->getLangId());
 

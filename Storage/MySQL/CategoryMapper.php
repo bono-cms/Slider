@@ -80,6 +80,7 @@ final class CategoryMapper extends AbstractMapper implements CategoryMapperInter
      */
     public function fetchAll()
     {
+        // Columns to be selected
         $columns = array(
             self::column('id'),
             self::column('name'),
@@ -92,9 +93,9 @@ final class CategoryMapper extends AbstractMapper implements CategoryMapperInter
         return $this->db->select($columns)
                         ->count(ImageMapper::column('id'), 'slides_count')
                         ->from(ImageMapper::getTableName())
-                        ->rightJoin(self::getTableName())
-                        ->on()
-                        ->equals(self::column('id'), new RawSqlFragment(ImageMapper::column('category_id')))
+                        ->rightJoin(self::getTableName(), array(
+                            self::column('id') => ImageMapper::getRawColumn('category_id')
+                        ))
                         ->groupBy(self::column('id'))
                         ->orderBy(self::column('id'))
                         ->desc()

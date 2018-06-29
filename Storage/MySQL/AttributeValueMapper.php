@@ -53,11 +53,10 @@ final class AttributeValueMapper extends AbstractMapper implements AttributeValu
 
         return $this->db->select($columns)
                         ->from(self::getTableName())
-                        ->innerJoin(AttributeGroupMapper::getTableName())
-                        ->on()
-                        ->equals(self::column('group_id'), new RawSqlFragment(AttributeGroupMapper::column('id')))
-                        ->rawAnd()
-                        ->equals(self::column('image_id'), $imageId)
+                        ->innerJoin(AttributeGroupMapper::getTableName(), array(
+                            self::column('group_id') => AttributeGroupMapper::getRawColumn('id'),
+                            self::column('image_id') => $imageId
+                        ))
                         ->orderBy(AttributeGroupMapper::column('id'))
                         ->desc()
                         ->queryAll();
