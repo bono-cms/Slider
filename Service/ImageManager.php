@@ -337,52 +337,6 @@ final class ImageManager extends AbstractManager implements ImageManagerInterfac
     }
 
     /**
-     * Prepares a container before sending to a mapper
-     * 
-     * @param array $input Raw input data
-     * @return boolean
-     */
-    private function prepareInput(array $input)
-    {
-        // Just a reference
-        $data =& $input['data']['image'];
-        $file =& $input['files']['file'];
-
-        // Safe type casting
-        $data['order'] = (int) $data['order'];
-
-        $this->filterFileInput($file);
-        return $input;
-    }
-
-    /**
-     * Adds a slider
-     * 
-     * @param array $input Raw input data
-     * @return boolean
-     */
-    public function add(array $input)
-    {
-        if (!empty($input['files'])) {
-            $input = $this->prepareInput($input);
-
-            $file =& $input['files']['file'];
-            $data =& $input['data']['image'];
-            $translations = $input['data']['translation'];
-
-            $data['image'] = $file[0]->getName();
-
-            // Now save the entity
-            $this->imageMapper->saveEntity($data, $translations);
-            
-            #$this->track('Slider "%s" has been uploaded', $data['name']);
-
-            $uploader = $this->getUploader($data['category_id']);
-            return $uploader->upload($this->getLastId(), $file);
-        }
-    }
-
-    /**
      * Update attributes
      * 
      * @param array $image
@@ -407,6 +361,31 @@ final class ImageManager extends AbstractManager implements ImageManagerInterfac
     }
 
     /**
+     * Adds a slider
+     * 
+     * @param array $input Raw input data
+     * @return boolean
+     */
+    public function add(array $input)
+    {
+        if (!empty($input['files'])) {
+            $file =& $input['files']['file'];
+            $data =& $input['data']['image'];
+            $translations = $input['data']['translation'];
+
+            $data['image'] = $file->getUniqueName();
+
+            // Now save the entity
+            $this->imageMapper->saveEntity($data, $translations);
+
+            #$this->track('Slider "%s" has been uploaded', $data['name']);
+
+            $uploader = $this->getUploader($data['category_id']);
+            return $uploader->upload($this->getLastId(), $file);
+        }
+    }
+
+    /**
      * Updates a slider
      * 
      * @param array $input Raw input data
@@ -423,12 +402,10 @@ final class ImageManager extends AbstractManager implements ImageManagerInterfac
 
             // First of all, we need to remove old one
             if ($uploader->delete($data['id'], $data['image'])) {
-                $input = $this->prepareInput($input);
-
                 $file = $input['files']['file'];
 
                 // Now override old image with a new one and start uploading
-                $data['image'] = $file[0]->getName();
+                $data['image'] = $file->getUniqueName();
                 $uploader->upload($data['id'], $file);
             } else {
                 return false;
