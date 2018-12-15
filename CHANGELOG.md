@@ -4,6 +4,7 @@ CHANGELOG
 1.3
 ---
 
+ * Grab slides by last category ID in main grid, not all
  * Support complete internalization
  * Added shortcut in administration panel
  * Added `quality` option for categories

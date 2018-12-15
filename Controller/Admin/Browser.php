@@ -24,7 +24,7 @@ final class Browser extends AbstractController
     public function indexAction($page = 1)
     {
         $url = $this->createUrl('Slider:Admin:Browser@indexAction', array(), 1);
-        return $this->createGrid($page, $url, null);
+        return $this->createGrid($page, $url, $this->getModuleService('categoryManager')->getLastId());
     }
 
     /**
