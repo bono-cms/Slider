@@ -1,8 +1,10 @@
-<?php defined('KRYSTAL') or die; ?>
 <?php
 
+use Krystal\Grid\Grid;
 use Krystal\Form\Element;
-use Krystal\Form\HtmlHelper;
+use Cms\View\Icon;
+
+defined('KRYSTAL') or die;
 
 ?>
 
@@ -33,53 +35,64 @@ use Krystal\Form\HtmlHelper;
 <div class="row">
     <div class="col-lg-7">
         <?php $this->loadPartial('items-per-page', array('caption' => 'Slider')); ?>
+        
         <form>
             <div class="table-responsive">
-                <table class="table table-hover table-bordered table-striped table-condensed">
-                    <thead>
-                        <tr>
-                            <th class="text-center">
-                                <?php if (!empty($images)): ?>
-                                <input type="checkbox" />
-                                <?php endif; ?>
-                            </th>
-                            <th class="text-center"><?php $this->show('#'); ?></th>
-                            <th class="text-center"><?php $this->show('Preview'); ?></th>
-                            <th class="text-center"><?php $this->show('Category'); ?></th>
-                            <th class="text-center"><?php $this->show('Published'); ?></th>
-                            <th class="text-center"><?php $this->show('Order'); ?></th>
-                            <th class="text-center"><?php $this->show('Actions'); ?></th>
-                        </tr>
-                    </thead>
-                    
-                    <?php if (!empty($images)): ?>
-                    <tbody>
-                        <?php foreach ($images as $image): ?>
-                        <tr>
-                            <td class="text-center">
-                                <input type="checkbox" name="toDelete[<?php echo $image->getId(); ?>]" />
-                            </td>
-                            <td class="text-center text-muted"><?php echo $image->getId(); ?></td>
-                            <td>
-                                <img class="img-responsive center-block" src="<?php echo $image->getImageBag()->getUrl('400x200'); ?>" alt="<?php echo $image->getName(); ?>" />
-                            </td>
-                            <td class="text-center"><?php echo $image->getCategoryName(); ?></td>
-                            <td class="text-center">
-                                <?php echo Element::checkbox(sprintf('published[%s]', $image->getId()), $image->getPublished()); ?>
-                            </td>
-                            <td class="text-center col-md-1">
-                                <?php echo Element::number(sprintf('order[%s]', $image->getId()), $image->getOrder(), array('class' => 'form-control', 'min' => '0')); ?>
-                            </td>
-                            <td class="text-center col-md-1">
-                                <a data-button="edit" data-toggle="tooltip" data-placement="left" data-original-title="<?php $this->show('Edit this image'); ?>" href="<?php echo $this->url('Slider:Admin:Image@editAction', $image->getId()); ?>"><i class="glyphicon glyphicon-pencil"></i></a>
-                                <a data-button="delete" data-url="<?php echo $this->url('Slider:Admin:Image@deleteAction', $image->getId()); ?>" data-toggle="tooltip" data-placement="left" data-original-title="<?php $this->show('Remove this image'); ?>" href="#"><i class="glyphicon glyphicon-remove"></i></a>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                    <?php endif; ?>
-                </table>
-                
+                <?= Grid::render($images, array(
+                    'batch' => true,
+                    'pk' => 'id',
+                    'tableClass' => 'table table-hover table-bordered table-striped table-condensed',
+                    'columns' => array(
+                        array(
+                            'column' => 'id',
+                            'label' => '#'
+                        ),
+
+                        array(
+                            'column' => 'image',
+                            'value' => function($image){
+                                return Element::image($image->getImageBag()->getUrl('400x200'), array('class' => 'img-responsive center-block'));
+                            }
+                        ),
+
+                        array(
+                            'column' => 'category_name',
+                            'label' => 'Category'
+                        ),
+
+                        array(
+                            'column' => 'published',
+                            'value' => function($image){
+                                return Element::checkbox(sprintf('published[%s]', $image->getId()), $image->getPublished());
+                            }
+                        ),
+                        
+                        array(
+                            'column' => 'order',
+                            'value' => function($image){
+                                return Element::number(sprintf('order[%s]', $image->getId()), $image->getOrder(), array('class' => 'form-control', 'min' => '0'));
+                            }
+                        )
+                    ),
+
+                    'actions' => array(
+                        'edit' => function($image){
+                            return Icon::edit(
+                                $this->url('Slider:Admin:Image@editAction', $image->getId()),
+                                $this->translate('Edit this image')
+                            );
+                        },
+
+                        'remove' => function($image){
+                            return Icon::remove(
+                                $this->url('Slider:Admin:Image@deleteAction', $image->getId()),
+                                $this->translate('Remove this image')
+                            );
+                        }
+                    )
+
+                ), $this->translator); ?>
+
                 <?php if (empty($images)): ?>
                 <div class="center-block">
                     <h2 class="text-center text-muted"><i class="glyphicon glyphicon-remove"></i> <?php $this->show('No images'); ?></h2>
@@ -94,46 +107,71 @@ use Krystal\Form\HtmlHelper;
     <div class="col-lg-5">
         <div class="table-responsive">
             <h4><i class="glyphicon glyphicon-th-list"></i> <?php $this->show('Categories'); ?> (<?php echo count($categories); ?>)</h4>
-            <table class="table table-hover table-bordered table-striped table-condensed">
-                <thead>
-                    <tr>
-                        <th class="text-center"><?php $this->show('#'); ?></th>
-                        <th><?php $this->show('Name'); ?></th>
-                        <th class="text-center"><?php $this->show('Amount of slides'); ?></th>
-                        <th class="text-center"><?php $this->show('Height'); ?></th>
-                        <th class="text-center"><?php $this->show('Width'); ?></th>
-                        <?php if ($extendedMode): ?>
-                        <th class="text-center"><?php $this->show('Class'); ?></th>
-                        <th class="text-center"><?php $this->show('Actions'); ?></th>
-                        <?php endif; ?>
-                    </tr>
-                </thead>
-                
-                <?php if (!empty($categories)): ?>
-                <tbody>
-                    <?php foreach ($categories as $category): ?>
-                    <tr class="<?php echo HtmlHelper::addOnDemand(isset($categoryId) && $categoryId == $category->getId(), 'info'); ?>">
-                        <td class="text-center text-muted"><?php echo $category->getId(); ?></td>
-                        <td>
-                            <a href="<?php echo $this->url('Slider:Admin:Browser@categoryAction', $category->getId()); ?>"><?php echo $category->getName(); ?></a>
-                        </td>
-                        <td class="text-center"><?php echo $category->getSlidesCount();; ?></td>
-                        <td class="text-center"><?php echo $category->getHeight(); ?></td>
-                        <td class="text-center"><?php echo $category->getWidth(); ?></td>
-                        
-                        <?php if ($extendedMode): ?>
-                        <td class="text-center"><?php echo $category->getClass(); ?></td>
-                        <td class="text-center">
-                            <a data-button="edit" data-toggle="tooltip" data-placement="left" data-original-title="<?php $this->show('Manage attributes'); ?>" href="<?php echo $this->url('Slider:Admin:Attribute@listAction', $category->getId()); ?>"><i class="glyphicon glyphicon-th-list"></i></a>
-                            <a data-button="edit" data-toggle="tooltip" data-placement="left" data-original-title="<?php $this->show('Edit this category'); ?>" href="<?php echo $this->url('Slider:Admin:Category@editAction', $category->getId()); ?>"><i class="glyphicon glyphicon-pencil"></i></a>
-                            <a data-button="delete" data-toggle="tooltip" data-placement="left" data-original-title="<?php $this->show('Remove this category'); ?>" data-url="<?php echo $this->url('Slider:Admin:Category@deleteAction', $category->getId()); ?>" href="#" ><i class="glyphicon glyphicon-remove"></i></a>
-                        </td>
-                        <?php endif; ?>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-                <?php endif; ?>
-            </table>
+
+            <?= Grid::render($categories, array(
+                'tableClass' => 'table table-hover table-bordered table-striped table-condensed',
+                'rowAttributes' => array(
+                    'class' => function($category) use ($categoryId){
+                        return $categoryId == $category->getId() ? 'info' : null;
+                    }
+                ),
+                'columns' => array(
+                    array(
+                        'column' => 'id',
+                        'label' => '#'
+                    ),
+
+                    array(
+                        'column' => 'name',
+                        'value' => function($category){
+                            return Element::link($category->getName(), $this->url('Slider:Admin:Browser@categoryAction', $category->getId()));
+                        }
+                    ),
+
+                    array(
+                        'column' => 'slides_count',
+                        'label' => 'Amount of slides'
+                    ),
+                    
+                    array(
+                        'column' => 'height'
+                    ),
+
+                    array(
+                        'column' => 'width'
+                    ),
+
+                    array(
+                        'column' => 'class',
+                        'hidden' => !$extendedMode
+                    ),
+                ),
+
+                'actions' => !$extendedMode ? array() : array(
+                    'manage' => function($category){
+                        return Icon::button(
+                            'glyphicon glyphicon-th-list',
+                            $this->url('Slider:Admin:Attribute@listAction', $category->getId()),
+                            $this->translate('Manage attributes')
+                        );
+                    },
+
+                    'edit' => function($category){
+                        return Icon::edit(
+                            $this->url('Slider:Admin:Category@editAction', $category->getId()),
+                            $this->translate('Edit this category')
+                        );
+                    },
+
+                    'remove' => function($category){
+                        return Icon::remove(
+                            $this->url('Slider:Admin:Category@deleteAction', $category->getId()),
+                            $this->translate('Remove this category')
+                        );
+                    }
+                )
+
+            ), $this->translator); ?>
 
             <?php if (empty($categories)): ?>
             <div class="center-block">
