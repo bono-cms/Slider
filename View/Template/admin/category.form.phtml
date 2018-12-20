@@ -1,7 +1,7 @@
-<?php defined('KRYSTAL') or die; ?>
 <?php
 
 use Krystal\Form\Element;
+defined('KRYSTAL') or die;
 
 ?>
 
@@ -59,14 +59,13 @@ use Krystal\Form\Element;
 			</div>
 		</div>
 	</div>
-	
-	<?php if (!$category->getId()): ?>
-	<button data-button="add" data-back-url="<?php echo $this->url('Slider:Admin:Category@editAction', null); ?>" data-url="<?php echo $this->url('Slider:Admin:Category@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Add'); ?></button>
-	
-	<?php else: ?>
-	<button data-button="save" data-url="<?php echo $this->url('Slider:Admin:Category@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save'); ?></button>
-	
-	<?php endif; ?>
-	<button data-button="cancel" data-url="<?php echo $this->url('Slider:Admin:Browser@indexAction'); ?>" class="btn btn-default"><i class="glyphicon glyphicon-floppy-remove"></i> <?php $this->show('Cancel'); ?></button>
-	
+
+    <?php $this->loadPartial('actions', array(
+        'new' => !$category->getId(),
+        'add' => 'Slider:Admin:Category@addAction',
+        'edit' => 'Slider:Admin:Category@editAction',
+        'save' => 'Slider:Admin:Category@saveAction',
+        'cancel' => 'Slider:Admin:Browser@indexAction'
+    )); ?>
+
 </form>

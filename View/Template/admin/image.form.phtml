@@ -135,19 +135,14 @@ defined('KRYSTAL') or die;
         <?php endif; ?>
 	</div>
 
-	<?php if ($new): ?>
+    <?php $this->loadPartial('actions', array(
+        'new' => $new,
+        'add' => 'Slider:Admin:Image@addAction',
+        'edit' => 'Slider:Admin:Image@editAction',
+        'save' => 'Slider:Admin:Image@saveAction',
+        'cancel' => 'Slider:Admin:Browser@indexAction'
+    )); ?>
 
-    <button data-button="add" data-back-url="<?php echo $this->url('Slider:Admin:Image@editAction', null); ?>" data-url="<?php echo $this->url('Slider:Admin:Image@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Add'); ?></button>
-	<button data-button="add-create" data-url="<?php echo $this->url('Slider:Admin:Image@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Add & Upload new'); ?></button>
-
-    <?php else: ?>
-
-	<button data-button="save" data-url="<?php echo $this->url('Slider:Admin:Image@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save'); ?></button>
-	<button data-button="save-create" data-back-url="<?php echo $this->url('Slider:Admin:Image@addAction'); ?>" data-url="<?php echo $this->url('Slider:Admin:Image@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save & Upload new'); ?></button>
-
-    <?php endif; ?>
-
-	<button data-button="cancel" data-url="<?php echo $this->url('Slider:Admin:Browser@indexAction'); ?>" class="btn btn-default"><i class="glyphicon glyphicon-floppy-remove"></i> <?php $this->show('Cancel'); ?></button>
 </form>
 
 <?php else: ?>
