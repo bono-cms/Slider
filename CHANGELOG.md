@@ -4,6 +4,7 @@ CHANGELOG
 1.3
 ---
 
+ * In image form - show first tab with image options, not with description
  * Grab slides by last category ID in main grid, not all
  * Support complete internalization
  * Added shortcut in administration panel

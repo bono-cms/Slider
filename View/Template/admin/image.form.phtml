@@ -10,10 +10,9 @@ defined('KRYSTAL') or die;
 <?php if (!empty($categories)): ?>
 
 <form data-group="image">
-
-	<ul class="nav nav-tabs" role="tablist">
-		<li role="presentation" class="active"><a href="#image" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-picture"></i> <?php $this->show('Image'); ?></a></li>
-		<li role="presentation"><a href="#options" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-th-list"></i> <?php $this->show('Options'); ?></a></li>
+    <ul class="nav nav-tabs" role="tablist">
+		<li role="presentation" class="active"><a href="#options" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-th-list"></i> <?php $this->show('Options'); ?></a></li>
+		<li role="presentation"><a href="#image" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-picture"></i> <?php $this->show('Description'); ?></a></li>
         
         <?php if ($hasAttributes): ?>
 		<li role="presentation"><a href="#attrs" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-th-list"></i> <?php $this->show('Attributes'); ?></a></li>
@@ -21,7 +20,7 @@ defined('KRYSTAL') or die;
 	</ul>
 	
 	<div class="tab-content">
-		<div role="tabpanel" class="tab-pane fade in active" id="image" role="tabpanel">
+		<div role="tabpanel" class="tab-pane fade in" id="image" role="tabpanel">
 			<div class="well">
                 <?php $this->loadPartial('language-tabs'); ?>
 
@@ -69,7 +68,7 @@ defined('KRYSTAL') or die;
 			</div>
 		</div>
 
-        <div class="tab-pane" id="options" role="tabpanel">
+        <div class="tab-pane fade in active" id="options" role="tabpanel">
             <?php echo Element::hidden('image[id]', $entity->getId()); ?>
             <?php echo Element::hidden('image[image]', $entity->getCover()); ?>
 
