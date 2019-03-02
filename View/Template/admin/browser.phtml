@@ -1,6 +1,6 @@
 <?php
 
-use Krystal\Grid\Grid;
+use Krystal\Widget\GridWidget;
 use Krystal\Form\Element;
 use Cms\View\Icon;
 
@@ -38,7 +38,7 @@ defined('KRYSTAL') or die;
         
         <form>
             <div class="table-responsive">
-                <?= Grid::render($images, array(
+                <?= $this->widget(new GridWidget($images, array(
                     'batch' => true,
                     'pk' => 'id',
                     'tableClass' => 'table table-hover table-bordered table-striped table-condensed',
@@ -90,8 +90,7 @@ defined('KRYSTAL') or die;
                             );
                         }
                     )
-
-                ), $this->translator); ?>
+                ))); ?>
 
                 <?php if (empty($images)): ?>
                 <div class="center-block">
@@ -108,7 +107,7 @@ defined('KRYSTAL') or die;
         <div class="table-responsive">
             <h4><i class="glyphicon glyphicon-th-list"></i> <?php $this->show('Categories'); ?> (<?php echo count($categories); ?>)</h4>
 
-            <?= Grid::render($categories, array(
+            <?= $this->widget(new GridWidget($categories, array(
                 'tableClass' => 'table table-hover table-bordered table-striped table-condensed',
                 'rowAttributes' => array(
                     'class' => function($category) use ($categoryId){
@@ -170,8 +169,7 @@ defined('KRYSTAL') or die;
                         );
                     }
                 )
-
-            ), $this->translator); ?>
+            ))); ?>
 
             <?php if (empty($categories)): ?>
             <div class="center-block">
