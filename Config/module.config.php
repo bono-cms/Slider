@@ -12,19 +12,19 @@ return array(
         array(
             'name' => 'Add a slider',
             'controller' => 'Slider:Admin:Image@addAction',
-            'icon' => 'glyphicon glyphicon-picture'
+            'icon' => 'fas fa-images'
         )
     ),
     'menu' => array(
         'name' => 'Slider',
-        'icon' => 'fas fa-poll',
+        'icon' => 'fas fa-images',
         'items' => array(
             array(
                 'route' => 'Slider:Admin:Browser@indexAction',
                 'name' => 'View all slides'
             ),
             array(
-                'route' => 'Slider:Admin:Category@addAction',
+                'route' => 'Slider:Admin:Image@addAction',
                 'name' => 'Add a slider'
             )
         )
