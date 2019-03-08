@@ -8,112 +8,38 @@ defined('KRYSTAL') or die;
 
 ?>
 
-<div class="btn-toolbar">
-	<div class="btn-group">
-	  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-		<i class="glyphicon glyphicon-list"></i> <?php $this->show('Menu'); ?> <span class="caret"></span>
-	  </button>
-	  <ul class="dropdown-menu">
-		 <li><a href="<?php echo isset($categoryId) ? $this->mapUrl('Slider:Admin:Image@addAction', array($categoryId), 1) : $this->url('Slider:Admin:Image@addAction'); ?>"><i class="glyphicon glyphicon-picture"></i> <?php $this->show('Add a slider'); ?></a></li>
-		 <?php if ($extendedMode): ?>
-		 <li><a href="<?php echo $this->url('Slider:Admin:Category@addAction'); ?>"><i class="glyphicon glyphicon-folder-open"></i> <?php $this->show('Add a category'); ?></a></li>
-		 <?php endif; ?>
-		 <li class="divider"></li>
-		 <li class="dropdown-header"><?php $this->show('Actions'); ?></li>
-		 
-		 <?php if (!empty($images)): ?>
-		 <li><a href="#" data-button="save-changes" data-url="<?php echo $this->url('Slider:Admin:Image@tweakAction'); ?>"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save changes'); ?></a></li>
-		 <li><a href="#" data-button="remove-selected" data-url="<?php echo $this->url('Slider:Admin:Image@deleteAction', null); ?>"><i class="glyphicon glyphicon-remove"></i> <?php $this->show('Remove selected'); ?></a></li>
-		 <?php else: ?>
-		 <li class="disabled"><a><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save changes'); ?></a></li>
-		 <li class="disabled"><a><i class="glyphicon glyphicon-remove"></i> <?php $this->show('Remove selected'); ?></a></li>
-		 <?php endif; ?>
-	  </ul>
-	</div>
-</div>
+<div class="card">
+    <div class="dropdown">
+      <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+        <i class="glyphicon glyphicon-list"></i> <?php $this->show('Menu'); ?>
+      </button>
 
-<div class="row">
-    <div class="col-lg-7">
-        <?php $this->loadPartial('items-per-page', array('caption' => 'Slider')); ?>
-        
-        <form>
-            <div class="table-responsive">
-                <?= $this->widget(new GridViewWidget($images, array(
-                    'batch' => true,
-                    'pk' => 'id',
-                    'tableClass' => 'table table-hover table-bordered table-striped table-condensed',
-                    'columns' => array(
-                        array(
-                            'column' => 'id',
-                            'label' => '#'
-                        ),
+      <div class="dropdown-menu">
+         <a class="dropdown-item" href="<?php echo isset($categoryId) ? $this->mapUrl('Slider:Admin:Image@addAction', array($categoryId), 1) : $this->url('Slider:Admin:Image@addAction'); ?>"><i class="glyphicon glyphicon-picture"></i> <?php $this->show('Add a slider'); ?></a>
+         <?php if ($extendedMode): ?>
+         <a class="dropdown-item" href="<?php echo $this->url('Slider:Admin:Category@addAction'); ?>"><i class="glyphicon glyphicon-folder-open"></i> <?php $this->show('Add a category'); ?></a>
+         <?php endif; ?>
+         <div class="dropdown-divider"></div>
+         <div class="dropdown-header"><?php $this->show('Actions'); ?></div>
 
-                        array(
-                            'column' => 'image',
-                            'value' => function($image){
-                                return Element::image($image->getImageBag()->getUrl('400x200'), array('class' => 'img-responsive center-block'));
-                            }
-                        ),
-
-                        array(
-                            'column' => 'category_name',
-                            'label' => 'Category'
-                        ),
-
-                        array(
-                            'column' => 'published',
-                            'value' => function($image){
-                                return Element::checkbox(sprintf('published[%s]', $image->getId()), $image->getPublished());
-                            }
-                        ),
-                        
-                        array(
-                            'column' => 'order',
-                            'value' => function($image){
-                                return Element::number(sprintf('order[%s]', $image->getId()), $image->getOrder(), array('class' => 'form-control', 'min' => '0'));
-                            }
-                        )
-                    ),
-
-                    'actions' => array(
-                        'edit' => function($image){
-                            return Icon::edit(
-                                $this->url('Slider:Admin:Image@editAction', $image->getId()),
-                                $this->translate('Edit this image')
-                            );
-                        },
-
-                        'remove' => function($image){
-                            return Icon::remove(
-                                $this->url('Slider:Admin:Image@deleteAction', $image->getId()),
-                                $this->translate('Remove this image')
-                            );
-                        }
-                    )
-                ))); ?>
-
-                <?php if (empty($images)): ?>
-                <div class="center-block">
-                    <h2 class="text-center text-muted"><i class="glyphicon glyphicon-remove"></i> <?php $this->show('No images'); ?></h2>
-                </div>
-                <?php endif; ?>
-            </div>
-        </form>
-
-        <?php $this->loadPartial('paginator'); ?>
+         <?php if (!empty($images)): ?>
+         <a class="dropdown-item" href="#" data-button="save-changes" data-url="<?php echo $this->url('Slider:Admin:Image@tweakAction'); ?>"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save changes'); ?></a>
+         <a class="dropdown-item" href="#" data-button="remove-selected" data-url="<?php echo $this->url('Slider:Admin:Image@deleteAction', null); ?>"><i class="glyphicon glyphicon-remove"></i> <?php $this->show('Remove selected'); ?></a>
+         <?php else: ?>
+         <a class="dropdown-item"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save changes'); ?></a>
+         <a class="dropdown-item"><i class="glyphicon glyphicon-remove"></i> <?php $this->show('Remove selected'); ?></a>
+         <?php endif; ?>
+      </div>
     </div>
 
-    <div class="col-lg-5">
-        <div class="table-responsive">
-            <h4><i class="glyphicon glyphicon-th-list"></i> <?php $this->show('Categories'); ?> (<?php echo count($categories); ?>)</h4>
+    <?php $this->loadPartial('items-per-page', array('caption' => 'Slider')); ?>
 
-            <?= $this->widget(new GridViewWidget($categories, array(
-                'tableClass' => 'table table-hover table-bordered table-striped table-condensed',
-                'rowAttributes' => array(
-                    'class' => function($category) use ($categoryId){
-                        return $categoryId == $category->getId() ? 'info' : null;
-                    }
-                ),
+    <form>
+        <div class="table-responsive">
+            <?= $this->widget(new GridViewWidget($images, array(
+                'batch' => true,
+                'pk' => 'id',
+                'tableClass' => 'table table-hover table-bordered table-striped',
                 'columns' => array(
                     array(
                         'column' => 'id',
@@ -121,61 +47,131 @@ defined('KRYSTAL') or die;
                     ),
 
                     array(
-                        'column' => 'name',
-                        'value' => function($category){
-                            return Element::link($category->getName(), $this->url('Slider:Admin:Browser@categoryAction', $category->getId()));
+                        'column' => 'image',
+                        'value' => function($image){
+                            return Element::image($image->getImageBag()->getUrl('400x200'), array('class' => 'img-fluid'));
                         }
                     ),
 
                     array(
-                        'column' => 'slides_count',
-                        'label' => 'Amount of slides'
+                        'column' => 'category_name',
+                        'label' => 'Category'
+                    ),
+
+                    array(
+                        'column' => 'published',
+                        'value' => function($image){
+                            return Element::checkbox(sprintf('published[%s]', $image->getId()), $image->getPublished());
+                        }
                     ),
                     
                     array(
-                        'column' => 'height'
-                    ),
-
-                    array(
-                        'column' => 'width'
-                    ),
-
-                    array(
-                        'column' => 'class',
-                        'hidden' => !$extendedMode
-                    ),
+                        'column' => 'order',
+                        'value' => function($image){
+                            return Element::number(sprintf('order[%s]', $image->getId()), $image->getOrder(), array('class' => 'form-control', 'min' => '0'));
+                        }
+                    )
                 ),
 
-                'actions' => !$extendedMode ? array() : array(
-                    'manage' => function($category){
-                        return Icon::button(
-                            'glyphicon glyphicon-th-list',
-                            $this->url('Slider:Admin:Attribute@listAction', $category->getId()),
-                            $this->translate('Manage attributes')
-                        );
-                    },
-
-                    'edit' => function($category){
+                'actions' => array(
+                    'edit' => function($image){
                         return Icon::edit(
-                            $this->url('Slider:Admin:Category@editAction', $category->getId()),
-                            $this->translate('Edit this category')
+                            $this->url('Slider:Admin:Image@editAction', $image->getId()),
+                            $this->translate('Edit this image')
                         );
                     },
 
-                    'remove' => function($category){
+                    'remove' => function($image){
                         return Icon::remove(
-                            $this->url('Slider:Admin:Category@deleteAction', $category->getId()),
-                            $this->translate('Remove this category')
+                            $this->url('Slider:Admin:Image@deleteAction', $image->getId()),
+                            $this->translate('Remove this image')
                         );
                     }
                 )
             ))); ?>
 
-            <?php if (empty($categories)): ?>
+            <?php if (empty($images)): ?>
             <div class="center-block">
-                <h2 class="text-center text-muted"><i class="glyphicon glyphicon-remove"></i> <?php $this->show('No categories'); ?></h2>
+                <h2 class="text-center text-muted"><i class="glyphicon glyphicon-remove"></i> <?php $this->show('No images'); ?></h2>
             </div>
             <?php endif; ?>
         </div>
+    </form>
+
+    <?php $this->loadPartial('paginator'); ?>
+</div>
+
+<div class="card">
+    <div class="table-responsive">
+        <h4><i class="glyphicon glyphicon-th-list"></i> <?php $this->show('Categories'); ?> (<?php echo count($categories); ?>)</h4>
+
+        <?= $this->widget(new GridViewWidget($categories, array(
+            'tableClass' => 'table table-hover table-bordered table-striped',
+            'rowAttributes' => array(
+                'class' => function($category) use ($categoryId){
+                    return $categoryId == $category->getId() ? 'table-info' : null;
+                }
+            ),
+            'columns' => array(
+                array(
+                    'column' => 'id',
+                    'label' => '#'
+                ),
+
+                array(
+                    'column' => 'name',
+                    'value' => function($category){
+                        return Element::link($category->getName(), $this->url('Slider:Admin:Browser@categoryAction', $category->getId()));
+                    }
+                ),
+
+                array(
+                    'column' => 'slides_count',
+                    'label' => 'Amount of slides'
+                ),
+                
+                array(
+                    'column' => 'height'
+                ),
+
+                array(
+                    'column' => 'width'
+                ),
+
+                array(
+                    'column' => 'class',
+                    'hidden' => !$extendedMode
+                ),
+            ),
+
+            'actions' => !$extendedMode ? array() : array(
+                'manage' => function($category){
+                    return Icon::details(
+                        $this->url('Slider:Admin:Attribute@listAction', $category->getId()),
+                        $this->translate('Manage attributes')
+                    );
+                },
+
+                'edit' => function($category){
+                    return Icon::edit(
+                        $this->url('Slider:Admin:Category@editAction', $category->getId()),
+                        $this->translate('Edit this category')
+                    );
+                },
+
+                'remove' => function($category){
+                    return Icon::remove(
+                        $this->url('Slider:Admin:Category@deleteAction', $category->getId()),
+                        $this->translate('Remove this category')
+                    );
+                }
+            )
+        ))); ?>
+
+        <?php if (empty($categories)): ?>
+        <div class="center-block">
+            <h2 class="text-center text-muted"><i class="glyphicon glyphicon-remove"></i> <?php $this->show('No categories'); ?></h2>
+        </div>
+        <?php endif; ?>
     </div>
 </div>

@@ -12,58 +12,60 @@ defined('KRYSTAL') or die;
 
 <div class="row">
     <div class="col-lg-6">
-        <?= $this->widget(new GridViewWidget($groups, array(
-            'tableClass' => 'table table-hover table-bordered table-striped table-condensed',
-            'rowAttributes' => array(
-                'class' => function($row) use ($group) {
-                    return $group->getId() == $row->getId() ? 'info' : null;
-                }
-            ),
-            'columns' => array(
-                array(
-                    'column' => 'id',
-                    'label' => '#'
+        <div class="card">
+            <?= $this->widget(new GridViewWidget($groups, array(
+                'tableClass' => 'table table-hover table-bordered table-striped table-condensed',
+                'rowAttributes' => array(
+                    'class' => function($row) use ($group) {
+                        return $group->getId() == $row->getId() ? 'table-info' : null;
+                    }
+                ),
+                'columns' => array(
+                    array(
+                        'column' => 'id',
+                        'label' => '#'
+                    ),
+
+                    array(
+                        'column' => 'name',
+                    )
                 ),
 
-                array(
-                    'column' => 'name',
+                'actions' => array(
+                    'edit' => function($group){
+                        return Icon::edit(
+                            $this->url('Slider:Admin:Attribute@editAction', $group->getCategoryId(), $group->getId()),
+                            $this->translate('Edit this group')
+                        );
+                    },
+
+                    'remove' => function($group){
+                        return Icon::remove(
+                            $this->url('Slider:Admin:Attribute@deleteAction', $group->getCategoryId(), $group->getId()),
+                            $this->translate('Remove this group')
+                        );
+                    }
                 )
-            ),
-
-            'actions' => array(
-                'edit' => function($group){
-                    return Icon::edit(
-                        $this->url('Slider:Admin:Attribute@editAction', $group->getCategoryId(), $group->getId()),
-                        $this->translate('Edit this group')
-                    );
-                },
-
-                'remove' => function($group){
-                    return Icon::remove(
-                        $this->url('Slider:Admin:Attribute@deleteAction', $group->getCategoryId(), $group->getId()),
-                        $this->translate('Remove this group')
-                    );
-                }
-            )
-        ))); ?>
-        
-        <?php if (empty($groups)): ?>
-        <div class="center-block">
-            <h2 class="text-center text-muted"><i class="glyphicon glyphicon-remove"></i> <?php $this->show('This category has not attributes'); ?></h2>
+            ))); ?>
+            
+            <?php if (empty($groups)): ?>
+            <div class="center-block">
+                <h2 class="text-center text-muted"><i class="glyphicon glyphicon-remove"></i> <?php $this->show('This category has not attributes'); ?></h2>
+            </div>
+            <?php endif; ?>
         </div>
-        <?php endif; ?>
     </div>
 
     <div class="col-lg-6">
-        <form data-group="group">
-            <h2 class="page-header"><i class="glyphicon glyphicon-floppy-save"></i> <?php echo $this->translate(!$group->getId() ? 'Add new group' : 'Edit the group'); ?></h2>
+        <div class="card">
+            <form data-group="group" autocomplete="off">
+                <h2 class="page-header"><i class="glyphicon glyphicon-floppy-save"></i> <?php echo $this->translate(!$group->getId() ? 'Add new group' : 'Edit the group'); ?></h2>
 
-            <div class="well">
                 <input type="hidden" name="group[id]" value="<?php echo $group->getId(); ?>" />
                 <input type="hidden" name="group[category_id]" value="<?php echo $group->getCategoryId(); ?>" />
 
                 <div class="form-group">
-                    <label class="col-lg-2 control-label"><?php $this->show('Name'); ?></label>
+                    <label class="col-lg-12 control-label"><?php $this->show('Name'); ?></label>
                     <div class="col-lg-10">
                         <div class="input-group">
                             <?php echo Element::text('group[name]', $group->getName(), array('class' => 'form-control', 'placeholder' => $this->translate('Name'))); ?>
@@ -71,20 +73,18 @@ defined('KRYSTAL') or die;
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <?php if (!$group->getId()): ?>
-            
-            <button data-button="add" data-back-url="<?php echo $this->url('Slider:Admin:Attribute@editAction', $group->getCategoryId(), null); ?>" data-url="<?php echo $this->url('Slider:Admin:Attribute@saveAction', $group->getCategoryId()); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Add'); ?></button>
-            <button data-button="add-create" data-url="<?php echo $this->url('Slider:Admin:Attribute@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Add & Create new'); ?></button>
-            
-            <?php else: ?>
-            
-            <button data-button="save" data-url="<?php echo $this->url('Slider:Admin:Attribute@saveAction', $group->getCategoryId()); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save'); ?></button>
-            <button data-button="save-create" data-back-url="<?php echo $this->url('Slider:Admin:Attribute@addAction', $group->getCategoryId()); ?>" data-url="<?php echo $this->url('Slider:Admin:Attribute@saveAction', $group->getCategoryId()); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save & Create new'); ?></button>
-            
-            <?php endif; ?>
-            <button data-button="cancel" data-url="<?php echo $this->url($group->getId() ? 'Slider:Admin:Attribute@listAction' : 'Slider:Admin:Browser@indexAction', $group->getCategoryId()); ?>" class="btn btn-default"><i class="glyphicon glyphicon-floppy-remove"></i> <?php $this->show('Cancel'); ?></button>
-        </form>
+                <div class="actions">
+                    <?php if (!$group->getId()): ?>
+                    <button data-button="add" data-back-url="<?php echo $this->url('Slider:Admin:Attribute@editAction', $group->getCategoryId(), null); ?>" data-url="<?php echo $this->url('Slider:Admin:Attribute@saveAction', $group->getCategoryId()); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Add'); ?></button>
+                    <button data-button="add-create" data-url="<?php echo $this->url('Slider:Admin:Attribute@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Add & Create new'); ?></button>
+                    <?php else: ?>
+                    <button data-button="save" data-url="<?php echo $this->url('Slider:Admin:Attribute@saveAction', $group->getCategoryId()); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save'); ?></button>
+                    <button data-button="save-create" data-back-url="<?php echo $this->url('Slider:Admin:Attribute@addAction', $group->getCategoryId()); ?>" data-url="<?php echo $this->url('Slider:Admin:Attribute@saveAction', $group->getCategoryId()); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save & Create new'); ?></button>
+                    <?php endif; ?>
+                    <button data-button="cancel" data-url="<?php echo $this->url($group->getId() ? 'Slider:Admin:Attribute@listAction' : 'Slider:Admin:Browser@indexAction', $group->getCategoryId()); ?>" class="btn btn-default"><i class="glyphicon glyphicon-floppy-remove"></i> <?php $this->show('Cancel'); ?></button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>

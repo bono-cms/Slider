@@ -5,60 +5,58 @@ defined('KRYSTAL') or die;
 
 ?>
 
-<form data-group="category">
-	<div class="well">
-        <?php echo Element::hidden('category[id]', $category->getId()); ?>
-		
-		<div class="form-group">
-			<label class="col-lg-2 control-label"><?php $this->show('Name'); ?></label>
-			<div class="col-lg-10">
-				<div class="input-group">
-                    <?php echo Element::text('category[name]', $category->getName(), array('class' => 'form-control', 'placeholder' => $this->translate('Category name'))); ?>
-					<span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-				</div>
-			</div>
-		</div>
+<form class="card" data-group="category" autocomplete="off">
+    <?php echo Element::hidden('category[id]', $category->getId()); ?>
 
-        <div class="form-group">
-            <label class="col-lg-2 control-label"><?php $this->show('Quality'); ?></label>
-			<div class="col-lg-10">
-                <div class="input-group">
-                    <?php echo Element::number('category[quality]', $category->getQuality(), array('min' => 10, 'max' => 100, 'class' => 'form-control', 'placeholder' => $this->translate('Quality for images'))); ?>
-                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-                </div>
+    <div class="form-group">
+        <label class="col-lg-2 control-label"><?php $this->show('Name'); ?></label>
+        <div class="col-lg-10">
+            <div class="input-group">
+                <?php echo Element::text('category[name]', $category->getName(), array('class' => 'form-control', 'placeholder' => $this->translate('Category name'))); ?>
+                <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
             </div>
-		</div>
+        </div>
+    </div>
 
-		<div class="form-group">
-			<label class="col-lg-2 control-label"><?php $this->show('Class'); ?></label>
-			<div class="col-lg-10">
-				<div class="input-group">
-                    <?php echo Element::text('category[class]', $category->getClass(), array('class' => 'form-control', 'placeholder' => $this->translate('Class to simplify rendering'))); ?>
-					<span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-				</div>
-			</div>
-		</div>
-		
-		<div class="form-group">
-			<label class="col-lg-2 control-label"><?php $this->show('Width'); ?></label>
-			<div class="col-lg-10">
-				<div class="input-group">
-					<?php echo Element::number('category[width]', $category->getWidth(), array('class' => 'form-control', 'placeholder' => $this->translate('Desired width for slide images'))); ?>
-					<span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-				</div>
-			</div>
-		</div>
-		
-		<div class="form-group">
-			<label class="col-lg-2 control-label"><?php $this->show('Height'); ?></label>
-			<div class="col-lg-10">
-				<div class="input-group">
-                    <?php echo Element::number('category[height]', $category->getHeight(), array('class' => 'form-control', 'placeholder' => $this->translate('Desired height for slide images'))); ?>
-					<span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="form-group">
+        <label class="col-lg-2 control-label"><?php $this->show('Quality'); ?></label>
+        <div class="col-lg-10">
+            <div class="input-group">
+                <?php echo Element::number('category[quality]', $category->getQuality(), array('min' => 10, 'max' => 100, 'class' => 'form-control', 'placeholder' => $this->translate('Quality for images'))); ?>
+                <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-2 control-label"><?php $this->show('Class'); ?></label>
+        <div class="col-lg-10">
+            <div class="input-group">
+                <?php echo Element::text('category[class]', $category->getClass(), array('class' => 'form-control', 'placeholder' => $this->translate('Class to simplify rendering'))); ?>
+                <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-lg-2 control-label"><?php $this->show('Width'); ?></label>
+        <div class="col-lg-10">
+            <div class="input-group">
+                <?php echo Element::number('category[width]', $category->getWidth(), array('class' => 'form-control', 'placeholder' => $this->translate('Desired width for slide images'))); ?>
+                <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-lg-2 control-label"><?php $this->show('Height'); ?></label>
+        <div class="col-lg-10">
+            <div class="input-group">
+                <?php echo Element::number('category[height]', $category->getHeight(), array('class' => 'form-control', 'placeholder' => $this->translate('Desired height for slide images'))); ?>
+                <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+            </div>
+        </div>
+    </div>
 
     <?php $this->loadPartial('actions', array(
         'new' => !$category->getId(),

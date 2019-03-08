@@ -9,127 +9,121 @@ defined('KRYSTAL') or die;
 
 <?php if (!empty($categories)): ?>
 
-<form data-group="image">
+<form class="card" data-group="image" autocomplete="off">
     <ul class="nav nav-tabs" role="tablist">
-		<li role="presentation" class="active"><a href="#options" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-th-list"></i> <?php $this->show('Options'); ?></a></li>
-		<li role="presentation"><a href="#image" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-picture"></i> <?php $this->show('Description'); ?></a></li>
-        
+		<li role="presentation" class="nav-item active"><a class="nav-link" href="#options" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-th-list"></i> <?php $this->show('Options'); ?></a></li>
+		<li role="presentation" class="nav-item"><a class="nav-link" href="#image" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-picture"></i> <?php $this->show('Description'); ?></a></li>
+
         <?php if ($hasAttributes): ?>
-		<li role="presentation"><a href="#attrs" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-th-list"></i> <?php $this->show('Attributes'); ?></a></li>
+		<li role="presentation" class="nav-item"><a class="nav-link" href="#attrs" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-th-list"></i> <?php $this->show('Attributes'); ?></a></li>
         <?php endif; ?>
 	</ul>
 	
 	<div class="tab-content">
 		<div role="tabpanel" class="tab-pane fade in" id="image" role="tabpanel">
-			<div class="well">
-                <?php $this->loadPartial('language-tabs'); ?>
+            <?php $this->loadPartial('language-tabs'); ?>
 
-                <div class="tab-content">
-                    <?php foreach ($languages as $index => $language): ?>
-                    <div class="tab-pane fade in <?php echo $index == 0 ? 'active' : null; ?>" id="<?php printf('language-%s', $language->getId()); ?>" role="tabpanel">
-                        <?php $entity = LanguageManager::findByLangId($language->getId(), $image); ?>
-                        <?php echo Element::hidden(sprintf('translation[%s][id]', $language->getId()), $entity->getId()); ?>
-                        <?php echo Element::hidden(sprintf('translation[%s][lang_id]', $language->getId()), $language->getId()); ?>
+            <div class="tab-content">
+                <?php foreach ($languages as $index => $language): ?>
+                <div class="tab-pane fade in <?php echo $index == 0 ? 'active' : null; ?>" id="<?php printf('language-%s', $language->getId()); ?>" role="tabpanel">
+                    <?php $entity = LanguageManager::findByLangId($language->getId(), $image); ?>
+                    <?php echo Element::hidden(sprintf('translation[%s][id]', $language->getId()), $entity->getId()); ?>
+                    <?php echo Element::hidden(sprintf('translation[%s][lang_id]', $language->getId()), $language->getId()); ?>
 
-                        <?php $this->loadPartial('language-name', array('language' => $language)); ?>
+                    <?php $this->loadPartial('language-name', array('language' => $language)); ?>
 
-                        <div class="form-group">
-                            <label class="col-lg-2 control-label"><?php $this->show('Name'); ?></label>
-                            <div class="col-lg-10">
-                                <div class="input-group">
-                                    <?php echo Element::text(sprintf('translation[%s][name]', $language->getId()), $entity->getName(), array('class' => 'form-control', 'placeholder' => $this->translate("Slider's name. When empty, then is taken from a filename"))); ?>
-                                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-lg-2 control-label"><?php $this->show('Description'); ?></label>
-                            <div class="col-lg-10">
-                                <div class="input-group">
-                                    <?php echo Element::textarea(sprintf('translation[%s][description]', $language->getId()), $entity->getDescription(), array('class' => 'form-control', 'placeholder' => $this->translate('Image description'))); ?>
-                                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-lg-2 control-label"><?php $this->show('Link'); ?></label>
-                            <div class="col-lg-10">
-                                <div class="input-group">
-                                    <?php echo Element::text(sprintf('translation[%s][link]', $language->getId()), $entity->getLink(), array('class' => 'form-control', 'placeholder' => $this->translate('Link to be opened when clicking on the slider'))); ?>
-                                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-                                </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label"><?php $this->show('Name'); ?></label>
+                        <div class="col-lg-10">
+                            <div class="input-group">
+                                <?php echo Element::text(sprintf('translation[%s][name]', $language->getId()), $entity->getName(), array('class' => 'form-control', 'placeholder' => $this->translate("Slider's name. When empty, then is taken from a filename"))); ?>
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
                             </div>
                         </div>
                     </div>
-                    <?php endforeach; ?>
+
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label"><?php $this->show('Description'); ?></label>
+                        <div class="col-lg-10">
+                            <div class="input-group">
+                                <?php echo Element::textarea(sprintf('translation[%s][description]', $language->getId()), $entity->getDescription(), array('class' => 'form-control', 'placeholder' => $this->translate('Image description'))); ?>
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label"><?php $this->show('Link'); ?></label>
+                        <div class="col-lg-10">
+                            <div class="input-group">
+                                <?php echo Element::text(sprintf('translation[%s][link]', $language->getId()), $entity->getLink(), array('class' => 'form-control', 'placeholder' => $this->translate('Link to be opened when clicking on the slider'))); ?>
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-			</div>
+                <?php endforeach; ?>
+            </div>
 		</div>
 
         <div class="tab-pane fade in active" id="options" role="tabpanel">
             <?php echo Element::hidden('image[id]', $entity->getId()); ?>
             <?php echo Element::hidden('image[image]', $entity->getCover()); ?>
 
-			<div class="well">
-				<div class="form-group">
-					<label class="col-lg-2 control-label"><?php $this->show('Category'); ?></label>
-					<div class="col-lg-10">
-                        <?php echo Element::select('image[category_id]', $categories, $entity->getCategoryId(), array('class' => 'form-control')); ?>
-					</div>
-				</div>
+            <div class="form-group">
+                <label class="col-lg-12 control-label"><?php $this->show('Category'); ?></label>
+                <div class="col-lg-10">
+                    <?php echo Element::select('image[category_id]', $categories, $entity->getCategoryId(), array('class' => 'form-control')); ?>
+                </div>
+            </div>
 
-				<div class="form-group">
-					<label class="col-lg-2 control-label"><?php $this->show('Order'); ?></label>
-					<div class="col-lg-10">
-						<div class="input-group">
-                            <?php echo Element::number('image[order]', $entity->getOrder(), array('class' => 'form-control', 'placeholder' => $this->translate('Image sort order'))); ?>
-							<span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-						</div>
-					</div>
-				</div>
-				
-				<div class="form-group">
-					<label class="col-lg-2 control-label"><?php $this->show('Published'); ?></label>
-					<div class="col-lg-10">
-                        <?php echo Element::checkbox('image[published]', $entity->getPublished(), array('class' => 'form-control')); ?>
-					</div>
-				</div>
+            <div class="form-group">
+                <label class="col-lg-12 control-label"><?php $this->show('Order'); ?></label>
+                <div class="col-lg-10">
+                    <div class="input-group">
+                        <?php echo Element::number('image[order]', $entity->getOrder(), array('class' => 'form-control', 'placeholder' => $this->translate('Image sort order'))); ?>
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="col-lg-12 control-label"><?php $this->show('Published'); ?></label>
+                <div class="col-lg-10">
+                    <?php echo Element::checkbox('image[published]', $entity->getPublished(), array('class' => 'form-control')); ?>
+                </div>
+            </div>
 
-				<div class="form-group">
-					<label class="col-lg-2 control-label"><?php $this->show('Image'); ?></label>
-					<div class="col-lg-10">
+            <div class="form-group">
+                <label class="col-lg-12 control-label"><?php $this->show('Image'); ?></label>
+                <div class="col-lg-10">
 
-						<?php if ($entity->getCover() != ''): ?>
-                        <p><img class="img-responsive" src="<?php echo $entity->getImageBag()->getUrl('400x200'); ?>" /></p>
-						<?php else: ?>
-                        <p><img data-image="preview" /></p>
+                    <?php if ($entity->getCover() != ''): ?>
+                    <p><img class="img-responsive" src="<?php echo $entity->getImageBag()->getUrl('400x200'); ?>" /></p>
+                    <?php else: ?>
+                    <p><img data-image="preview" /></p>
 
-						<?php endif; ?>
+                    <?php endif; ?>
 
-                        <a class="btn btn-primary" data-button="upload" data-target="[name='file']" href="#"><i class="glyphicon glyphicon-picture"></i> <?php $this->show('Upload a file'); ?></a>
-                        <?php echo Element::file('file', 'image/x-png, image/gif, image/jpeg', array('class' => 'hidden', 'data-plugin' => 'preview')); ?>
-					</div>
-				</div>
-			</div>
+                    <a class="btn btn-primary" data-button="upload" data-target="[name='file']" href="#"><i class="glyphicon glyphicon-picture"></i> <?php $this->show('Upload a file'); ?></a>
+                    <?php echo Element::file('file', 'image/x-png, image/gif, image/jpeg', array('class' => 'hidden', 'data-plugin' => 'preview')); ?>
+                </div>
+            </div>
         </div>
 
         <?php if ($hasAttributes): ?>
 		<div class="tab-pane" id="attrs" role="tabpanel">
-            <div class="well">
-                <?php foreach ($attributes as $attribute): ?>
-                <div class="form-group">
-                    <label class="col-lg-2 control-label"><?php echo $attribute->getName(); ; ?></label>
-                    <div class="col-lg-10">
-                        <div class="input-group">
-                            <?php echo Element::text(sprintf('image[attributes][%s]', $attribute->getId()), $attribute->getValue(), array('class' => 'form-control')); ?>
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-                        </div>
+            <?php foreach ($attributes as $attribute): ?>
+            <div class="form-group">
+                <label class="col-lg-2 control-label"><?php echo $attribute->getName(); ; ?></label>
+                <div class="col-lg-10">
+                    <div class="input-group">
+                        <?php echo Element::text(sprintf('image[attributes][%s]', $attribute->getId()), $attribute->getValue(), array('class' => 'form-control')); ?>
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
                     </div>
                 </div>
-                <?php endforeach; ?>
             </div>
+            <?php endforeach; ?>
         </div>
         <?php endif; ?>
 	</div>
@@ -146,10 +140,8 @@ defined('KRYSTAL') or die;
 
 <?php else: ?>
 
-<div class="well">
-	<div class="center-block">
-		<h2 class="text-center text-muted"><i class="glyphicon glyphicon-remove"></i> <?php $this->show('In order to upload a slider, you need to create at least one category'); ?></h2>
-	</div>
+<div class="center-block">
+    <h2 class="text-center text-muted"><i class="glyphicon glyphicon-remove"></i> <?php $this->show('In order to upload a slider, you need to create at least one category'); ?></h2>
 </div>
 
 <?php endif; ?>
