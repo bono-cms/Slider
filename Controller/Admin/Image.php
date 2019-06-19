@@ -36,6 +36,10 @@ final class Image extends AbstractController
      */
     private function createForm($image, $title)
     {
+        // Load view plugins
+        $this->view->getPluginBag()
+                   ->load(array($this->getWysiwygPluginName(), 'preview'));
+
         // Append breadcrumbs
         $this->view->getBreadcrumbBag()->addOne('Slider', 'Slider:Admin:Browser@indexAction')
                                        ->addOne($title);
@@ -78,9 +82,6 @@ final class Image extends AbstractController
      */
     public function addAction($categoryId = null)
     {
-        $this->view->getPluginBag()
-                   ->load('preview');
-
         $image = new VirtualEntity();
         $image->setPublished(true)
               ->setOrder(0)

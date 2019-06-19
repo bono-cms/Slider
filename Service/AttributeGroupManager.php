@@ -43,7 +43,8 @@ final class AttributeGroupManager extends AbstractManager implements AttributeGr
         $group = new VirtualEntity();
         $group->setId($row['id'], VirtualEntity::FILTER_INT)
               ->setCategoryId($row['category_Id'], VirtualEntity::FILTER_INT)
-              ->setName($row['name'], VirtualEntity::FILTER_TAGS);
+              ->setName($row['name'], VirtualEntity::FILTER_TAGS)
+              ->setType($row['type'], VirtualEntity::FILTER_INT);
 
         return $group;
     }

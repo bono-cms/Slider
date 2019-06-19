@@ -1,5 +1,6 @@
 <?php
 
+use Slider\Collection\AttributeTypeCollection;
 use Krystal\Widget\GridView\GridViewWidget;
 use Krystal\Form\Element;
 use Cms\View\Icon;
@@ -28,6 +29,15 @@ defined('KRYSTAL') or die;
 
                     array(
                         'column' => 'name',
+                    ),
+
+                    array(
+                        'column' => 'type',
+                        'translateable' => true,
+                        'value' => function($group){
+                            $aTypeCol = new AttributeTypeCollection();
+                            return $aTypeCol->findByKey($group->getType());
+                        }
                     )
                 ),
 
@@ -71,6 +81,13 @@ defined('KRYSTAL') or die;
                             <?php echo Element::text('group[name]', $group->getName(), array('class' => 'form-control', 'placeholder' => $this->translate('Name'))); ?>
                             <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
                         </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-lg-12 control-label"><?php $this->show('Type'); ?></label>
+                    <div class="col-lg-10">
+                        <?php echo Element::select('group[type]', $this->translateArray($types), $group->getType(), array('class' => 'form-control')); ?>
                     </div>
                 </div>
 

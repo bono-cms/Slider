@@ -1,5 +1,6 @@
 <?php
 
+use Slider\Collection\AttributeTypeCollection;
 use Krystal\Form\Element;
 use Cms\Service\LanguageManager;
 
@@ -112,17 +113,27 @@ defined('KRYSTAL') or die;
         </div>
 
         <?php if ($hasAttributes): ?>
-		<div class="tab-pane" id="attrs" role="tabpanel">
+        <div class="tab-pane" id="attrs" role="tabpanel">
             <?php foreach ($attributes as $attribute): ?>
             <div class="form-group">
                 <label class="col-lg-2 control-label"><?php echo $attribute->getName(); ; ?></label>
                 <div class="col-lg-10">
-                    <div class="input-group">
-                        <?php echo Element::text(sprintf('image[attributes][%s]', $attribute->getId()), $attribute->getValue(), array('class' => 'form-control')); ?>
-                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-                    </div>
+                    <?php if ($attribute->getType() == AttributeTypeCollection::TYPE_TEXT): ?>
+                    <?php echo Element::text(sprintf('image[attributes][%s]', $attribute->getId()), $attribute->getValue(), array('class' => 'form-control')); ?>
+
+                    <?php elseif ($attribute->getType() == AttributeTypeCollection::TYPE_RICH): ?>
+                    <?php echo Element::textarea(sprintf('image[attributes][%s]', $attribute->getId()), $attribute->getValue(), array('class' => 'form-control', 'data-wysiwyg' => 'true')); ?>
+
+                    <?php elseif ($attribute->getType() == AttributeTypeCollection::TYPE_DESCRIPTION): ?>
+                    <?php echo Element::textarea(sprintf('image[attributes][%s]', $attribute->getId()), $attribute->getValue(), array('class' => 'form-control')); ?>
+
+                    <?php elseif ($attribute->getType() == AttributeTypeCollection::TYPE_NUMBER): ?>
+                    <?php echo Element::number(sprintf('image[attributes][%s]', $attribute->getId()), $attribute->getValue(), array('class' => 'form-control')); ?>
+
+                    <?php endif; ?>
                 </div>
             </div>
+
             <?php endforeach; ?>
         </div>
         <?php endif; ?>
