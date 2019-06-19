@@ -11,6 +11,7 @@
 
 namespace Slider\Controller\Admin;
 
+use Slider\Collection\AttributeTypeCollection;
 use Cms\Controller\Admin\AbstractController;
 use Krystal\Stdlib\VirtualEntity;
 use Krystal\Validate\Pattern;
@@ -40,6 +41,8 @@ final class Attribute extends AbstractController
      */
     private function createForm(VirtualEntity $group, $id)
     {
+        $aTypeCol = new AttributeTypeCollection();
+
         // Configure breadcrumbs
         $this->view->getBreadcrumbBag()->addOne('Slider', 'Slider:Admin:Browser@indexAction')
                                        ->addOne($this->translator->translate('Attributes of category "%s"', $this->getModuleService('categoryManager')->fetchNameById($id)));
@@ -47,7 +50,8 @@ final class Attribute extends AbstractController
         return $this->view->render('attributes', array(
             'groups' => $this->getModuleService('attributeGroupManager')->fetchAll($id),
             'id' => $id,
-            'group' => $group
+            'group' => $group,
+            'types' => $aTypeCol->getAll()
         ));
     }
 
