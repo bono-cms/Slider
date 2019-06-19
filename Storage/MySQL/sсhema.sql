@@ -3,7 +3,8 @@ DROP TABLE IF EXISTS `bono_module_slider_category_attribute_groups`;
 CREATE TABLE `bono_module_slider_category_attribute_groups` (
     `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT 'Attribute group unique ID',
 	`category_Id` INT NOT NULL COMMENT 'Attached category ID',
-	`name` varchar(255) NOT NULL
+	`name` varchar(255) NOT NULL,
+    `type` varchar(1) NOT NULL COMMENT 'Type constant'
 ) DEFAULT CHARSET = UTF8;
 
 
