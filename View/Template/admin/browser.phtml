@@ -9,28 +9,18 @@ defined('KRYSTAL') or die;
 ?>
 
 <div class="btn-toolbar">
-    <div class="dropdown">
-      <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-        <i class="glyphicon glyphicon-list"></i> <?php $this->show('Menu'); ?>
-      </button>
+    <?php $this->loadPartial('menu', array(
+        'items' => array(
+            isset($categoryId) ? $this->mapUrl('Slider:Admin:Image@addAction', array($categoryId), 1) : $this->url('Slider:Admin:Image@addAction') => 'Add a slider',
+            'Slider:Admin:Category@addAction' => $extendedMode ? 'Add a category' : null
+        ),
 
-      <div class="dropdown-menu">
-         <a class="dropdown-item" href="<?php echo isset($categoryId) ? $this->mapUrl('Slider:Admin:Image@addAction', array($categoryId), 1) : $this->url('Slider:Admin:Image@addAction'); ?>"><i class="glyphicon glyphicon-picture"></i> <?php $this->show('Add a slider'); ?></a>
-         <?php if ($extendedMode): ?>
-         <a class="dropdown-item" href="<?php echo $this->url('Slider:Admin:Category@addAction'); ?>"><i class="glyphicon glyphicon-folder-open"></i> <?php $this->show('Add a category'); ?></a>
-         <?php endif; ?>
-         <div class="dropdown-divider"></div>
-         <div class="dropdown-header"><?php $this->show('Actions'); ?></div>
-
-         <?php if (!empty($images)): ?>
-         <a class="dropdown-item" href="#" data-button="save-changes" data-url="<?php echo $this->url('Slider:Admin:Image@tweakAction'); ?>"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save changes'); ?></a>
-         <a class="dropdown-item" href="#" data-button="remove-selected" data-url="<?php echo $this->url('Slider:Admin:Image@deleteAction', null); ?>"><i class="glyphicon glyphicon-remove"></i> <?php $this->show('Remove selected'); ?></a>
-         <?php else: ?>
-         <a class="dropdown-item"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save changes'); ?></a>
-         <a class="dropdown-item"><i class="glyphicon glyphicon-remove"></i> <?php $this->show('Remove selected'); ?></a>
-         <?php endif; ?>
-      </div>
-    </div>
+        'actions' => array(
+            'data' => $images,
+            'save' => 'Slider:Admin:Image@tweakAction',
+            'delete' => 'Slider:Admin:Image@deleteAction'
+        )
+    )); ?>
 </div>
 
 <div class="card">
