@@ -132,6 +132,7 @@ final class Image extends AbstractController
     public function deleteAction($id)
     {
         $service = $this->getModuleService('imageManager');
+        $historyService = $this->getService('Cms', 'historyManager');
 
         // Batch removal
         if ($this->request->hasPost('batch')) {
@@ -140,14 +141,22 @@ final class Image extends AbstractController
             $service->deleteByIds($ids);
             $this->flashBag->set('success', 'Selected elements have been removed successfully');
 
+            // Save in the history
+            $historyService->write('Slider', 'Batch removal of "%s" slides', count($ids));
+
         } else {
             $this->flashBag->set('warning', 'You should select at least one element to remove');
         }
 
         // Single removal
         if (!empty($id)) {
+            $image = $this->getImageManager()->fetchById($id);
+
             $service->deleteById($id);
             $this->flashBag->set('success', 'Selected element has been removed successfully');
+
+            // Save in the history
+            $historyService->write('Slider', 'Slider "%s" has been removed', $image[0]->getName());
         }
 
         return '1';
@@ -183,16 +192,26 @@ final class Image extends AbstractController
 
         if (1) {
             $service = $this->getModuleService('imageManager');
+            $historyService = $this->getService('Cms', 'historyManager');
+
+            // Current page name
+            $name = $this->getCurrentProperty($this->request->getPost('translation'), 'name');
 
             if (!empty($input['id'])) {
                 if ($service->update($this->request->getAll())) {
                     $this->flashBag->set('success', 'The element has been updated successfully');
+
+                    // Save in the history
+                    $historyService->write('Slider', 'Slider "%s" has been updated', $name);
                     return '1';
                 }
 
             } else {
                 if ($service->add($this->request->getAll())) {
                     $this->flashBag->set('success', 'The element has been created successfully');
+
+                    // Save in the history
+                    $historyService->write('Slider', 'Slider "%s" has been uploaded', $name);
                     return $service->getLastId();
                 }
             }

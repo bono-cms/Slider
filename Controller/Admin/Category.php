@@ -83,8 +83,14 @@ final class Category extends AbstractController
      */
     public function deleteAction($id)
     {
+        $category = $this->getCategoryManager()->fetchById($id);
+
         // Remove all images associated with provided category id
         if ($this->getModuleService('imageManager')->deleteAllByCategoryId($id) && $this->getCategoryManager()->deleteById($id)) {
+            // Save in the history
+            $historyService = $this->getService('Cms', 'historyManager');
+            $historyService->write('Slider', 'Category "%s" has been removed', $category->getName());
+
             $this->flashBag->set('success', 'The category has been removed successfully');
             return '1';
         }
@@ -112,17 +118,23 @@ final class Category extends AbstractController
         ));
 
         if ($formValidator->isValid()) {
+            // Save in the history
+            $historyService = $this->getService('Cms', 'historyManager');
             $service = $this->getModuleService('categoryManager');
 
             if (!empty($input['id'])) {
                 if ($service->update($input)) {
                     $this->flashBag->set('success', 'The element has been updated successfully');
+
+                    $historyService->write('Slider', 'Category "%s" has been updated', $input['name']);
                     return '1';
                 }
 
             } else {
                 if ($service->add($input)) {
                     $this->flashBag->set('success', 'The element has been created successfully');
+
+                    $historyService->write('Slider', 'Category "%s" has been added', $input['name']);
                     return $service->getLastId();
                 }
             }

@@ -32,19 +32,17 @@ final class Module extends AbstractCmsModule
         $attributeGroupMapper = $this->getMapper('/Slider/Storage/MySQL/AttributeGroupMapper');
         $attributeValueMapper = $this->getMapper('/Slider/Storage/MySQL/AttributeValueMapper');
 
-        $historyManager = $this->getHistoryManager();
-
         $imageManager = new ImageManager(
             $imageMapper, 
             $categoryMapper, 
             $attributeValueMapper, 
-            new ImageManagerFactory($this->getAppConfig()), $historyManager
+            new ImageManagerFactory($this->getAppConfig())
         );
 
         return array(
             'attributeGroupManager' => new AttributeGroupManager($attributeGroupMapper),
             'siteService' => new SiteService($imageManager, new MemoryCache),
-            'categoryManager' => new CategoryManager($categoryMapper, $attributeGroupMapper, $historyManager),
+            'categoryManager' => new CategoryManager($categoryMapper, $attributeGroupMapper),
             'imageManager'  => $imageManager
         );
     }

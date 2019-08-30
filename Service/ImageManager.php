@@ -58,46 +58,20 @@ final class ImageManager extends AbstractManager implements ImageManagerInterfac
     private $imageManagerFactory;
 
     /**
-     * History manager to keep track
-     * 
-     * @var \Cms\Service\HistoryManager
-     */
-    private $historyManager;
-
-    /**
      * State initialization
      * 
      * @param \Slider\Storage\ImageMapperInterface $imageMapper
      * @param \Slider\Storage\CategoryMapperInterface $categoryMapper
      * @param \Slider\Storage\AttributeValueMapperInterface $attributeValueMapper
      * @param \Slider\Service\Factories\ImageManagerFactory $imageManagerFactory
-     * @param \Cms\Service\HistoryManagerInterface $historyManager
      * @return void
      */
-    public function __construct(
-        ImageMapperInterface $imageMapper, 
-        CategoryMapperInterface $categoryMapper, 
-        AttributeValueMapperInterface $attributeValueMapper,
-        ImageManagerFactory $imageManagerFactory, 
-        HistoryManagerInterface $historyManager
-    ){
+    public function __construct(ImageMapperInterface $imageMapper,  CategoryMapperInterface $categoryMapper, AttributeValueMapperInterface $attributeValueMapper, ImageManagerFactory $imageManagerFactory)
+    {
         $this->imageMapper = $imageMapper;
         $this->categoryMapper = $categoryMapper;
         $this->attributeValueMapper = $attributeValueMapper;
         $this->imageManagerFactory = $imageManagerFactory;
-        $this->historyManager = $historyManager;
-    }
-
-    /**
-     * Tracks activity
-     * 
-     * @param string $message
-     * @param string $placeholder
-     * @return boolean
-     */
-    private function track($message, $placeholder)
-    {
-        return $this->historyManager->write('Slider', $message, $placeholder);
     }
 
     /**
@@ -283,14 +257,7 @@ final class ImageManager extends AbstractManager implements ImageManagerInterfac
      */
     public function deleteById($id)
     {
-        #$name = Filter::escape($this->imageMapper->fetchNameById($id));
-
-        if ($this->delete($id)) {
-            #$this->track('Slider "%s" has been removed', $name);
-            return true;
-        } else {
-            return false;
-        }
+        return $this->delete($id);
     }
 
     /**
@@ -307,7 +274,6 @@ final class ImageManager extends AbstractManager implements ImageManagerInterfac
             }
         }
 
-        #$this->track('Batch removal of "%s" slides', count($ids));
         return true;
     }
 
@@ -378,8 +344,6 @@ final class ImageManager extends AbstractManager implements ImageManagerInterfac
             // Now save the entity
             $this->imageMapper->saveEntity($data, $translations);
 
-            #$this->track('Slider "%s" has been uploaded', $data['name']);
-
             $uploader = $this->getUploader($data['category_id']);
             return $uploader->upload($this->getLastId(), $file);
         }
@@ -412,7 +376,6 @@ final class ImageManager extends AbstractManager implements ImageManagerInterfac
             }
         }
 
-        #$this->track('Slider "%s" has been updated', $data['name']);
         $this->updateAttributes($data);
 
         return $this->imageMapper->saveEntity(ArrayUtils::arrayWithout($data, array('attributes')), $translations);
