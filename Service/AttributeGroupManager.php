@@ -15,7 +15,7 @@ use Slider\Storage\AttributeGroupMapperInterface;
 use Krystal\Stdlib\VirtualEntity;
 use Cms\Service\AbstractManager;
 
-final class AttributeGroupManager extends AbstractManager implements AttributeGroupManagerInterface
+final class AttributeGroupManager extends AbstractManager
 {
     /**
      * Any compliatn attribute group mapper

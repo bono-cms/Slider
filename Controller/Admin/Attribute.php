@@ -45,7 +45,7 @@ final class Attribute extends AbstractController
 
         // Configure breadcrumbs
         $this->view->getBreadcrumbBag()->addOne('Slider', 'Slider:Admin:Browser@indexAction')
-                                       ->addOne($this->translator->translate('Attributes of category "%s"', $this->getModuleService('categoryManager')->fetchNameById($id)));
+                                       ->addOne($this->translator->translate('Attributes of category "%s"', $this->getModuleService('categoryManager')->fetchById($id)->getName()));
 
         return $this->view->render('attributes', array(
             'groups' => $this->getModuleService('attributeGroupManager')->fetchAll($id),

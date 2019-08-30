@@ -16,7 +16,7 @@ use Krystal\Cache\CacheEngineInterface;
 /**
  * This service automatically gets injected to templates
  */
-final class SiteService implements SiteServiceInterface
+final class SiteService
 {
     /**
      * Cache engine used to cache fetching calls
@@ -28,18 +28,18 @@ final class SiteService implements SiteServiceInterface
     /**
      * Image manages which provides slide bags
      * 
-     * @var \Slider\Service\ImageManagerInterface
+     * @var \Slider\Service\ImageManager
      */
     private $imageManager;
 
     /**
      * State initialization
      * 
-     * @param \Slider\Service\ImageManagerInterface $imageManager
+     * @param \Slider\Service\ImageManager $imageManager
      * @param \Krystal\Cache\CacheEngineInterface $cache
      * @return void
      */
-    public function __construct(ImageManagerInterface $imageManager, CacheEngineInterface $cache)
+    public function __construct(ImageManager $imageManager, CacheEngineInterface $cache)
     {
         $this->imageManager = $imageManager;
         $this->cache = $cache;

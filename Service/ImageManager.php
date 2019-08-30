@@ -20,7 +20,7 @@ use Slider\Storage\CategoryMapperInterface;
 use Slider\Storage\AttributeValueMapperInterface;
 use Slider\Service\ImageManagerFactory;
 
-final class ImageManager extends AbstractManager implements ImageManagerInterface
+final class ImageManager extends AbstractManager
 {
     /**
      * Any-compliant image mapper
